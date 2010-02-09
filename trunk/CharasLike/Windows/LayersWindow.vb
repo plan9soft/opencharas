@@ -66,8 +66,9 @@
     Private Sub ToolStripButton6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton6.Click
         Dim Node As New RPGNode
         Node.Text = "Layer " + (TreeView1.Nodes.Count() + 1).ToString()
+        Node.Layer = CharacterSelect.CharacterList.CurrentCharacter.Character.CreateLayer(Node)
+        Node.Layer.Node = Node
         TreeView1.Nodes.Add(Node)
-        Node.Layer = Character.RPGCharacterFiles(0).CreateLayer(Node)
     End Sub
 
     Private Sub ToolStripButton8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton8.Click
@@ -77,16 +78,17 @@
 
         Dim NewNode As RPGNode = New RPGNode
         NewNode.Text = "Sub-Layer " + (Node.Nodes.Count() + 1).ToString()
+        NewNode.Layer = CharacterSelect.CharacterList.CurrentCharacter.Character.CreateLayer(NewNode)
+        NewNode.Layer.Node = NewNode
         Node.Nodes.Add(NewNode)
         Node.Expand()
-        NewNode.Layer = Character.RPGCharacterFiles(0).CreateLayer(NewNode)
     End Sub
 
     Private Sub ToolStripButton7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton7.Click
         Dim Node As RPGNode = CType(TreeView1.SelectedNode, RPGNode)
 
         If Node IsNot Nothing Then
-            Character.RPGCharacterFiles(0).RemoveLayer(Node.Layer)
+            CharacterSelect.CharacterList.CurrentCharacter.Character.RemoveLayer(Node.Layer)
             TreeView1.Nodes.Remove(Node)
 
             ChangeStates(False)
@@ -106,7 +108,7 @@
         NodeCont.Insert(OldIndex - 1, Node)
         TreeView1.SelectedNode = Node
 
-        Character.RPGCharacterFiles(0).MoveLayer(Node.Layer, False)
+        CharacterSelect.CharacterList.CurrentCharacter.Character.MoveLayer(Node.Layer, False)
     End Sub
 
     Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
@@ -121,7 +123,7 @@
         NodeCont.Insert(OldIndex + 1, Node)
         TreeView1.SelectedNode = Node
 
-        Character.RPGCharacterFiles(0).MoveLayer(Node.Layer, True)
+        CharacterSelect.CharacterList.CurrentCharacter.Character.MoveLayer(Node.Layer, True)
     End Sub
 
     Private Sub TreeView1_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles TreeView1.NodeMouseClick
@@ -352,8 +354,9 @@ Public Class RPGNode
     Public Sub RecurseAndLoadSubNodes()
         For Each SubLayer In Layer.SubLayers
             Dim SubNode As New RPGNode
-            SubNode.Layer = SubLayer
             SubNode.Text = SubLayer.Name
+            SubNode.Layer = SubLayer
+            SubNode.Layer.Node = SubNode
 
             Nodes.Add(SubNode)
             SubNode.RecurseAndLoadSubNodes()

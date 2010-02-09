@@ -5,7 +5,7 @@ Public Class Canvas
         WindowGeometry.FromString(My.Settings.WindowGeometry_Canvas, Me)
     End Sub
 
-    Private SkipSizeChanged_ As Boolean
+    Private SkipSizeChanged_ As Boolean = True
     Public Property SkipSizeChanged() As Boolean
         Get
             Return SkipSizeChanged_
@@ -24,8 +24,8 @@ Public Class Canvas
 
     ' Loading code
     Private Sub Canvas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        ' TEMP
-        Character.RPGCharacterFiles.Add(New RPGCharacter)
+        CharacterSelect.ClearCharacters()
+        SkipSizeChanged = False
 
         Images.LoadImages()
         AnimTimer = New Timer
@@ -72,10 +72,11 @@ Public Class Canvas
 
         ToolStripManager.LoadSettings(Me)
         ToolStripManager.LoadSettings(LayersWindow)
+        ToolStripManager.LoadSettings(CharacterSelect)
 
         ' Do we have any games?
         While Images.RPGGames.Count = 0
-            MsgBox("Charas.EXtended notices that you don't have any games set up." + vbNewLine + vbNewLine + "To use this application, you must create at least one game.", MsgBoxStyle.OkOnly)
+            MsgBox(Application.ProductName + " notices that you don't have any games set up." + vbNewLine + vbNewLine + "To use this application, you must create at least one game.", MsgBoxStyle.OkOnly)
 
             GameEditor.ShowDialog()
             ' Re-load images and games
@@ -103,6 +104,7 @@ Public Class Canvas
     Private Sub Canvas_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         ToolStripManager.SaveSettings(Me)
         ToolStripManager.SaveSettings(LayersWindow)
+        ToolStripManager.SaveSettings(CharacterSelect)
 
         My.Settings.Save()
     End Sub
@@ -123,7 +125,7 @@ Public Class Canvas
     End Sub
 
     Private Sub Canvas_Resize(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Resize
-        If Me.WindowState = FormWindowState.Minimized Then Return
+        If Me.WindowState = FormWindowState.Minimized Or SkipSizeChanged Then Return
         UpdateDrawing()
     End Sub
 
@@ -159,8 +161,8 @@ Public Class Canvas
             TempGfx.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
 
             ' Go through each layer drawing the sheet
-            If Character.RPGCharacterFiles.Count > 0 Then
-                For Each Layer In Character.RPGCharacterFiles(0).Layers
+            If CharacterSelect.CharacterList.CurrentCharacter().Character IsNot Nothing Then
+                For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
                     Layer.DrawCanvasLayers(TempGfx)
                 Next
             End If
@@ -335,7 +337,7 @@ Public Class Canvas
 
     ' Preview sheet
     Private Sub DoPreviewSheet()
-        If Character.RPGCharacterFiles(0).Layers.Count = 0 Then
+        If CharacterSelect.CharacterList.CurrentCharacter.Character.Layers.Count = 0 Then
             MsgBox("You need some layers first!")
             Return
         End If
@@ -344,7 +346,7 @@ Public Class Canvas
             Return
         End If
         PreviewWindow.StartPosition = FormStartPosition.Manual
-        Dim ImgWidth = Character.RPGCharacterFiles(0).SizeOfOutput
+        Dim ImgWidth = CharacterSelect.CharacterList.CurrentCharacter.Character.SizeOfOutput
         PreviewWindow.Size = New Size(ImgWidth.Width + GameEditor.Diff.Width, ImgWidth.Height + GameEditor.Diff.Height)
         PreviewWindow.Location = Me.Location + New Size(Me.Size.Width - PreviewWindow.Size.Width, -PreviewWindow.Size.Height)
         PreviewWindow.Show()
@@ -362,14 +364,14 @@ Public Class Canvas
     Public Shared SpecialColor As Color = Color.FromArgb(32, 156, 0)
 
     Public Function RenderToTexture(ByVal ResetTrans) As Bitmap
-        Dim ImgSize As Size = Character.RPGCharacterFiles(0).SizeOfOutput
+        Dim ImgSize As Size = CharacterSelect.CharacterList.CurrentCharacter.Character.SizeOfOutput
 
         Dim RenderedImage = New Bitmap(ImgSize.Width, ImgSize.Height, Imaging.PixelFormat.Format32bppArgb)
         Using TempGfx As Graphics = Graphics.FromImage(RenderedImage)
             TempGfx.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
 
             ' Go through each layer drawing the sheet
-            For Each Layer In Character.RPGCharacterFiles(0).Layers
+            For Each Layer In CharacterSelect.CharacterList.CurrentCharacter.Character.Layers
                 Layer.RenderLayerToGraphicsRecursion(TempGfx)
             Next
         End Using
@@ -469,7 +471,7 @@ Public Class Canvas
                     Writer.Write(Images.CurrentGameFile.FilePath)
 
                     ' Write every layer
-                    Character.RPGCharacterFiles(0).Save(Writer, (Header = EHeaderValue.HeaderCharacterImages))
+                    CharacterSelect.CharacterList.CurrentCharacter.Character.Save(Writer, (Header = EHeaderValue.HeaderCharacterImages))
                 End If
 
                 Using outFile As IO.FileStream = IO.File.Create(Path)
@@ -668,7 +670,7 @@ Public Class Canvas
                             SetGameMenuItem.DropDownItems.Add(MenuItem)
                         End If
 
-                        Character.RPGCharacterFiles(0).Load(Reader, (Header = EHeaderValue.HeaderCharacterImages))
+                        CharacterSelect.CharacterList.CurrentCharacter.Character.Load(Reader, (Header = EHeaderValue.HeaderCharacterImages))
                         If Header = EHeaderValue.HeaderCharacterImages Then Images.ReloadImages()
 
                         If ImagesNotFound.Count Then
@@ -899,7 +901,7 @@ Public Class Canvas
     ' New image
     Public Sub ResetEverything()
         ' Clear the layers list
-        Character.RPGCharacterFiles(0).Layers.Clear()
+        CharacterSelect.CharacterList.CurrentCharacter.Character.Layers.Clear()
         LayersWindow.TreeView1.Nodes.Clear()
         LayersWindow.CurrentNode = Nothing
         LayersWindow.ChangeStates(False)

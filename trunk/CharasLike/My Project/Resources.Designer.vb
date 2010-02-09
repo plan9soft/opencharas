@@ -122,9 +122,37 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property chardown() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("chardown", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property charup() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("charup", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property dec_speed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("dec_speed", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property delchar() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("delchar", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property delrow() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("delrow", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -192,9 +220,23 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property newchar() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("newchar", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property NewDocumentHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("NewDocumentHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property newrow() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("newrow", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -293,6 +335,20 @@ Namespace My.Resources
         Friend ReadOnly Property right() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("right", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property rowdown() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("rowdown", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property rowup() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("rowup", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

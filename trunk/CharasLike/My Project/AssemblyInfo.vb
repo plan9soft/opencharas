@@ -10,10 +10,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Charas.EXtended")> 
-<Assembly: AssemblyDescription("A Ripoff of Charas.EX, but better.")> 
+<Assembly: AssemblyTitle("OpenCharas")> 
+<Assembly: AssemblyDescription("Open source character editor")> 
 <Assembly: AssemblyCompany("Altered Softworks")> 
-<Assembly: AssemblyProduct("Charas.EXtended")> 
+<Assembly: AssemblyProduct("OpenCharas")> 
 <Assembly: AssemblyCopyright("Copyright © Paril 2010")> 
 <Assembly: AssemblyTrademark("Awesome")> 
 

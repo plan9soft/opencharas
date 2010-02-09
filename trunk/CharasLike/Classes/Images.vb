@@ -315,6 +315,8 @@ Public Class Images
         Dim entries As String() = IO.Directory.GetDirectories(Node.Path)
 
         For Each directory In entries
+            If directory.Substring(directory.LastIndexOf("\") + 1).StartsWith(".") Then Continue For
+
             Dim Entry As New GameNodeEntry
             Entry.NodeName = directory.Substring(directory.LastIndexOf("\") + 1)
             Entry.Path = directory
@@ -373,12 +375,14 @@ Public Class Images
 
         Dim WillBeCurrentGame As RPGGameFile = Nothing
         For Each Game In subdirectoryEntries
+            If Game.Substring(Game.LastIndexOf("\") + 1).StartsWith(".") Then Continue For
+            Dim fileEntries As String() = IO.Directory.GetFiles(Game)
+
             Dim Entry As New GameNodeEntry
             Entry.NodeName = Game.Substring(Game.LastIndexOf("\") + 1)
             Entry.Path = Game
 
             ' Is there a .gam file in here?
-            Dim fileEntries As String() = IO.Directory.GetFiles(Entry.Path)
             For Each File In fileEntries
                 If File.EndsWith(".gam") Then
                     Entry.GameFile = New RPGGameFile
@@ -440,8 +444,10 @@ Public Class Images
     ' Call this when you want to refresh the image list.
     Shared Sub ReloadImages()
         Dim Backup As String = CurrentGameFile.Path
+
         ' Back up all image data in the layers
-        For Each Layer In Character.RPGCharacterFiles(0).Layers
+        ' FIXME: do all characters
+        For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
             If Layer.Image IsNot Nothing Then
                 Dim Img As RPGImage = Layer.Image
 
@@ -464,7 +470,8 @@ Public Class Images
         CurrentGameFile = FindGameByPath(Backup)
 
         ' Fix layer data
-        For Each Layer In Character.RPGCharacterFiles(0).Layers
+        ' FIXME2: above
+        For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
             If Layer.Image IsNot Nothing Then
                 Layer.Image = FindImage(Layer.Image.Path)
                 Layer.UpdateFlippedImage()

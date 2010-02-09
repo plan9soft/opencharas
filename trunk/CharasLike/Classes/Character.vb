@@ -110,6 +110,16 @@ Public Class RPGLayer
         End Set
     End Property
 
+    Private Node_ As RPGNode
+    Public Property Node() As RPGNode
+        Get
+            Return Node_
+        End Get
+        Set(ByVal value As RPGNode)
+            Node_ = value
+        End Set
+    End Property
+
     Public Sub New()
         Offset = Point.Empty
         Image = Nothing
@@ -397,6 +407,7 @@ Public Class RPGCharacter
             Dim Node As New RPGNode
             Node.Layer = Layer
             Node.Text = Layer.Name
+            Layer.Node = Node
 
             LayersWindow.TreeView1.Nodes.Add(Node)
 
@@ -466,7 +477,7 @@ Public Class RPGCharacter
                 Layer.Parent.SubLayers.Insert(OldIndex - 1, Layer)
             End If
         Else
-            Dim OldIndex As Integer = Character.RPGCharacterFiles(0).Layers.IndexOf(Layer)
+            Dim OldIndex As Integer = CharacterSelect.CharacterList.CurrentCharacter().Character.Layers.IndexOf(Layer)
             Layers.Remove(Layer)
             If (Down) Then
                 Layers.Insert(OldIndex + 1, Layer)
@@ -479,8 +490,6 @@ Public Class RPGCharacter
 End Class
 
 Public Class Character
-    Public Shared RPGCharacterFiles As New Collections.ObjectModel.Collection(Of RPGCharacter)
-
     Public Shared Function GetRectangleForBitmapFrame(ByVal bmp As Image, ByVal FrameNumber As Integer, ByVal NumRows As Integer, ByVal NumColumns As Integer)
         If bmp Is Nothing Then Return New Rectangle(0, 0, 0, 0)
         Dim SpriteWidth As Integer = bmp.Width \ NumRows, SpriteHeight As Integer = bmp.Height \ NumColumns

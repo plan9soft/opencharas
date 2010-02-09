@@ -686,7 +686,7 @@ Partial Class Canvas
         Me.Name = "Canvas"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Text = "Charas.EXtended"
+        Me.Text = "OpenCharas"
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
         Me.MenuStrip1.ResumeLayout(False)

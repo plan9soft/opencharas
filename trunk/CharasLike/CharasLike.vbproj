@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{659FD186-1AA0-434D-9560-174165383346}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>CharasLike.My.MyApplication</StartupObject>
+    <RootNamespace>CharasLike</RootNamespace>
+    <AssemblyName>Charas.EXtended</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>Resources\Icon2.ico</ApplicationIcon>
+    <SignManifests>false</SignManifests>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CharasExtendedKey.pfx</AssemblyOriginatorKeyFile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Charas.EXtended.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Charas.EXtended.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <CodeAnalysisRuleSet>myRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Character.vb" />
+    <Compile Include="Classes\WindowDockSystem.vb" />
+    <Compile Include="Controls\DockContainer\FrmContainer.Designer.vb">
+      <DependentUpon>FrmContainer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DockContainer\FrmContainer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\DockContainer\FrmFormContainer.Designer.vb">
+      <DependentUpon>FrmFormContainer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DockContainer\FrmFormContainer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\DockContainer\FrmOtherContainer.Designer.vb">
+      <DependentUpon>FrmOtherContainer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DockContainer\FrmOtherContainer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\DockContainer\WindowDockContainer.Designer.vb">
+      <DependentUpon>WindowDockContainer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DockContainer\WindowDockContainer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GlobalSuppressions.vb" />
+    <Compile Include="Windows\About.Designer.vb">
+      <DependentUpon>About.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\About.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\ApplicationEvents.vb" />
+    <Compile Include="Windows\CharacterSelect.Designer.vb">
+      <DependentUpon>CharacterSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CharacterSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Dialog1.Designer.vb">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Dialog1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\DockForm.Designer.vb">
+      <DependentUpon>DockForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DockForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\SetValues.Designer.vb">
+      <DependentUpon>SetValues.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SetValues.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\FastPixel.vb" />
+    <Compile Include="Windows\Canvas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Canvas.Designer.vb">
+      <DependentUpon>Canvas.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\LayersWindow.Designer.vb">
+      <DependentUpon>LayersWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LayersWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ItemsWindow.Designer.vb">
+      <DependentUpon>ItemsWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ItemsWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\PreviewWindow.Designer.vb">
+      <DependentUpon>PreviewWindow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PreviewWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\EasyPosition.Designer.vb">
+      <DependentUpon>EasyPosition.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EasyPosition.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\GameEditor.Designer.vb">
+      <DependentUpon>GameEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\GameEditor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ImagePacker.designer.vb">
+      <DependentUpon>ImagePacker.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ImagePacker.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\SetSheetCreator.Designer.vb">
+      <DependentUpon>SetSheetCreator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SetSheetCreator.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\Images.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Classes\QColorMatrix.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\DockContainer\FrmContainer.resx">
+      <DependentUpon>FrmContainer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DockContainer\FrmFormContainer.resx">
+      <DependentUpon>FrmFormContainer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DockContainer\FrmOtherContainer.resx">
+      <DependentUpon>FrmOtherContainer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DockContainer\WindowDockContainer.resx">
+      <DependentUpon>WindowDockContainer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\About.resx">
+      <DependentUpon>About.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\CharacterSelect.resx">
+      <DependentUpon>CharacterSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Dialog1.resx">
+      <DependentUpon>Dialog1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\DockForm.resx">
+      <DependentUpon>DockForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\SetValues.resx">
+      <DependentUpon>SetValues.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Canvas.resx">
+      <DependentUpon>Canvas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\LayersWindow.resx">
+      <DependentUpon>LayersWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\ItemsWindow.resx">
+      <DependentUpon>ItemsWindow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\PreviewWindow.resx">
+      <DependentUpon>PreviewWindow.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\EasyPosition.resx">
+      <DependentUpon>EasyPosition.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\GameEditor.resx">
+      <DependentUpon>GameEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\ImagePacker.resx">
+      <DependentUpon>ImagePacker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\SetSheetCreator.resx">
+      <DependentUpon>SetSheetCreator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="CharasExtendedKey.pfx" />
+    <None Include="Config\App.config" />
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\boggle.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\animation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\dec_speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\inc_speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\next_frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\nextanim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\playanim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\prev_frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\prevanim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\sheetmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\stop_anim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\zoom_in.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\zoom_out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\bottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\bottom_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\bottom_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\center.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\up_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\up_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\GameEditor\g_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\GameEditor\g_X.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\add_layer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\move layer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\rem_layer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\reorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\reorder_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\reorder_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\112_RefreshArrow_Green_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\305_Close_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\NewDocumentHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\openHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\PrintHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\PrintPreviewHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\smCamera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\ThumbnailLoadingHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\flip_hor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\flip_ver.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

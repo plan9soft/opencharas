@@ -109,7 +109,7 @@ Public Class RPGPictureBox
         ' If Form7.Visible = False Then Return
     End Sub
 
-    Public Function CreatePictureBoxCopy()
+    Public Function CreatePictureBoxCopy() As RPGPictureBox
         Dim Box As New RPGPictureBox
 
         Box.Size = New Size(48, 48)
@@ -125,7 +125,7 @@ Public Class RPGPictureBox
         Return Box
     End Function
 
-    Shared Function Create(ByVal MainImage As RPGImage)
+    Shared Function Create(ByVal MainImage As RPGImage) As RPGPictureBox
         Dim Box As New RPGPictureBox
 
         Box.Size = New Size(48, 48)

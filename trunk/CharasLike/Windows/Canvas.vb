@@ -22,6 +22,33 @@ Public Class Canvas
         If String.IsNullOrEmpty(file) = False Then Me.Text += " - " + SavePos.Substring(SavePos.LastIndexOf("\") + 1)
     End Sub
 
+    Public Sub ReportCrash(ByVal ex As Exception)
+        ' Write the report
+        IO.Directory.CreateDirectory("dumps\")
+        Dim FilePath As String = "dumps\" + Date.Now().ToString().Replace("/"c, "_"c).Replace(" "c, "_"c).Replace(":"c, "_"c) + "_report.txt"
+
+        Using outFile = IO.File.Open(FilePath, IO.FileMode.Create)
+            Using strm As New IO.StreamWriter(outFile)
+                Dim output As String = "==Exception Message==" + vbNewLine + ex.Message + vbNewLine + vbNewLine + "==Inner Exception==" + vbNewLine
+                If ex.InnerException IsNot Nothing Then
+                    output += ex.InnerException.Message
+                Else
+                    output += "Nothing"
+                End If
+                output += vbNewLine + vbNewLine + "==Source==" + vbNewLine + ex.Source + vbNewLine + vbNewLine + "==Stack Trace==" + vbNewLine + ex.StackTrace
+                output += vbNewLine + vbNewLine + vbNewLine + "==String==" + vbNewLine + ex.ToString()
+                strm.Write(output)
+            End Using
+        End Using
+
+        ' Open dialog
+        Dim OldText = CrashReport.Label1.Text
+        CrashReport.Label1.Text += vbNewLine + vbNewLine + "Exception Message: " + ex.Message
+        CrashReport.Folder_Path = FilePath
+        CrashReport.ShowDialog()
+        CrashReport.Label1.Text = OldText
+    End Sub
+
     ' Loading code
     Private Sub Canvas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         CharacterSelect.ClearCharacters()
@@ -31,7 +58,7 @@ Public Class Canvas
         AnimTimer = New Timer
         AnimTimer.Interval = 350
         AddHandler AnimTimer.Tick, AddressOf AnimTimerUp
-        ToolStripTextBox2.Text = AnimTimer.Interval
+        ToolStripTextBox2.Text = AnimTimer.Interval.ToString()
 
         UpdateDrawing()
 
@@ -143,11 +170,17 @@ Public Class Canvas
         ItemsWindow.Show(Me)
     End Sub
 
+    Private Sub CharactersToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CharactersToolStripMenuItem.Click
+        If ItemsWindow.Visible Then Return
+
+        CharacterSelect.Show(Me)
+    End Sub
+
     ' Drawing Code
     Dim StoredImage As Bitmap
 
     Public Sub UpdateDrawing()
-        If ToolStripContainer1.ContentPanel.Width And ToolStripContainer1.ContentPanel.Height Then
+        If ToolStripContainer1.ContentPanel.Width <> 0 And ToolStripContainer1.ContentPanel.Height <> 0 Then
             StoredImage = New Bitmap(ToolStripContainer1.ContentPanel.Width, ToolStripContainer1.ContentPanel.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim TempGfx As Graphics = Graphics.FromImage(StoredImage)
 
@@ -363,7 +396,7 @@ Public Class Canvas
     ' Rendering: for getting the finalized image for saving
     Public Shared SpecialColor As Color = Color.FromArgb(32, 156, 0)
 
-    Public Function RenderToTexture(ByVal ResetTrans) As Bitmap
+    Public Function RenderToTexture(ByVal ResetTrans As Boolean) As Bitmap
         Dim ImgSize As Size = CharacterSelect.CharacterList.CurrentCharacter.Character.SizeOfOutput
 
         Dim RenderedImage = New Bitmap(ImgSize.Width, ImgSize.Height, Imaging.PixelFormat.Format32bppArgb)
@@ -400,7 +433,7 @@ Public Class Canvas
         Return RenderedImage
     End Function
 
-    Public Function RenderToTexture()
+    Public Function RenderToTexture() As Bitmap
         Return RenderToTexture(False)
     End Function
 
@@ -509,8 +542,7 @@ Public Class Canvas
                     WriteHeader(File, EHeaderValue.HeaderImagePack)
 
                     File.Write(ImagePacker.FlowLayoutPanel2.Controls.Count)
-                    For Each Control In ImagePacker.FlowLayoutPanel2.Controls
-                        Dim Box As RPGPictureBox = Control
+                    For Each Box As RPGPictureBox In ImagePacker.FlowLayoutPanel2.Controls
                         Dim Image As RPGImage = Box.MainImage
 
                         File.Write(Image IsNot Nothing)
@@ -594,7 +626,7 @@ Public Class Canvas
 
     ' Loading portion
     Shared Function ReadHeader(ByVal Reader As IO.BinaryReader) As EHeaderValue
-        If Reader Is Nothing Then Return "???"
+        If Reader Is Nothing Then Return EHeaderValue.HeaderUnknown
 
         Dim Header As String = Reader.ReadString()
 
@@ -673,7 +705,7 @@ Public Class Canvas
                         CharacterSelect.CharacterList.CurrentCharacter.Character.Load(Reader, (Header = EHeaderValue.HeaderCharacterImages))
                         If Header = EHeaderValue.HeaderCharacterImages Then Images.ReloadImages()
 
-                        If ImagesNotFound.Count Then
+                        If ImagesNotFound.Count <> 0 Then
                             Dim Prompt As String = "The character file loaded with the following errors:" + vbNewLine + vbNewLine
                             For Each MissingImg In ImagesNotFound
                                 Prompt += "The image " + MissingImg + " was not found." + vbNewLine
@@ -682,7 +714,7 @@ Public Class Canvas
                             MsgBox(Prompt)
                             ImagesNotFound.Clear()
                         End If
-                        If ImagesAcquired.Count Then
+                        If ImagesAcquired.Count <> 0 Then
                             Dim ResultStr As String = (ImagesAcquired.Count.ToString() + " images were added to your list:" + vbNewLine + vbNewLine)
                             For Each Stri In ImagesAcquired
                                 ResultStr += Stri + vbNewLine
@@ -865,7 +897,7 @@ Public Class Canvas
                             End Using
 
                             Indexed.UnlockBits(bmd)
-                            Image = Indexed.Clone()
+                            Image = Indexed.Clone(New Rectangle(0, 0, Image.Width, Image.Height), Imaging.PixelFormat.Format32bppArgb)
                         End Using
                     Else
                         MsgBox("Warning: Your image contains more than 256 colors! All this means is this program will not perform the conversion for you. You must manually convert this image to 8 bits per pixel if you wish to use this image in RPG Maker 2000/3.")
@@ -998,9 +1030,7 @@ Public Class Canvas
 
         ' Insert code to render the page here.
         ' This code will be called when the control is drawn.
-        Dim Render As Bitmap = RenderToTexture()
-
-        e.Graphics.DrawImage(Render, 0, 0)
+        e.Graphics.DrawImage(RenderToTexture(), 0, 0)
     End Sub
 
     Public Sub DoPrint()
@@ -1161,11 +1191,11 @@ Public Structure DockReturnValues
         Return IsDocked ^ (DockDifferenceVal.X ^ DockDifferenceVal.Y)
     End Function
 
-    Shared Operator =(ByVal Left As DockReturnValues, ByVal Right As DockReturnValues)
+    Shared Operator =(ByVal Left As DockReturnValues, ByVal Right As DockReturnValues) As Boolean
         Return Left.Equals(Right)
     End Operator
 
-    Shared Operator <>(ByVal Left As DockReturnValues, ByVal Right As DockReturnValues)
+    Shared Operator <>(ByVal Left As DockReturnValues, ByVal Right As DockReturnValues) As Boolean
         Return (Left.Equals(Right) = False)
     End Operator
 
@@ -1215,11 +1245,11 @@ Public Structure DockStoreValues
         Return (IsDockedVal = PasObj.IsDockedVal) And (DockDifferenceVal = PasObj.DockDifferenceVal)
     End Function
 
-    Shared Operator =(ByVal Left As DockStoreValues, ByVal Right As DockStoreValues)
+    Shared Operator =(ByVal Left As DockStoreValues, ByVal Right As DockStoreValues) As Boolean
         Return Left.Equals(Right)
     End Operator
 
-    Shared Operator <>(ByVal Left As DockStoreValues, ByVal Right As DockStoreValues)
+    Shared Operator <>(ByVal Left As DockStoreValues, ByVal Right As DockStoreValues) As Boolean
         Return (Left.Equals(Right) = False)
     End Operator
 
@@ -1264,7 +1294,7 @@ Public NotInheritable Class WindowGeometry
         If String.IsNullOrEmpty(thisWindowGeometry) Then Return
         If formIn Is Nothing Then Return
 
-        Dim numbers As String() = thisWindowGeometry.Split("|")
+        Dim numbers As String() = thisWindowGeometry.Split("|"c)
         Dim windowString As String = numbers(4)
 
         If (windowString = "Normal") Then

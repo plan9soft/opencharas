@@ -11,7 +11,7 @@ Public Class DontAskDialog
         Me.Close()
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal Prompt As String, Optional ByVal Img As Image = Nothing, Optional ByVal Title As String = Nothing) As MsgBoxResult
+    Public Overloads Function ShowDialog(ByVal Prompt As String, Optional ByVal Img As Image = Nothing, Optional ByVal Title As String = Nothing) As DialogResult
         If Img IsNot Nothing Then
             PictureBox1.Image = Img
             PictureBox1.Visible = True

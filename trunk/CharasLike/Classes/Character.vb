@@ -49,7 +49,7 @@ Public Class RPGLayer
     Public Sub SetMatrixValue(ByVal index As Integer, ByVal value As Single)
         MatrixValues_(index) = value
     End Sub
-    Public Function GetMatrixValue(ByVal index As Integer)
+    Public Function GetMatrixValue(ByVal index As Integer) As Single
         Return MatrixValues_(index)
     End Function
 
@@ -150,7 +150,7 @@ Public Class RPGLayer
     End Sub
 
     Public Sub UpdateFlippedImage()
-        FlippedImage = Image.RawBitmap.Clone()
+        FlippedImage = Image.RawBitmap.Clone(New Rectangle(0, 0, Image.RawBitmap.Width, Image.RawBitmap.Height), Imaging.PixelFormat.Format32bppArgb)
         If (FlipFlags And (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical)) = (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical) Then
             FlippedImage.RotateFlip(RotateFlipType.RotateNoneFlipXY)
         ElseIf (FlipFlags And EFlipFlag.FlipHorizontal) = EFlipFlag.FlipHorizontal Then
@@ -256,7 +256,7 @@ Public Class RPGLayer
         Next
     End Sub
 
-    Public Function GenerateColorMatrix()
+    Public Function GenerateColorMatrix() As Imaging.ImageAttributes
         Dim Attr As New Imaging.ImageAttributes
         Attr.SetColorMatrix(Matrix.MyMatrix, Imaging.ColorMatrixFlag.Default, Imaging.ColorAdjustType.Bitmap)
         Return Attr
@@ -346,7 +346,7 @@ Public Class RPGLayer
         Dim WImg = OwnedCharacter.SizeOfOutput
         Dim ContentSize As New Size(WImg.Width / 2, WImg.Height / 2)
         Dim BmpSize As New Size(FlippedImage.Width / 2, FlippedImage.Height / 2)
-        Dim DrawLocation As Point = (New Point(ContentSize - BmpSize)) + Offset
+        Dim DrawLocation As Point = New Point(ContentSize - BmpSize) + Offset
 
         gfx.DrawImage(FlippedImage, New Rectangle(DrawLocation, FlippedImage.Size), 0, 0, FlippedImage.Width, FlippedImage.Height, GraphicsUnit.Pixel, GenerateColorMatrix())
     End Sub
@@ -415,7 +415,7 @@ Public Class RPGCharacter
         Next
     End Sub
 
-    Private Function SizeRecursion(ByVal LayerCollection As Collections.ObjectModel.Collection(Of RPGLayer), ByVal CurrentSize As Size)
+    Private Function SizeRecursion(ByVal LayerCollection As Collections.ObjectModel.Collection(Of RPGLayer), ByVal CurrentSize As Size) As Size
         For Each Layer In LayerCollection
             CurrentSize = SizeRecursion(Layer.SubLayers, CurrentSize)
             If Layer.FlippedImage Is Nothing Then Continue For
@@ -439,7 +439,7 @@ Public Class RPGCharacter
         End Get
     End Property
 
-    Public Function CreateLayer(ByVal Node As TreeNode)
+    Public Function CreateLayer(ByVal Node As TreeNode) As RPGLayer
         Dim Layer As New RPGLayer
 
         If Node IsNot Nothing And Node.Parent IsNot Nothing And (Node.Parent IsNot LayersWindow.SplitContainer1.Panel1) Then
@@ -490,7 +490,7 @@ Public Class RPGCharacter
 End Class
 
 Public Class Character
-    Public Shared Function GetRectangleForBitmapFrame(ByVal bmp As Image, ByVal FrameNumber As Integer, ByVal NumRows As Integer, ByVal NumColumns As Integer)
+    Public Shared Function GetRectangleForBitmapFrame(ByVal bmp As Image, ByVal FrameNumber As Integer, ByVal NumRows As Integer, ByVal NumColumns As Integer) As Rectangle
         If bmp Is Nothing Then Return New Rectangle(0, 0, 0, 0)
         Dim SpriteWidth As Integer = bmp.Width \ NumRows, SpriteHeight As Integer = bmp.Height \ NumColumns
         Dim FramesPerRow As Integer = bmp.Width \ SpriteWidth

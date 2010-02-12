@@ -3,7 +3,7 @@ Public Class ImagePacker
     Private Sub Form7_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
     End Sub
 
-    Shared Function ContainsThisBox(ByVal Controls As Control.ControlCollection, ByVal Box As RPGPictureBox)
+    Shared Function ContainsThisBox(ByVal Controls As Control.ControlCollection, ByVal Box As RPGPictureBox) As Boolean
         If Controls Is Nothing Or Box Is Nothing Then Return False
 
         For Each Control In Controls

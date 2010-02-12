@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Oops!
+
+It appears OpenCharas has encountered an unhandled exception! We recommend that you send us a crash report, so we may examine and fix the problem.
+
+We have a special site set up for this. A crash dump was created in the dumps\ directory of your OpenCharas installation. This is the ultimate key to fixing the bug!
+
+Click the link below to browse to our magical upload site to report the developers a crash and we will get right on fixing! It will also open an Explorer window to the dump, for convenience.</value>
+  </data>
 </root>

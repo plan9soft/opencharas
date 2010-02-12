@@ -146,7 +146,7 @@ Public Class Images
     Public Shared RPGNodes As New Collections.ObjectModel.Collection(Of GameNodeEntry)
     Public Shared RPGGames As New Collections.ObjectModel.Collection(Of RPGGameFile)
 
-    Shared Function CompareGameFiles(ByVal Left As RPGGameFile, ByVal Right As RPGGameFile)
+    Shared Function CompareGameFiles(ByVal Left As RPGGameFile, ByVal Right As RPGGameFile) As Boolean
         If Left Is Nothing Or Right Is Nothing Then Return False
 
         If Left.SheetRows <> Right.SheetRows Then Return False
@@ -203,7 +203,7 @@ Public Class Images
         Return Nothing
     End Function
 
-    Shared Function SearchImage(ByVal List As Collections.ObjectModel.Collection(Of GameNodeEntry), ByVal Paths As String(), ByVal CurIndex As Integer)
+    Shared Function SearchImage(ByVal List As Collections.ObjectModel.Collection(Of GameNodeEntry), ByVal Paths As String(), ByVal CurIndex As Integer) As RPGImage
         For Each Node In List
             If String.Compare(Node.NodeName, Paths(CurIndex), True) = 0 Then
                 CurIndex += 1

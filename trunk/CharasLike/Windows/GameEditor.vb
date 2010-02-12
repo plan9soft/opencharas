@@ -470,7 +470,7 @@ Public Class RPGGameFileAnimation
         Next
     End Sub
 
-    Public Function GetFrame(ByVal Index As Integer)
+    Public Function GetFrame(ByVal Index As Integer) As Integer
         Return Frames(Index) - 1
     End Function
 End Class

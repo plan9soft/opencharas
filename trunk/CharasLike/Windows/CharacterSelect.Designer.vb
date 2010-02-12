@@ -22,16 +22,16 @@ Partial Class CharacterSelect
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 1")
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 2")
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 3")
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 4")
-        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Row 1", New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13, TreeNode14})
-        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 1")
-        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 2")
-        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 3")
-        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 4")
-        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Row 2", New System.Windows.Forms.TreeNode() {TreeNode16, TreeNode17, TreeNode18, TreeNode19})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 1")
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 2")
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 3")
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 4")
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Row 1", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2, TreeNode3, TreeNode4})
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 1")
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 2")
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 3")
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Column 4")
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Row 2", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7, TreeNode8, TreeNode9})
         Me.TreeView1 = New System.Windows.Forms.TreeView()
         Me.ToolStripContainer1 = New System.Windows.Forms.ToolStripContainer()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
@@ -54,29 +54,31 @@ Partial Class CharacterSelect
         '
         Me.TreeView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TreeView1.HideSelection = False
+        Me.TreeView1.HotTracking = True
+        Me.TreeView1.LabelEdit = True
         Me.TreeView1.Location = New System.Drawing.Point(0, 0)
         Me.TreeView1.Name = "TreeView1"
-        TreeNode11.Name = "Node5"
-        TreeNode11.Text = "Column 1"
-        TreeNode12.Name = "Node6"
-        TreeNode12.Text = "Column 2"
-        TreeNode13.Name = "Node7"
-        TreeNode13.Text = "Column 3"
-        TreeNode14.Name = "Node8"
-        TreeNode14.Text = "Column 4"
-        TreeNode15.Name = "Node0"
-        TreeNode15.Text = "Row 1"
-        TreeNode16.Name = "Node9"
-        TreeNode16.Text = "Column 1"
-        TreeNode17.Name = "Node10"
-        TreeNode17.Text = "Column 2"
-        TreeNode18.Name = "Node11"
-        TreeNode18.Text = "Column 3"
-        TreeNode19.Name = "Node12"
-        TreeNode19.Text = "Column 4"
-        TreeNode20.Name = "Node1"
-        TreeNode20.Text = "Row 2"
-        Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode20})
+        TreeNode1.Name = "Node5"
+        TreeNode1.Text = "Column 1"
+        TreeNode2.Name = "Node6"
+        TreeNode2.Text = "Column 2"
+        TreeNode3.Name = "Node7"
+        TreeNode3.Text = "Column 3"
+        TreeNode4.Name = "Node8"
+        TreeNode4.Text = "Column 4"
+        TreeNode5.Name = "Node0"
+        TreeNode5.Text = "Row 1"
+        TreeNode6.Name = "Node9"
+        TreeNode6.Text = "Column 1"
+        TreeNode7.Name = "Node10"
+        TreeNode7.Text = "Column 2"
+        TreeNode8.Name = "Node11"
+        TreeNode8.Text = "Column 3"
+        TreeNode9.Name = "Node12"
+        TreeNode9.Text = "Column 4"
+        TreeNode10.Name = "Node1"
+        TreeNode10.Text = "Row 2"
+        Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5, TreeNode10})
         Me.TreeView1.Size = New System.Drawing.Size(366, 237)
         Me.TreeView1.TabIndex = 0
         '

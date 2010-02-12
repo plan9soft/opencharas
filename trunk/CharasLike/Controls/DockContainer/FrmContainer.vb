@@ -109,11 +109,11 @@ Public Class FrmContainer
 
 
     Private dcs As DockStyle = Windows.Forms.DockStyle.None
-    Public Property DockStyle() As WindowsDockStyle
+    Public Property DockStyle() As Windows.Forms.DockStyle
         Get
             Return dcs
         End Get
-        Set(ByVal value As WindowsDockStyle)
+        Set(ByVal value As Windows.Forms.DockStyle)
             dcs = value
             Me.OnDockStyleChanged(evt)
         End Set

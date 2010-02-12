@@ -45,7 +45,7 @@
         DockedTo.FormsDockedToMe.Add(Me)
     End Sub
 
-    Shared Function SingleValueWithin(ByVal Value As Integer, ByVal Low As Integer, ByVal High As Integer) As Integer
+    Shared Function SingleValueWithin(ByVal Value As Integer, ByVal Low As Integer, ByVal High As Integer) As Boolean
         Return (Value < High And Value > Low)
     End Function
 
@@ -169,7 +169,7 @@ Public Class WindowDockingHandler
 
     Public Shared Handler As New WindowDockingHandler
 
-    Public Function DockFromForm(ByVal frm As Form)
+    Public Function DockFromForm(ByVal frm As Form) As WindowDocking
         For Each Dockable In DockableWindows
             If Dockable.DockForm Is frm Then Return Dockable
         Next

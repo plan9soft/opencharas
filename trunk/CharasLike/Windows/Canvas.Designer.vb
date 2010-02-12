@@ -95,6 +95,7 @@ Partial Class Canvas
         Me.ToolStripMenuItem7 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LayersToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ItemsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CharactersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem12 = New System.Windows.Forms.ToolStripMenuItem()
         Me.SetSheetCreatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
@@ -122,6 +123,7 @@ Partial Class Canvas
         Me.ToolStripContainer1.ContentPanel.SuspendLayout()
         Me.ToolStripContainer1.TopToolStripPanel.SuspendLayout()
         Me.ToolStripContainer1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ToolStrip2.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -470,7 +472,7 @@ Partial Class Canvas
         '
         'ToolStripMenuItem7
         '
-        Me.ToolStripMenuItem7.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LayersToolStripMenuItem2, Me.ItemsToolStripMenuItem})
+        Me.ToolStripMenuItem7.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LayersToolStripMenuItem2, Me.ItemsToolStripMenuItem, Me.CharactersToolStripMenuItem})
         Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
         Me.ToolStripMenuItem7.Size = New System.Drawing.Size(68, 20)
         Me.ToolStripMenuItem7.Text = "Windows"
@@ -478,14 +480,20 @@ Partial Class Canvas
         'LayersToolStripMenuItem2
         '
         Me.LayersToolStripMenuItem2.Name = "LayersToolStripMenuItem2"
-        Me.LayersToolStripMenuItem2.Size = New System.Drawing.Size(107, 22)
+        Me.LayersToolStripMenuItem2.Size = New System.Drawing.Size(130, 22)
         Me.LayersToolStripMenuItem2.Text = "Layers"
         '
         'ItemsToolStripMenuItem
         '
         Me.ItemsToolStripMenuItem.Name = "ItemsToolStripMenuItem"
-        Me.ItemsToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
+        Me.ItemsToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.ItemsToolStripMenuItem.Text = "Items"
+        '
+        'CharactersToolStripMenuItem
+        '
+        Me.CharactersToolStripMenuItem.Name = "CharactersToolStripMenuItem"
+        Me.CharactersToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.CharactersToolStripMenuItem.Text = "Characters"
         '
         'ToolStripMenuItem12
         '
@@ -696,6 +704,7 @@ Partial Class Canvas
         Me.ToolStripContainer1.TopToolStripPanel.PerformLayout()
         Me.ToolStripContainer1.ResumeLayout(False)
         Me.ToolStripContainer1.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ToolStrip2.ResumeLayout(False)
         Me.ToolStrip2.PerformLayout()
         Me.ResumeLayout(False)
@@ -771,5 +780,6 @@ Partial Class Canvas
     Friend WithEvents SingleCharacterToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ImagePackToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CharacterSetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CharactersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

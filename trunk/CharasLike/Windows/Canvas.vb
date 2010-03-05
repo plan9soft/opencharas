@@ -15,11 +15,22 @@ Public Class Canvas
         End Set
     End Property
 
-    Public Sub SetCurrentSavePosition(ByVal file As String)
-        SavePos = file
-        Me.Text = Application.ProductName
+    Structure LastSaveInfo
+        Public Path As String
+        Public Header As EHeaderValue
+    End Structure
+    Private LastSavePath_ As New LastSaveInfo
+    Public Property LastSavePath() As LastSaveInfo
+        Get
+            Return LastSavePath_
+        End Get
+        Set(ByVal value As LastSaveInfo)
+            LastSavePath_ = value
+        End Set
+    End Property
 
-        If String.IsNullOrEmpty(file) = False Then Me.Text += " - " + SavePos.Substring(SavePos.LastIndexOf("\") + 1)
+    Public Sub SetCurrentSavePosition(ByVal Path As String, ByVal Header As EHeaderValue)
+        LastSavePath = New LastSaveInfo With {.Path = Path, .Header = Header}
     End Sub
 
     Public Sub ReportCrash(ByVal ex As Exception)
@@ -50,7 +61,10 @@ Public Class Canvas
     End Sub
 
     ' Loading code
+    Private Dockable As Blue.Windows.StickyWindow
     Private Sub Canvas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dockable = New Blue.Windows.StickyWindow(Me)
+
         CharacterSelect.ClearCharacters()
         SkipSizeChanged = False
 
@@ -70,26 +84,30 @@ Public Class Canvas
         ItemsWindow.Show(Me)
         SkipSizeChanged = False
 
-        If String.IsNullOrEmpty(My.Settings.WindowGeometry_Canvas) Then
-            Me.Location = New Point((Screen.PrimaryScreen.WorkingArea.X + (Screen.PrimaryScreen.WorkingArea.Width / 2)) - (Me.Size.Width / 2) - (LayersWindow.Size.Width / 2), (Screen.PrimaryScreen.WorkingArea.Y + (Screen.PrimaryScreen.WorkingArea.Height / 2)) - (Me.Size.Height / 2) + (LayersWindow.Size.Height / 3.5))
-        End If
+        If My.Settings.DockingMode = False Then
+            If String.IsNullOrEmpty(My.Settings.WindowGeometry_Canvas) Then
+                Me.Location = New Point((Screen.PrimaryScreen.WorkingArea.X + (Screen.PrimaryScreen.WorkingArea.Width / 2)) - (Me.Size.Width / 2) - (LayersWindow.Size.Width / 2), (Screen.PrimaryScreen.WorkingArea.Y + (Screen.PrimaryScreen.WorkingArea.Height / 2)) - (Me.Size.Height / 2) + (LayersWindow.Size.Height / 3.5))
+            End If
 
-        If String.IsNullOrEmpty(My.Settings.WindowGeometry_Items) Then
-            ItemsWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y + Me.Size.Height - ItemsWindow.Size.Height)
-        Else
-            WindowGeometry.FromString(My.Settings.WindowGeometry_Items, ItemsWindow)
-        End If
+            If String.IsNullOrEmpty(My.Settings.WindowGeometry_Items) Then
+                ItemsWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y + Me.Size.Height - ItemsWindow.Size.Height)
+            Else
+                WindowGeometry.FromString(My.Settings.WindowGeometry_Items, ItemsWindow)
+            End If
 
-        If String.IsNullOrEmpty(My.Settings.WindowGeometry_Layers) Then
-            LayersWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y - LayersWindow.Size.Height + (Me.Size.Height - LayersWindow.Size.Height) + (LayersWindow.Size.Height - ItemsWindow.Size.Height))
-        Else
-            WindowGeometry.FromString(My.Settings.WindowGeometry_Layers, LayersWindow)
-        End If
+            If String.IsNullOrEmpty(My.Settings.WindowGeometry_Layers) Then
+                LayersWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y - LayersWindow.Size.Height + (Me.Size.Height - LayersWindow.Size.Height) + (LayersWindow.Size.Height - ItemsWindow.Size.Height))
+            Else
+                WindowGeometry.FromString(My.Settings.WindowGeometry_Layers, LayersWindow)
+            End If
 
-        If String.IsNullOrEmpty(My.Settings.WindowGeometry_CharSelect) Then
-            CharacterSelect.Location = New Point(Me.Location.X - CharacterSelect.Size.Width, Me.Location.Y + Me.Size.Height - CharacterSelect.Size.Height)
-        Else
-            WindowGeometry.FromString(My.Settings.WindowGeometry_CharSelect, CharacterSelect)
+            If String.IsNullOrEmpty(My.Settings.WindowGeometry_CharSelect) Then
+                CharacterSelect.Location = New Point(Me.Location.X - CharacterSelect.Size.Width, Me.Location.Y + Me.Size.Height - CharacterSelect.Size.Height)
+            Else
+                WindowGeometry.FromString(My.Settings.WindowGeometry_CharSelect, CharacterSelect)
+            End If
+
+            '            WindowDockingHandler.Handler.Load()
         End If
 
         If My.Settings.FirstRun Then
@@ -97,9 +115,14 @@ Public Class Canvas
             My.Settings.Save()
         End If
 
-        ToolStripManager.LoadSettings(Me)
-        ToolStripManager.LoadSettings(LayersWindow)
-        ToolStripManager.LoadSettings(CharacterSelect)
+        'ToolStripManager.LoadSettings(Me)
+        ' ToolStripManager.LoadSettings(LayersWindow)
+        'ToolStripManager.LoadSettings(CharacterSelect)
+
+        If My.Settings.DockingMode = True Then
+            DockForm.Show()
+            SwitchToDockModeToolStripMenuItem.Text = "Switch to Window Mode"
+        End If
 
         ' Do we have any games?
         While Images.RPGGames.Count = 0
@@ -122,25 +145,34 @@ Public Class Canvas
     End Function
 
     ' Closing Code
+    Private SwitchingToWindowMode As Boolean
     Private Sub Canvas_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        My.Settings.WindowGeometry_Canvas = WindowGeometry.ToString(Me)
-        My.Settings.WindowGeometry_Items = WindowGeometry.ToString(ItemsWindow)
-        My.Settings.WindowGeometry_Layers = WindowGeometry.ToString(LayersWindow)
+        If My.Settings.DockingMode = False And SwitchingToWindowMode = False Then
+            My.Settings.WindowGeometry_Canvas = WindowGeometry.ToString(Me)
+            My.Settings.WindowGeometry_Items = WindowGeometry.ToString(ItemsWindow)
+            My.Settings.WindowGeometry_Layers = WindowGeometry.ToString(LayersWindow)
+            My.Settings.WindowGeometry_CharSelect = WindowGeometry.ToString(CharacterSelect)
+
+            '            WindowDockingHandler.Handler.Save()
+        End If
     End Sub
 
     Private Sub Canvas_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        ToolStripManager.SaveSettings(Me)
-        ToolStripManager.SaveSettings(LayersWindow)
-        ToolStripManager.SaveSettings(CharacterSelect)
+        If My.Application.SaveMySettingsOnExit Then
+            If My.Settings.DockingMode = False Then
+                ToolStripManager.SaveSettings(Me)
+                ToolStripManager.SaveSettings(LayersWindow)
+                ToolStripManager.SaveSettings(CharacterSelect)
+            End If
 
-        My.Settings.Save()
+            My.Settings.Save()
+        End If
     End Sub
 
-    Private Dockable As New WindowDocking(Me)
     Private Sub Canvas_Move(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Move
         If Me.WindowState <> FormWindowState.Normal Then Return
 
-        Dockable.CheckDocking()
+        'Dockable.CheckDocking()
     End Sub
 
     Dim WasMinimized As Boolean = False
@@ -171,7 +203,7 @@ Public Class Canvas
     End Sub
 
     Private Sub CharactersToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CharactersToolStripMenuItem.Click
-        If ItemsWindow.Visible Then Return
+        If CharacterSelect.Visible Then Return
 
         CharacterSelect.Show(Me)
     End Sub
@@ -194,10 +226,58 @@ Public Class Canvas
             TempGfx.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
 
             ' Go through each layer drawing the sheet
-            If CharacterSelect.CharacterList.CurrentCharacter().Character IsNot Nothing Then
-                For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
-                    Layer.DrawCanvasLayers(TempGfx)
+            If SheetModeToolStripMenuItem.Checked Then
+                Dim SheetWidth As Integer = 0, SheetHeight As Integer = 0
+
+                For Each Row As RPGCharacterRowNode In CharacterSelect.TreeView1.Nodes
+                    Dim LargestY As Integer = 0
+                    Dim CurrentX As Integer = 0
+
+                    For Each Col As RPGCharacterNode In Row.Nodes
+                        If LargestY < Col.Character.SizeOfOutput.Height Then LargestY = Col.Character.SizeOfOutput.Height
+                        CurrentX += Col.Character.SizeOfOutput.Width
+                    Next
+
+                    If SheetWidth < CurrentX Then SheetWidth = CurrentX
+
+                    SheetHeight += LargestY
                 Next
+
+                Using TempSheetBitmap As New Bitmap(SheetWidth, SheetHeight, Imaging.PixelFormat.Format32bppArgb)
+                    Using TempSheetGfx = Graphics.FromImage(TempSheetBitmap)
+                        TempSheetGfx.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+                        Dim CurYPos As Integer = 0
+                        For Each Row As RPGCharacterRowNode In CharacterSelect.TreeView1.Nodes
+                            Dim CurXPos As Integer = 0
+                            Dim LargestY As Integer = 0
+
+                            For Each Col As RPGCharacterNode In Row.Nodes
+                                Dim CharSize = Col.Character.SizeOfOutput()
+
+                                Using RectangleBmp As New Bitmap(CharSize.Width, CharSize.Height, Imaging.PixelFormat.Format32bppArgb), RectangleGfx = Graphics.FromImage(RectangleBmp)
+                                    For Each Layer In Col.Character.Layers
+                                        Layer.DrawCanvasLayers(RectangleGfx)
+                                    Next
+                                    TempSheetGfx.DrawImage(RectangleBmp, New Rectangle(CurXPos, CurYPos, CharSize.Width, CharSize.Height), New Rectangle(0, 0, CharSize.Width, CharSize.Height), Drawing.GraphicsUnit.Pixel)
+                                End Using
+
+                                If LargestY < Col.Character.SizeOfOutput.Height Then LargestY = Col.Character.SizeOfOutput.Height
+                                CurXPos += CharSize.Width
+                            Next
+
+                            CurYPos += LargestY
+                        Next
+                    End Using
+
+                    Dim Zoom As Single = CType(ZoomNumber, Single) / 100
+                    TempGfx.DrawImage(TempSheetBitmap, New Rectangle((CType(ToolStripContainer1.ContentPanel.Width / 2, Integer) - ((SheetWidth * Zoom) / 2)) + CameraPosition.X, (CType(ToolStripContainer1.ContentPanel.Height / 2, Integer) - ((SheetHeight * Zoom) / 2)) + CameraPosition.Y, SheetWidth * Zoom, SheetHeight * Zoom))
+                End Using
+            Else
+                If CharacterSelect.CharacterList.CurrentCharacter().Character IsNot Nothing Then
+                    For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
+                        Layer.DrawCanvasLayers(TempGfx)
+                    Next
+                End If
             End If
 
             TempGfx.EndContainer(Cont)
@@ -210,7 +290,8 @@ Public Class Canvas
     ' Switch to Frame Mode
     Public Sub SwitchToFrameMode()
         FrameAnimationToolStripMenuItem.Checked = True
-        EntireSheetToolStripMenuItem.Checked = False
+        SingleSetToolStripMenuItem.Checked = False
+        SheetModeToolStripMenuItem.Checked = False
         UpdateDrawing()
     End Sub
 
@@ -218,22 +299,35 @@ Public Class Canvas
         SwitchToFrameMode()
     End Sub
 
-    Private Sub ToolStripButton12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton21.Click
+    Private Sub ToolStripButton12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         SwitchToFrameMode()
+    End Sub
+
+    ' Switch to Set Mode
+    Public Sub SwitchToSetMode()
+        FrameAnimationToolStripMenuItem.Checked = False
+        SingleSetToolStripMenuItem.Checked = True
+        SheetModeToolStripMenuItem.Checked = False
+        UpdateDrawing()
+    End Sub
+
+    Private Sub EntireSheetToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SingleSetToolStripMenuItem.Click
+        SwitchToSetMode()
+    End Sub
+
+    Private Sub ToolStripButton11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        SwitchToSetMode()
     End Sub
 
     ' Switch to Sheet Mode
     Public Sub SwitchToSheetMode()
         FrameAnimationToolStripMenuItem.Checked = False
-        EntireSheetToolStripMenuItem.Checked = True
+        SingleSetToolStripMenuItem.Checked = False
+        SheetModeToolStripMenuItem.Checked = True
         UpdateDrawing()
     End Sub
 
-    Private Sub EntireSheetToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EntireSheetToolStripMenuItem.Click
-        SwitchToSheetMode()
-    End Sub
-
-    Private Sub ToolStripButton11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton23.Click
+    Private Sub SheetModeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SheetModeToolStripMenuItem.Click
         SwitchToSheetMode()
     End Sub
 
@@ -477,47 +571,16 @@ Public Class Canvas
         If Bmp IsNot Nothing Then fp.Dispose()
     End Sub
 
-    Dim SavePos As String = ""
-
     Shared Sub WriteHeader(ByVal Writer As IO.BinaryWriter, ByVal Header As EHeaderValue)
         If Writer Is Nothing Then Return
 
-        If Header = EHeaderValue.HeaderCharacterNoImages Then
-            Writer.Write("chz0")
-        ElseIf Header = EHeaderValue.HeaderCharacterImages Then
-            Writer.Write("chz1")
-        ElseIf Header = EHeaderValue.HeaderImagePack Then
+        If Header = EHeaderValue.HeaderImagePack Then
             Writer.Write("chz2")
+        ElseIf Header = EHeaderValue.HeaderSheetNoImages Then
+            Writer.Write("chz3")
+        ElseIf Header = EHeaderValue.HeaderSheetImages Then
+            Writer.Write("chz4")
         End If
-    End Sub
-
-    Shared Sub PerformSave(ByVal Path As String, ByVal Header As EHeaderValue)
-        Using MemStrm As New IO.MemoryStream
-            Using Writer As New IO.BinaryWriter(MemStrm)
-
-                If Writer IsNot Nothing Then
-                    WriteHeader(Writer, Header)
-
-                    ' Write the game file (this is to ensure that receiving ends have the game)
-                    Images.CurrentGameFile.Save(Writer)
-                    ' Write the path
-                    Writer.Write(Images.CurrentGameFile.FilePath)
-
-                    ' Write every layer
-                    CharacterSelect.CharacterList.CurrentCharacter.Character.Save(Writer, (Header = EHeaderValue.HeaderCharacterImages))
-                End If
-
-                Using outFile As IO.FileStream = IO.File.Create(Path)
-                    Using Compress As IO.Compression.GZipStream = _
-                        New IO.Compression.GZipStream(outFile, IO.Compression.CompressionMode.Compress)
-
-                        ' Copy the source file into the compression stream.
-                        MemStrm.Seek(0, IO.SeekOrigin.Begin)
-                        Compress.Write(MemStrm.ToArray(), 0, MemStrm.Length())
-                    End Using
-                End Using
-            End Using
-        End Using
     End Sub
 
     Public Shared Function Percent(ByVal CurrVal As Long, ByVal MaxVal As Long) As Integer
@@ -580,35 +643,71 @@ Public Class Canvas
         End If
     End Sub
 
+    Public Sub PerformSheetSave(ByVal Path As String, ByVal Header As EHeaderValue)
+        Using MemStrm As New IO.MemoryStream
+            Using Writer As New IO.BinaryWriter(MemStrm)
+
+                If Writer IsNot Nothing Then
+                    WriteHeader(Writer, Header)
+
+                    ' Write the game file (this is to ensure that receiving ends have the game)
+                    Images.CurrentGameFile.Save(Writer)
+                    ' Write the path
+                    Writer.Write(Images.CurrentGameFile.FilePath)
+
+                    ' Write every character
+                    Writer.Write(CharacterSelect.TreeView1.Nodes.Count)
+                    For Each Row As RPGCharacterRowNode In CharacterSelect.TreeView1.Nodes
+                        Writer.Write(Row.Text)
+
+                        Writer.Write(Row.Nodes.Count)
+                        For Each Col As RPGCharacterNode In Row.Nodes
+                            Col.Character.Save(Writer, (Header = EHeaderValue.HeaderSheetImages))
+
+                            Writer.Write(Col.Text)
+                        Next
+                    Next
+                End If
+
+                SetCurrentSavePosition(Path, Header)
+
+                Using outFile As IO.FileStream = IO.File.Create(Path)
+                    Using Compress As IO.Compression.GZipStream = _
+                        New IO.Compression.GZipStream(outFile, IO.Compression.CompressionMode.Compress)
+
+                        ' Copy the source file into the compression stream.
+                        MemStrm.Seek(0, IO.SeekOrigin.Begin)
+                        Compress.Write(MemStrm.ToArray(), 0, MemStrm.Length())
+                    End Using
+                End Using
+            End Using
+        End Using
+    End Sub
+
     Public Sub DoSaveAs()
         Using SaveDlg As New SaveFileDialog
             SaveDlg.AddExtension = True
-            SaveDlg.Filter = "CHZ Files (.chz)|*.chz|CHX Files (.chx)|*.chx|Image Pack (.chx)|*.chx|All Files|*"
+            SaveDlg.Filter = "Character Sheet (No Images) (.chs)|*.chs|Character Sheet (Images) (.chs)|*.chs|All Files|*"
             SaveDlg.DefaultExt = "chz"
             SaveDlg.RestoreDirectory = True
+            SaveDlg.FilterIndex = 1
             Dim Result = SaveDlg.ShowDialog()
 
             If Result = Windows.Forms.DialogResult.OK Then
-                If SavePos.EndsWith(".chz") Then
-                    SetCurrentSavePosition(SaveDlg.FileName)
-                    PerformSave(SavePos, EHeaderValue.HeaderCharacterNoImages)
-                ElseIf SavePos.EndsWith(".chx") Then
-                    If SaveDlg.FilterIndex = 3 Then
-                        PerformImagePackCreate(SaveDlg.FileName)
-                    Else
-                        SetCurrentSavePosition(SaveDlg.FileName)
-                        PerformSave(SavePos, EHeaderValue.HeaderCharacterImages)
-                    End If
+                If SaveDlg.FilterIndex = 1 Then
+                    PerformSheetSave(SaveDlg.FileName, EHeaderValue.HeaderSheetNoImages)
+                ElseIf SaveDlg.FilterIndex = 2 Then
+                    PerformSheetSave(SaveDlg.FileName, EHeaderValue.HeaderSheetImages)
                 End If
             End If
         End Using
     End Sub
 
     Public Sub DoSave()
-        If SavePos = "" Then
+        If String.IsNullOrEmpty(LastSavePath.Path) Then
             DoSaveAs()
         Else
-            PerformSave(SavePos, EHeaderValue.HeaderCharacterNoImages)
+            PerformSheetSave(LastSavePath.Path, LastSavePath.Header)
         End If
     End Sub
 
@@ -630,12 +729,15 @@ Public Class Canvas
 
         Dim Header As String = Reader.ReadString()
 
-        If Header = "chz0" Then
-            Return EHeaderValue.HeaderCharacterNoImages
-        ElseIf Header = "chz1" Then
-            Return EHeaderValue.HeaderCharacterImages
+        If Header = "chz0" OrElse Header = "chz1" Then
+            MsgBox("Single character files are no longer supported.")
+            Return EHeaderValue.HeaderUnknown
         ElseIf Header = "chz2" Then
             Return EHeaderValue.HeaderImagePack
+        ElseIf Header = "chz3" Then
+            Return EHeaderValue.HeaderSheetNoImages
+        ElseIf Header = "chz4" Then
+            Return EHeaderValue.HeaderSheetImages
         End If
         Return EHeaderValue.HeaderUnknown
     End Function
@@ -676,53 +778,6 @@ Public Class Canvas
                         MsgBox("Error opening " + Path + ": invalid header.", MsgBoxStyle.OkOnly)
                         Reader.Close()
                         Return
-                    ElseIf Header = EHeaderValue.HeaderCharacterNoImages Or Header = EHeaderValue.HeaderCharacterImages Then
-                        ' Read the game
-                        Dim CheckGameFile As New RPGGameFile
-                        CheckGameFile.Load(Reader)
-                        CheckGameFile.FilePath = Reader.ReadString()
-
-                        Dim FoundGameFile As RPGGameFile = Images.FindGame(CheckGameFile)
-
-                        If FoundGameFile IsNot Nothing Then
-                            Images.CurrentGameFile.MenuItem.Checked = False
-                            Images.CurrentGameFile = FoundGameFile
-                            FoundGameFile.MenuItem.Checked = True
-                        Else
-                            IO.Directory.CreateDirectory(CheckGameFile.FilePath.Substring(0, CheckGameFile.FilePath.LastIndexOf("\")))
-                            Using File As New IO.BinaryWriter(IO.File.Open(CheckGameFile.FilePath, IO.FileMode.Create))
-                                CheckGameFile.Save(File)
-                            End Using
-                            Images.RPGGames.Add(CheckGameFile)
-                            Images.CurrentGameFile = CheckGameFile
-
-                            Dim MenuItem As GameModeMenuItem = New GameModeMenuItem
-                            MenuItem.GameFile = CheckGameFile
-                            CheckGameFile.MenuItem = MenuItem
-                            SetGameMenuItem.DropDownItems.Add(MenuItem)
-                        End If
-
-                        CharacterSelect.CharacterList.CurrentCharacter.Character.Load(Reader, (Header = EHeaderValue.HeaderCharacterImages))
-                        If Header = EHeaderValue.HeaderCharacterImages Then Images.ReloadImages()
-
-                        If ImagesNotFound.Count <> 0 Then
-                            Dim Prompt As String = "The character file loaded with the following errors:" + vbNewLine + vbNewLine
-                            For Each MissingImg In ImagesNotFound
-                                Prompt += "The image " + MissingImg + " was not found." + vbNewLine
-                            Next
-
-                            MsgBox(Prompt)
-                            ImagesNotFound.Clear()
-                        End If
-                        If ImagesAcquired.Count <> 0 Then
-                            Dim ResultStr As String = (ImagesAcquired.Count.ToString() + " images were added to your list:" + vbNewLine + vbNewLine)
-                            For Each Stri In ImagesAcquired
-                                ResultStr += Stri + vbNewLine
-                            Next
-                            MsgBox(ResultStr)
-                            ImagesAcquired.Clear()
-                        End If
-                        SetCurrentSavePosition(Path)
                     ElseIf Header = EHeaderValue.HeaderImagePack Then
                         Dim Count As Integer = Reader.ReadInt32()
                         Dim StrList As New List(Of String)
@@ -793,6 +848,67 @@ Public Class Canvas
                             ResultStr += Stri + vbNewLine
                         Next
                         MsgBox(ResultStr)
+                    ElseIf Header = EHeaderValue.HeaderSheetNoImages Or Header = EHeaderValue.HeaderSheetImages Then
+                        ' Read the game
+                        Dim CheckGameFile As New RPGGameFile
+                        CheckGameFile.Load(Reader)
+                        CheckGameFile.FilePath = Reader.ReadString()
+
+                        Dim FoundGameFile As RPGGameFile = Images.FindGame(CheckGameFile)
+
+                        If FoundGameFile IsNot Nothing Then
+                            Images.CurrentGameFile.MenuItem.Checked = False
+                            Images.CurrentGameFile = FoundGameFile
+                            FoundGameFile.MenuItem.Checked = True
+                        Else
+                            IO.Directory.CreateDirectory(CheckGameFile.FilePath.Substring(0, CheckGameFile.FilePath.LastIndexOf("\")))
+                            Using File As New IO.BinaryWriter(IO.File.Open(CheckGameFile.FilePath, IO.FileMode.Create))
+                                CheckGameFile.Save(File)
+                            End Using
+                            Images.RPGGames.Add(CheckGameFile)
+                            Images.CurrentGameFile = CheckGameFile
+
+                            Dim MenuItem As GameModeMenuItem = New GameModeMenuItem
+                            MenuItem.GameFile = CheckGameFile
+                            CheckGameFile.MenuItem = MenuItem
+                            SetGameMenuItem.DropDownItems.Add(MenuItem)
+                        End If
+
+                        CharacterSelect.TreeView1.Nodes.Clear()
+                        Dim RowCount As Integer = Reader.ReadInt32()
+                        For i As Integer = 0 To RowCount - 1
+                            Dim Row As RPGCharacterRowNode = CharacterSelect.CharacterList.AddRow()
+                            Row.Text = Reader.ReadString()
+
+                            Dim CharCount As Integer = Reader.ReadInt32()
+                            For x As Integer = 0 To CharCount - 1
+                                Dim Character As RPGCharacterNode = Row.AddCharacter()
+                                Character.Character.Load(Reader, (Header = EHeaderValue.HeaderSheetImages))
+                                Character.Text = Reader.ReadString()
+                            Next
+                        Next
+                        CharacterSelect.TreeView1.ExpandAll()
+
+                        If Header = EHeaderValue.HeaderSheetImages Then Images.ReloadImages()
+
+                        If ImagesNotFound.Count <> 0 Then
+                            Dim Prompt As String = "The character file loaded with the following errors:" + vbNewLine + vbNewLine
+                            For Each MissingImg In ImagesNotFound
+                                Prompt += "The image " + MissingImg + " was not found." + vbNewLine
+                            Next
+
+                            MsgBox(Prompt)
+                            ImagesNotFound.Clear()
+                        End If
+                        If ImagesAcquired.Count <> 0 Then
+                            Dim ResultStr As String = (ImagesAcquired.Count.ToString() + " images were added to your list:" + vbNewLine + vbNewLine)
+                            For Each Stri In ImagesAcquired
+                                ResultStr += Stri + vbNewLine
+                            Next
+                            MsgBox(ResultStr)
+                            ImagesAcquired.Clear()
+                        End If
+                        SetCurrentSavePosition(Path, Header)
                     End If
 
                     Reader.Close()
@@ -805,16 +921,16 @@ Public Class Canvas
     End Sub
 
     Public Sub HitOpen()
-        If MsgBox("Opening a new character file will erase this unsaved character. Do you wish to save first?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+        If MsgBox("Opening a new character file will erase this unsaved character/sheet. Do you wish to save first?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             DoSaveAs()
-            SetCurrentSavePosition("")
+            SetCurrentSavePosition("", EHeaderValue.HeaderUnknown)
         End If
 
         ResetEverything()
 
         Using OpenDlg As New OpenFileDialog
             OpenDlg.AddExtension = True
-            OpenDlg.Filter = "Character Files (.chz;.chx)|*.chz;*.chx|All Files|*"
+            OpenDlg.Filter = "Supported Files (.chz;.chx;.chs)|*.chz;*.chx;*.chs|All Files|*"
             OpenDlg.DefaultExt = "chz"
             OpenDlg.RestoreDirectory = True
             Dim Result = OpenDlg.ShowDialog()
@@ -930,16 +1046,12 @@ Public Class Canvas
         ExportSprite()
     End Sub
 
-    ' New image
-    Public Sub ResetEverything()
-        ' Clear the layers list
+    Public Sub ResetCharacter()
         CharacterSelect.CharacterList.CurrentCharacter.Character.Layers.Clear()
         LayersWindow.TreeView1.Nodes.Clear()
         LayersWindow.CurrentNode = Nothing
         LayersWindow.ChangeStates(False)
 
-        SetCurrentSavePosition("")
-        Me.Text = Application.ProductName
         UpdateDrawing()
     End Sub
 
@@ -951,11 +1063,37 @@ Public Class Canvas
             Return
         End If
 
-        ResetEverything()
+        ResetCharacter()
     End Sub
 
     Private Sub SingleCharacterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SingleCharacterToolStripMenuItem.Click
         NewCharacter()
+    End Sub
+
+    Public Sub ResetEverything()
+        ' Clear the layers list
+        CharacterSelect.ClearCharacters()
+        CharacterSelect.CharacterList.CurrentCharacter = CharacterSelect.TreeView1.Nodes(0).Nodes(0)
+        LayersWindow.TreeView1.Nodes.Clear()
+        LayersWindow.CurrentNode = Nothing
+        LayersWindow.ChangeStates(False)
+
+        UpdateDrawing()
+    End Sub
+
+    Public Sub NewSheet()
+        Dim Result = MsgBox("You may have unsaved work. Creating a new sheet will make you lose all of your characters in this sheet. Would you like to save your sheet first?", MsgBoxStyle.YesNoCancel)
+        If Result = MsgBoxResult.Yes Then
+            DoSaveAs()
+        ElseIf Result = MsgBoxResult.Cancel Then
+            Return
+        End If
+
+        ResetEverything()
+    End Sub
+
+    Private Sub CharacterSetToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CharacterSetToolStripMenuItem.Click
+        NewSheet()
     End Sub
 
     Private Sub ImagePackToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ImagePackToolStripMenuItem.Click
@@ -973,11 +1111,22 @@ Public Class Canvas
     End Sub
 
     Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton9.Click
-        NewCharacter()
+        If (CharacterSelect.TreeView1.SelectedNode) Is Nothing Then Return
+
+        If CharacterSelect.TreeView1.SelectedNode.GetType() Is GetType(RPGCharacterRowNode) Then
+            NewSheet()
+        Else
+            NewCharacter()
+        End If
+    End Sub
+
+    Public Sub DoClose()
+        FinalClosing = True
+        Me.Close()
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
-        Me.Close()
+        DoClose()
     End Sub
 
     ' Camera code
@@ -1094,6 +1243,11 @@ Public Class Canvas
     ' Clear Settings
     Private Sub ToolStripMenuItem9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem9.Click
         My.Settings.Reset()
+        My.Application.SaveMySettingsOnExit = False
+        If MsgBox("In order for the settings to be fully cleared, the application must be closed. You can restart the app after this. Proceed?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            FinalClosing = True
+            Me.Close()
+        End If
     End Sub
 
     ' Game Editor
@@ -1169,6 +1323,22 @@ Public Class Canvas
     ' Sheet Creator
     Private Sub SetSheetCreatorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetSheetCreatorToolStripMenuItem.Click
         SetSheetCreator.ShowDialog()
+    End Sub
+
+    Private Sub SwitchToDockModeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SwitchToDockModeToolStripMenuItem.Click
+        My.Settings.DockingMode = (My.Settings.DockingMode = False)
+
+        If My.Settings.DockingMode = True Then
+            SwitchToDockModeToolStripMenuItem.Text = "Switch to Window Mode"
+            SwitchingToWindowMode = False
+        Else
+            SwitchToDockModeToolStripMenuItem.Text = "Switch to Dock Mode"
+            SwitchingToWindowMode = True
+        End If
+
+        If MsgBox("Changing the windowing style requires that OpenCharas is restarted. Do this now?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+            DoClose()
+        End If
     End Sub
 End Class
 
@@ -1278,9 +1448,14 @@ Public Structure DockStoreValues
 End Structure
 
 Public Enum EHeaderValue
+    ' Unsupported
     HeaderCharacterNoImages
     HeaderCharacterImages
+
+    ' Supported
     HeaderImagePack
+    HeaderSheetNoImages
+    HeaderSheetImages
     HeaderUnknown
 End Enum
 

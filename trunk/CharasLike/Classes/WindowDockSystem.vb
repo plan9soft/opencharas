@@ -95,6 +95,9 @@
     Public Function NotDockedSomewhereDownTheChain(ByVal checkFrm As WindowDocking) As Boolean
         If checkFrm Is Nothing Then Return False
 
+        ' Are WE docked to it?
+        If DockedTo Is checkFrm Then Return True
+
         ' Go through each form that is docked to this one 
         For Each Docked In FormsDockedToMe
             If Docked Is checkFrm Then Return True
@@ -111,10 +114,9 @@
         Dim FoundDock As WindowDocking = Nothing
         Dim FoundLocation As Point = DockForm.Location, FoundDifference As Point
 
-        'MoveWithDock
         For Each Dockable In WindowDockingHandler.Handler.DockableWindows
             ' Special case: don't try on a form that Me is docked to
-            If FormsDockedToMe.Contains(Dockable) Then Continue For
+            If FormsDockedToMe.Contains(Dockable) Or Dockable Is Me Then Continue For
 
             Dim DockWindowRectangle As New Rectangle(FoundLocation, DockForm.Size)
             Dim ParentWindowRectangle As New Rectangle(Dockable.DockForm.Location, Dockable.DockForm.Size)
@@ -128,6 +130,7 @@
 
         Dim DockedDownChain As Boolean = False
         If FoundDock IsNot Nothing Then DockedDownChain = NotDockedSomewhereDownTheChain(FoundDock)
+
         ' Did we find a dock?
         ' If we were already docked, we can just switch and go away.
         If DockedTo IsNot Nothing Then AttachedTo(DockedTo.DockForm)
@@ -175,4 +178,44 @@ Public Class WindowDockingHandler
         Next
         Return Nothing
     End Function
+
+    Public Function DockFromString(ByVal Str As String) As WindowDocking
+        For Each Dockable In DockableWindows
+            If Dockable.DockForm.Text = Str Then Return Dockable
+        Next
+        Return Nothing
+    End Function
+
+    Public Sub ClearDocks()
+        For Each Dockable In DockableWindows_
+            Dockable.DockedTo = Nothing
+            Dockable.FormsDockedToMe.Clear()
+        Next
+    End Sub
+
+    Public Sub Save()
+        Dim DockStr As String = ""
+
+        For Each Dockable As WindowDocking In DockableWindows_
+            If Dockable.DockedTo IsNot Nothing Then
+                If String.IsNullOrEmpty(DockStr) = False Then DockStr += "|"
+                DockStr += Dockable.DockForm.Text + "|" + Dockable.DockedTo.DockForm.Text
+            End If
+        Next
+
+        My.Settings.DockString = DockStr
+    End Sub
+
+    Public Sub Load()
+        If String.IsNullOrEmpty(My.Settings.DockString) Then Return
+
+        ' Clear all current docks
+        ClearDocks()
+
+        Dim Spl As String() = My.Settings.DockString.Split("|"c)
+        For i As Integer = 0 To Spl.Length - 1 Step 2
+            Dim Dockable As WindowDocking = DockFromString(Spl(i))
+            Dockable.ForceDock(DockFromString(Spl(i + 1)).DockForm)
+        Next
+    End Sub
 End Class

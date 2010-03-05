@@ -22,11 +22,12 @@ Partial Class SetSheetCreator
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SetSheetCreator))
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TreeView1 = New System.Windows.Forms.TreeView()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ImportImageToThisSetToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
@@ -56,6 +57,7 @@ Partial Class SetSheetCreator
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStripContainer1.ContentPanel.SuspendLayout()
@@ -105,29 +107,29 @@ Partial Class SetSheetCreator
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportImageToThisSetToolStripMenuItem, Me.ClearImageToolStripMenuItem, Me.ToolStripSeparator5, Me.ExportSetToImageToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(211, 76)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(204, 76)
         '
         'ImportImageToThisSetToolStripMenuItem
         '
         Me.ImportImageToThisSetToolStripMenuItem.Name = "ImportImageToThisSetToolStripMenuItem"
-        Me.ImportImageToThisSetToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.ImportImageToThisSetToolStripMenuItem.Size = New System.Drawing.Size(203, 22)
         Me.ImportImageToThisSetToolStripMenuItem.Text = "Import Image to this Set..."
         '
         'ClearImageToolStripMenuItem
         '
         Me.ClearImageToolStripMenuItem.Name = "ClearImageToolStripMenuItem"
-        Me.ClearImageToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.ClearImageToolStripMenuItem.Size = New System.Drawing.Size(203, 22)
         Me.ClearImageToolStripMenuItem.Text = "Clear Image"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(207, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(200, 6)
         '
         'ExportSetToImageToolStripMenuItem
         '
         Me.ExportSetToImageToolStripMenuItem.Name = "ExportSetToImageToolStripMenuItem"
-        Me.ExportSetToImageToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.ExportSetToImageToolStripMenuItem.Size = New System.Drawing.Size(203, 22)
         Me.ExportSetToImageToolStripMenuItem.Text = "Export Set to Image..."
         '
         'MenuStrip1
@@ -152,7 +154,7 @@ Partial Class SetSheetCreator
         Me.NewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
         Me.NewToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
         Me.NewToolStripMenuItem.Text = "&New..."
         '
         'OpenToolStripMenuItem
@@ -325,6 +327,7 @@ Partial Class SetSheetCreator
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         Me.SplitContainer1.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()

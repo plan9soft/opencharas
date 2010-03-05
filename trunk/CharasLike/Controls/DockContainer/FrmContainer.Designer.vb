@@ -19,7 +19,7 @@ Partial Class FrmContainer
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.HeaderWindow1 = New HeaderWindow
+        Me.HeaderWindow1 = New CharasLike.HeaderWindow()
         Me.SuspendLayout()
         '
         'HeaderWindow1

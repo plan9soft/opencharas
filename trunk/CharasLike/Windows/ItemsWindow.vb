@@ -1,9 +1,12 @@
 ﻿Public Class ItemsWindow
     ' Loading/Closing
+    Private Dockable As Blue.Windows.StickyWindow
+
     Private Sub ItemsWindow_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         FlowLayoutPanel1.Controls.Add(RPGPictureBox.EmptyBox)
 
-        Dockable.ForceDock(Canvas)
+        Dockable = New Blue.Windows.StickyWindow(Me)
+        'If String.IsNullOrEmpty(My.Settings.DockString) Then Dockable.ForceDock(Canvas)
     End Sub
 
     Private Sub ItemsWindow_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
@@ -14,11 +17,10 @@
     End Sub
 
     ' Move/resize code
-    Private Dockable As New WindowDocking(Me)
 
     Private Sub ItemsWindow_Move(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Move
         If Canvas.SkipSizeChanged Then Return
-        Dockable.CheckDocking()
+        'Dockable.CheckDocking()
     End Sub
 
     Private Sub ItemsWindow_Resize(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Resize

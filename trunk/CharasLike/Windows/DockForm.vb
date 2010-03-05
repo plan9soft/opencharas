@@ -9,6 +9,13 @@
             .AddForm(Canvas, WindowsDockStyle.Fill)
             .AddForm(ItemsWindow, WindowsDockStyle.Bottom)
             .AddForm(LayersWindow, WindowsDockStyle.Top)
+            .AddForm(CharacterSelect, WindowsDockStyle.Left)
         End With
+    End Sub
+
+    Private Sub DockForm_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        'Canvas.Close()
+
+        'If Canvas.FinalClosing = False Then e.Cancel = True
     End Sub
 End Class

@@ -1,11 +1,13 @@
 ﻿Public Class LayersWindow
     ' Loading/Closing
+    Private Dockable As Blue.Windows.StickyWindow
     Private Sub LayersWindow_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         TreeView1.Nodes.Clear()
 
         SetSliderColors()
 
-        Dockable.ForceDock(ItemsWindow)
+        'If String.IsNullOrEmpty(My.Settings.DockString) Then Dockable.ForceDock(ItemsWindow)
+        Dockable = New Blue.Windows.StickyWindow(Me)
     End Sub
 
     Private Sub LayersWindow_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
@@ -37,14 +39,23 @@
             Ctrl.Enabled = Enabled
             ChangeStatesSub(Ctrl, Enabled)
         Next
-    End Sub
 
-    Private Dockable As New WindowDocking(Me)
+        If Enabled = False Then
+            NumericUpDown1.Value = 0
+            NumericUpDown2.Value = 0
+
+            TrackBar1.Value = 0
+            TrackBar2.Value = 100
+            TrackBar3.Value = 100
+            TrackBar5.Value = 0
+            TrackBar6.Value = 255
+            SetSliderColors()
+            PictureBox1.Image = Nothing
+        End If
+    End Sub
 
     Private Sub LayersWindow_Move(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Move
         If Canvas.SkipSizeChanged Then Return
-
-        Dockable.CheckDocking()
     End Sub
 
     Public Sub SetSliderColors()
@@ -91,7 +102,11 @@
             CharacterSelect.CharacterList.CurrentCharacter.Character.RemoveLayer(Node.Layer)
             TreeView1.Nodes.Remove(Node)
 
-            ChangeStates(False)
+            If TreeView1.SelectedNode IsNot Nothing Then
+                DoSelectNode(TreeView1.SelectedNode)
+            Else
+                ChangeStates(False)
+            End If
             Canvas.UpdateDrawing()
         End If
     End Sub
@@ -298,37 +313,41 @@
         Canvas.UpdateDrawing()
     End Sub
 
-    Private Sub TreeView1_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeView1.AfterSelect
+    Public Sub DoSelectNode(ByVal Node As TreeNode)
+        CurrentNode = Node
+        SliderColorsToLayerColors()
+        ChangeStates(True)
+
+        'TextBox1.Text = CurrentNode.Layer.Name
+        NumericUpDown1.Value = CurrentNode.Layer.Offset.X
+        NumericUpDown2.Value = CurrentNode.Layer.Offset.Y
+
+        If CurrentNode.Layer.Image IsNot Nothing Then
+            PictureBox1.Image = CurrentNode.Layer.Image.Box.MyImage
+        Else
+            PictureBox1.Image = Nothing
+        End If
+
+        CheckBox1.Checked = False
+        CheckBox2.Checked = False
+
+        If (CurrentNode.Layer.FlipFlags And (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical)) = (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical) Then
+            CheckBox1.Checked = True
+            CheckBox2.Checked = True
+        ElseIf (CurrentNode.Layer.FlipFlags And EFlipFlag.FlipHorizontal) = EFlipFlag.FlipHorizontal Then
+            CheckBox1.Checked = True
+        ElseIf (CurrentNode.Layer.FlipFlags And EFlipFlag.FlipVertical) = EFlipFlag.FlipVertical Then
+            CheckBox2.Checked = True
+        End If
+
+        TreeView1.SelectedNode = Node
+    End Sub
+
+    Private Sub TreeView1_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles TreeView1.NodeMouseClick
         Dim Node As RPGNode = CType(e.Node, RPGNode)
 
         If Node IsNot Nothing Then
-            CurrentNode = Node
-            SliderColorsToLayerColors()
-            ChangeStates(True)
-
-            'TextBox1.Text = CurrentNode.Layer.Name
-            NumericUpDown1.Value = CurrentNode.Layer.Offset.X
-            NumericUpDown2.Value = CurrentNode.Layer.Offset.Y
-
-            If CurrentNode.Layer.Image IsNot Nothing Then
-                PictureBox1.Image = CurrentNode.Layer.Image.Box.MyImage
-            Else
-                PictureBox1.Image = Nothing
-            End If
-
-            CheckBox1.Checked = False
-            CheckBox2.Checked = False
-
-            If (CurrentNode.Layer.FlipFlags And (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical)) = (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical) Then
-                CheckBox1.Checked = True
-                CheckBox2.Checked = True
-            ElseIf (CurrentNode.Layer.FlipFlags And EFlipFlag.FlipHorizontal) = EFlipFlag.FlipHorizontal Then
-                CheckBox1.Checked = True
-            ElseIf (CurrentNode.Layer.FlipFlags And EFlipFlag.FlipVertical) = EFlipFlag.FlipVertical Then
-                CheckBox2.Checked = True
-            End If
-
-            TreeView1.SelectedNode = Node
+            DoSelectNode(Node)
         Else
             ChangeStates(False)
         End If

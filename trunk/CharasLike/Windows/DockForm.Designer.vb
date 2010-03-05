@@ -14,6 +14,18 @@ Partial Class DockForm
         End Try
     End Sub
 
+    <Security.Permissions.SecurityPermissionAttribute(Security.Permissions.SecurityAction.InheritanceDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
+    <Security.Permissions.SecurityPermissionAttribute(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)> _
+    Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Select Case m.Msg
+            Case Is = &H10
+                Canvas.Close()
+                If Canvas.FinalClosing = False Then Return
+        End Select
+
+        MyBase.WndProc(m)
+    End Sub
+
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
@@ -22,6 +34,7 @@ Partial Class DockForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DockForm))
         Me.SuspendLayout()
         '
         'DockForm
@@ -29,8 +42,9 @@ Partial Class DockForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 262)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "DockForm"
-        Me.Text = "DockForm"
+        Me.Text = "OpenCharas"
         Me.ResumeLayout(False)
 
     End Sub

@@ -13,7 +13,7 @@
     <AssemblyName>OpenCharas</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <OptionExplicit>On</OptionExplicit>
@@ -23,10 +23,10 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>Resources\Icon2.ico</ApplicationIcon>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>CharasExtendedKey.pfx</AssemblyOriginatorKeyFile>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>c:\testpub\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -36,9 +36,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -66,14 +67,24 @@
     <WarningsAsErrors>
     </WarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>EA2D1BCF86E2BF319526F496E337648806C7D6D4</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>CharasLike_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -89,7 +100,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Classes\Character.vb" />
-    <Compile Include="Classes\WindowDockSystem.vb" />
+    <Compile Include="Classes\StickyWindow.vb" />
     <Compile Include="Controls\DockContainer\FrmContainer.Designer.vb">
       <DependentUpon>FrmContainer.vb</DependentUpon>
     </Compile>
@@ -121,7 +132,6 @@
     <Compile Include="Windows\About.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Config\ApplicationEvents.vb" />
     <Compile Include="Windows\CharacterSelect.Designer.vb">
       <DependentUpon>CharacterSelect.vb</DependentUpon>
     </Compile>
@@ -288,7 +298,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="CharasExtendedKey.pfx" />
-    <None Include="Config\App.config" />
+    <None Include="CharasLike_TemporaryKey.pfx" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -480,6 +490,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\CharacterSelect\rowup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\setmode.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

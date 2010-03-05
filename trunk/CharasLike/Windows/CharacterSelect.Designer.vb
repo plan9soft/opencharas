@@ -79,7 +79,7 @@ Partial Class CharacterSelect
         TreeNode10.Name = "Node1"
         TreeNode10.Text = "Row 2"
         Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode5, TreeNode10})
-        Me.TreeView1.Size = New System.Drawing.Size(366, 237)
+        Me.TreeView1.Size = New System.Drawing.Size(374, 243)
         Me.TreeView1.TabIndex = 0
         '
         'ToolStripContainer1
@@ -88,11 +88,11 @@ Partial Class CharacterSelect
         'ToolStripContainer1.ContentPanel
         '
         Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.TreeView1)
-        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(366, 237)
+        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(374, 243)
         Me.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolStripContainer1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripContainer1.Name = "ToolStripContainer1"
-        Me.ToolStripContainer1.Size = New System.Drawing.Size(366, 262)
+        Me.ToolStripContainer1.Size = New System.Drawing.Size(374, 268)
         Me.ToolStripContainer1.TabIndex = 1
         Me.ToolStripContainer1.Text = "ToolStripContainer1"
         '
@@ -107,7 +107,7 @@ Partial Class CharacterSelect
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripButton2, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripSeparator1, Me.ToolStripButton3, Me.ToolStripButton4, Me.ToolStripButton8, Me.ToolStripButton7})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(366, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(374, 25)
         Me.ToolStrip1.Stretch = True
         Me.ToolStrip1.TabIndex = 0
         '
@@ -199,7 +199,7 @@ Partial Class CharacterSelect
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(366, 262)
+        Me.ClientSize = New System.Drawing.Size(374, 268)
         Me.Controls.Add(Me.ToolStripContainer1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.MinimumSize = New System.Drawing.Size(382, 291)

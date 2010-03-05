@@ -150,6 +150,8 @@ Public Class RPGLayer
     End Sub
 
     Public Sub UpdateFlippedImage()
+        If Image Is Nothing Then Return
+
         FlippedImage = Image.RawBitmap.Clone(New Rectangle(0, 0, Image.RawBitmap.Width, Image.RawBitmap.Height), Imaging.PixelFormat.Format32bppArgb)
         If (FlipFlags And (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical)) = (EFlipFlag.FlipHorizontal Or EFlipFlag.FlipVertical) Then
             FlippedImage.RotateFlip(RotateFlipType.RotateNoneFlipXY)
@@ -321,13 +323,25 @@ Public Class RPGLayer
             destRect = New Rectangle(DrawX, DrawY, (bmp.Width \ Image.GameFile.SheetRows) * Zoom, (bmp.Height \ Image.GameFile.SheetColumns) * Zoom)
             srcRect = Character.GetRectangleForBitmapFrame(bmp, Frame, Image.GameFile.SheetRows, Image.GameFile.SheetColumns)
             gfx.DrawImage(bmp, destRect, srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, Attr)
-        Else ' Sheet mode
+        ElseIf Canvas.SingleSetToolStripMenuItem.Checked Then ' Sheet mode
             Dim BmpWidth As Integer = ((bmp.Width * Zoom) / 2)
             Dim BmpHeight As Integer = ((bmp.Height * Zoom) / 2)
             Dim DrawX As Integer = (ContentWidth - BmpWidth) + (Offset.X * Zoom) + Canvas.CanvasCamera.X
             Dim DrawY As Integer = (ContentHeight - BmpHeight) + (Offset.Y * Zoom) + Canvas.CanvasCamera.Y
 
             destRect = New Rectangle(New Point(DrawX, DrawY), New Size(bmp.Width * Zoom, bmp.Height * Zoom))
+            srcRect = New Rectangle(0, 0, bmp.Width, bmp.Height)
+
+            gfx.DrawImage(bmp, destRect, srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, Attr)
+        Else
+            Dim BmpWidth As Integer = (bmp.Width / 2)
+            Dim BmpHeight As Integer = (bmp.Height / 2)
+            ContentWidth = (gfx.VisibleClipBounds.Width / 2)
+            ContentHeight = (gfx.VisibleClipBounds.Height / 2)
+            Dim DrawX As Integer = (ContentWidth - BmpWidth) + (Offset.X)
+            Dim DrawY As Integer = (ContentHeight - BmpHeight) + (Offset.Y)
+
+            destRect = New Rectangle(New Point(DrawX, DrawY), New Size(bmp.Width, bmp.Height))
             srcRect = New Rectangle(0, 0, bmp.Width, bmp.Height)
 
             gfx.DrawImage(bmp, destRect, srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, Attr)
@@ -367,16 +381,6 @@ Public Class RPGCharacter
         End Get
         Set(ByVal value As String)
             Name_ = value
-        End Set
-    End Property
-
-    Private LastSavePath_ As String ' Last place we saved this specific character file
-    Public Property LastSavePath() As String
-        Get
-            Return LastSavePath_
-        End Get
-        Set(ByVal value As String)
-            LastSavePath_ = value
         End Set
     End Property
 
@@ -429,10 +433,10 @@ Public Class RPGCharacter
         Get
             Dim Width As Integer, Height As Integer
             If Layers.Count = 0 Then
-                Width = 1
-                Height = 1
+                Width = 0
+                Height = 0
             Else
-                Dim LargestSize As New Size(1, 1)
+                Dim LargestSize As New Size(0, 0)
                 Return SizeRecursion(Layers, LargestSize)
             End If
             Return New Size(Width, Height)

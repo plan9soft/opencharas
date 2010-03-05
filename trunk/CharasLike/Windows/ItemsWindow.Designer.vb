@@ -22,10 +22,11 @@ Partial Class ItemsWindow
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.TreeView1 = New System.Windows.Forms.TreeView()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -45,8 +46,8 @@ Partial Class ItemsWindow
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.FlowLayoutPanel1)
-        Me.SplitContainer1.Size = New System.Drawing.Size(366, 257)
-        Me.SplitContainer1.SplitterDistance = 131
+        Me.SplitContainer1.Size = New System.Drawing.Size(374, 268)
+        Me.SplitContainer1.SplitterDistance = 133
         Me.SplitContainer1.TabIndex = 0
         '
         'TreeView1
@@ -55,7 +56,7 @@ Partial Class ItemsWindow
         Me.TreeView1.HideSelection = False
         Me.TreeView1.Location = New System.Drawing.Point(0, 0)
         Me.TreeView1.Name = "TreeView1"
-        Me.TreeView1.Size = New System.Drawing.Size(127, 253)
+        Me.TreeView1.Size = New System.Drawing.Size(129, 264)
         Me.TreeView1.TabIndex = 0
         '
         'FlowLayoutPanel1
@@ -64,7 +65,7 @@ Partial Class ItemsWindow
         Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(227, 253)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(233, 264)
         Me.FlowLayoutPanel1.TabIndex = 0
         '
         'ToolTip1
@@ -81,7 +82,7 @@ Partial Class ItemsWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(366, 257)
+        Me.ClientSize = New System.Drawing.Size(374, 268)
         Me.Controls.Add(Me.SplitContainer1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.MinimumSize = New System.Drawing.Size(382, 291)

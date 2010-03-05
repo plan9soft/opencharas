@@ -1,15 +1,17 @@
 ﻿Public Class CharacterSelect
 
+    Private Dockable As Blue.Windows.StickyWindow
+
     Private Sub CharacterSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dockable.ForceDock(Canvas)
+        'If String.IsNullOrEmpty(My.Settings.DockString) Then Dockable.ForceDock(Canvas)
+        Dockable = New Blue.Windows.StickyWindow(Me)
     End Sub
 
-    Private Dockable As New WindowDocking(Me)
     Private Sub CharacterSelect_Move(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Move
         If Me.WindowState <> FormWindowState.Normal Then Return
         If Canvas.SkipSizeChanged Then Return
 
-        Dockable.CheckDocking()
+        ' Dockable.CheckDocking()
     End Sub
 
     Public Shared CharacterList As New RPGCharacterNodeList
@@ -32,9 +34,11 @@
         For Each Layer In CharacterList.CurrentCharacter.Character.Layers
             UpdateLayersTreeView_Recurse(Layer)
         Next
+        LayersWindow.CurrentNode = Nothing
+        LayersWindow.ChangeStates(False)
     End Sub
 
-    Private Sub TreeView1_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeView1.AfterSelect
+    Private Sub TreeView1_NodeMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles TreeView1.NodeMouseClick
         Dim Node As TreeNode = e.Node
 
         If Node Is Nothing Then Return
@@ -83,7 +87,7 @@
         Dim Node = CharacterList.CurrentCharacter
         Dim Row = GetSelectedRow()
 
-        If Node Is Nothing Or Row Is Nothing Or TreeView1.SelectedNode.GetType() Is GetType(RPGCharacterRowNode) Then Return
+        If Node Is Nothing OrElse Row Is Nothing OrElse TreeView1.SelectedNode.GetType() Is GetType(RPGCharacterRowNode) Then Return
 
         If RowsWithNodes() = 1 And Row.Nodes.Count = 1 Then
             ' special case: if we have only this character, just clear the data.
@@ -93,15 +97,15 @@
 
             ' Is there a row behind us with nodes?
             If Row.Index > 0 Then
-                If Row.Parent.Nodes(Row.Index - 1).Nodes.Count > 0 Then
+                If TreeView1.Nodes(Row.Index - 1).Nodes.Count > 0 Then
                     ' Good, select it
-                    TreeView1.SelectedNode = Row.Parent.Nodes(Row.Index - 1).Nodes(Row.Parent.Nodes(Row.Index - 1).Nodes.Count - 1)
+                    TreeView1.SelectedNode = TreeView1.Nodes(Row.Index - 1).Nodes(TreeView1.Nodes(Row.Index - 1).Nodes.Count - 1)
                 End If
             ElseIf Row.Index = 0 Then
                 ' Ahead of us?
-                If Row.Parent.Nodes(Row.Index + 1).Nodes.Count > 0 Then
+                If TreeView1.Nodes(Row.Index + 1).Nodes.Count > 0 Then
                     ' Good, select it
-                    TreeView1.SelectedNode = Row.Parent.Nodes(Row.Index + 1).Nodes(Row.Parent.Nodes(Row.Index + 1).Nodes.Count - 1)
+                    TreeView1.SelectedNode = TreeView1.Nodes(Row.Index + 1).Nodes(TreeView1.Nodes(Row.Index + 1).Nodes.Count - 1)
                 End If
             End If
         Else
@@ -176,7 +180,7 @@
         If TreeView1.SelectedNode.GetType() Is GetType(RPGCharacterRowNode) Then
             Dim Row As RPGCharacterRowNode = TreeView1.SelectedNode
 
-            If RowsWithNodes() = 1 Then Return
+            If TreeView1.Nodes.Count = 1 Then Return
             If Row.Nodes.Count > 0 Then
                 If MsgBox("Deleting this row will delete all characters associated with it. Are you sure you want to do this?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.No Then
                     Return
@@ -188,25 +192,27 @@
         End If
     End Sub
 
-    Public Sub MoveNode(ByVal IndexOffset As Integer)
-        Dim Node = CharacterList.CurrentCharacter
-        If Node Is Nothing Or TreeView1.SelectedNode.GetType() Is GetType(RPGCharacterRowNode) Then Return
-
-        Dim Row As RPGCharacterRowNode = Node.Parent
+    Public Sub MoveRow(ByVal IndexOffset As Integer)
+        Dim Node = TreeView1.SelectedNode
+        If Node Is Nothing Or Node.GetType() IsNot GetType(RPGCharacterRowNode) Then Return
 
         If TreeView1.Nodes.Count = 1 Then Return
 
         ' Can we even move?
         Dim WantedIndex As Integer = Node.Index + IndexOffset
 
-        Row.Nodes.Remove(Node)
-        Row.Nodes.Insert(WantedIndex, Node)
+        TreeView1.Nodes.Remove(Node)
+        TreeView1.Nodes.Insert(WantedIndex, Node)
         TreeView1.SelectedNode = Node
         Canvas.UpdateDrawing()
     End Sub
 
     Private Sub ToolStripButton8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton8.Click
+        MoveRow(1)
+    End Sub
 
+    Private Sub ToolStripButton7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton7.Click
+        MoveRow(-1)
     End Sub
 End Class
 
@@ -219,7 +225,7 @@ Public Class RPGCharacterRowNode
     Inherits TreeNode
     Public Row As RPGCharacterNodeList
 
-    Public Sub AddCharacter(Optional ByVal SwitchTo As Boolean = False)
+    Public Function AddCharacter(Optional ByVal SwitchTo As Boolean = False) As RPGCharacterNode
         Dim NewCharacter As New RPGCharacterNode
         NewCharacter.Text = "Character " + (Nodes.Count + 1).ToString()
 
@@ -227,8 +233,12 @@ Public Class RPGCharacterRowNode
         If SwitchTo Then
             CharacterSelect.TreeView1.SelectedNode = NewCharacter
             CharacterSelect.CharacterList.CurrentCharacter = NewCharacter
+
+            CharacterSelect.UpdateLayersTreeView()
+            Canvas.UpdateDrawing()
         End If
-    End Sub
+        Return NewCharacter
+    End Function
 End Class
 
 Public Class RPGCharacterNodeList
@@ -241,15 +251,12 @@ Public Class RPGCharacterNodeList
             CurrentSelectedNode_ = value
         End Set
     End Property
-    Private List As New Collections.ObjectModel.Collection(Of RPGCharacterRowNode)
 
     Public Function AddRow() As RPGCharacterRowNode
         Dim NewRow As New RPGCharacterRowNode
-        NewRow.Text = "Row " + (List.Count + 1).ToString()
+        NewRow.Text = "Row " + (CharacterSelect.TreeView1.Nodes.Count + 1).ToString()
 
         CharacterSelect.TreeView1.Nodes.Add(NewRow)
-        List.Add(NewRow)
-
         Return NewRow
     End Function
 End Class

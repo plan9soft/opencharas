@@ -229,7 +229,7 @@ Public Class Images
 
     Shared Function FindImage(ByVal Path As String) As RPGImage
         Dim Main As String = Path.Substring(5)
-        Dim Paths() As String = Main.Split(New String() {"\"}, StringSplitOptions.None)
+        Dim Paths() As String = Main.Split("\"c)
 
         Return SearchImage(RPGNodes, Paths, 0)
     End Function
@@ -447,14 +447,18 @@ Public Class Images
 
         ' Back up all image data in the layers
         ' FIXME: do all characters
-        For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
-            If Layer.Image IsNot Nothing Then
-                Dim Img As RPGImage = Layer.Image
+        For Each Row As RPGCharacterRowNode In CharacterSelect.TreeView1.Nodes
+            For Each Col As RPGCharacterNode In Row.Nodes
+                For Each Layer In Col.Character.Layers
+                    If Layer.Image IsNot Nothing Then
+                        Dim Img As RPGImage = Layer.Image
 
-                Layer.Image = New RPGImage
-                Layer.Image.Path = Img.Path
-            End If
-            Layer.ReloadImagesSubLayers(False)
+                        Layer.Image = New RPGImage
+                        Layer.Image.Path = Img.Path
+                    End If
+                    Layer.ReloadImagesSubLayers(False)
+                Next
+            Next
         Next
 
         ' Clear nodes
@@ -471,12 +475,16 @@ Public Class Images
 
         ' Fix layer data
         ' FIXME2: above
-        For Each Layer In CharacterSelect.CharacterList.CurrentCharacter().Character.Layers
-            If Layer.Image IsNot Nothing Then
-                Layer.Image = FindImage(Layer.Image.Path)
-                Layer.UpdateFlippedImage()
-            End If
-            Layer.ReloadImagesSubLayers(True)
+        For Each Row As RPGCharacterRowNode In CharacterSelect.TreeView1.Nodes
+            For Each Col As RPGCharacterNode In Row.Nodes
+                For Each Layer In Col.Character.Layers
+                    If Layer.Image IsNot Nothing Then
+                        Layer.Image = FindImage(Layer.Image.Path)
+                        Layer.UpdateFlippedImage()
+                    End If
+                    Layer.ReloadImagesSubLayers(True)
+                Next
+            Next
         Next
 
         ' Re-draw incase we changed

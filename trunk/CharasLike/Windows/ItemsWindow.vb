@@ -78,10 +78,12 @@ Public Class RPGPictureBox
 
         Dim Box As RPGPictureBox = CType(sender, RPGPictureBox)
 
-        If Images.CurrentGameFile IsNot Box.MainImage.GameFile And My.Settings.DontAskGameChange = False Then
-            Dim result As MsgBoxResult = DontAskDialog.ShowDialog("You are about to use an image associated with" + vbNewLine + "another game. This may result in problems with" + vbNewLine + "exporting and animation." + vbNewLine + vbNewLine + "Are you sure you want to do this?", SystemIcons.Question.ToBitmap())
-            My.Settings.DontAskGameChange = DontAskDialog.CheckBox1.Checked
-            If result = MsgBoxResult.Cancel Then Return
+        If Box.MainImage IsNot Nothing Then
+            If Images.CurrentGameFile IsNot Box.MainImage.GameFile And My.Settings.DontAskGameChange = False Then
+                Dim result As MsgBoxResult = DontAskDialog.ShowDialog("You are about to use an image associated with" + vbNewLine + "another game. This may result in problems with" + vbNewLine + "exporting and animation." + vbNewLine + vbNewLine + "Are you sure you want to do this?", SystemIcons.Question.ToBitmap())
+                My.Settings.DontAskGameChange = DontAskDialog.CheckBox1.Checked
+                If result = MsgBoxResult.Cancel Then Return
+            End If
         End If
 
         ' Are we modifying a layer?

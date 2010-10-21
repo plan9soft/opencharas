@@ -100,6 +100,16 @@ Public Class RPGLayer
         End Set
     End Property
 
+    Private Inverted_ As Boolean
+    Public Property Inverted() As Boolean
+        Get
+            Return Inverted_
+        End Get
+        Set(ByVal value As Boolean)
+            Inverted_ = value
+        End Set
+    End Property
+
     Private FlippedImage_ As Bitmap
     Public Property FlippedImage() As Bitmap
         Get
@@ -128,6 +138,7 @@ Public Class RPGLayer
         Matrix.Reset()
         Alpha = 255
         FlipFlags = EFlipFlag.FlipNone
+        Inverted = False
         FlippedImage = Nothing
 
         SetMatrixValue(0, 0)
@@ -189,6 +200,7 @@ Public Class RPGLayer
         Next
         File.Write(Alpha)
         File.Write(FlipFlags)
+        File.Write(Inverted)
 
         ' Parent is not saved/loaded, it is re-created on run-time
         File.Write(SubLayers.Count)
@@ -248,6 +260,7 @@ Public Class RPGLayer
         Next
         Alpha = File.ReadInt32()
         FlipFlags = File.ReadInt32()
+        Inverted = File.ReadBoolean()
 
         Dim SubLayerNum As Integer = File.ReadInt32()
         For i As Integer = 0 To SubLayerNum - 1
@@ -289,10 +302,13 @@ Public Class RPGLayer
     Public Sub SetColorMatrix()
         Matrix.Reset()
         Matrix.ScaleColors(Single.Parse(LayersWindow.TextBox4.Text))
-        Matrix.TranslateColors(Single.Parse(LayersWindow.TextBox6.Text))
         Matrix.SetSaturation(Single.Parse(LayersWindow.TextBox3.Text))
         Matrix.RotateHue(Integer.Parse(LayersWindow.TextBox2.Text))
         Matrix.ScaleOpacity(Alpha / 255)
+        If (Inverted) Then
+            Matrix.Invert()
+        End If
+        Matrix.TranslateColors(Single.Parse(LayersWindow.TextBox6.Text))
         Canvas.UpdateDrawing()
     End Sub
 

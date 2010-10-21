@@ -80,6 +80,20 @@ Public Class QColorMatrix
         Next
     End Sub
 
+    ' Inverts the colors
+    Sub Invert()
+        'cm.Matrix00=cm.Matrix11=cm.Matrix22=0.99f;
+        'cm.Matrix33=cm.Matrix44=1;
+        'cm.Matrix40=cm.Matrix41=cm.Matrix42=.04f;
+        MyMatrix(0, 0) = -1
+        MyMatrix(1, 1) = -1
+        MyMatrix(2, 2) = -1
+        MyMatrix(4, 0) = 1
+        MyMatrix(4, 1) = 1
+        MyMatrix(4, 2) = 1
+        MyMatrix(4, 4) = 1
+    End Sub
+
     ' Assumes that v points to (at least) four REALs.
     Sub TransformVector(ByRef V() As Single)
         Dim Temp(3) As Single

@@ -49,6 +49,7 @@
             TrackBar3.Value = 100
             TrackBar5.Value = 0
             TrackBar6.Value = 255
+            CheckBox3.Checked = False
             SetSliderColors()
             PictureBox1.Image = Nothing
         End If
@@ -340,6 +341,7 @@
             CheckBox2.Checked = True
         End If
 
+        CheckBox3.Checked = CurrentNode.Layer.Inverted
         TreeView1.SelectedNode = Node
     End Sub
 
@@ -355,6 +357,14 @@
 
     Private Sub TreeView1_NodeMouseDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles TreeView1.NodeMouseDoubleClick
         e.Node.BeginEdit()
+    End Sub
+
+    Private Sub CheckBox3_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox3.CheckedChanged
+        If CurrentNode Is Nothing Then Return
+
+        CurrentNode.Layer.Inverted = CheckBox3.Checked
+        CurrentNode.Layer.SetColorMatrix()
+        Canvas.UpdateDrawing()
     End Sub
 End Class
 

@@ -630,10 +630,10 @@ Namespace Blue.Windows
 
 #Region "Move Computing"
         Public Sub MoveAttached()
-            For Each sw As StickyWindow In _stuckToMe
-                sw.originalForm.Location = originalForm.Location - sw._dockDifference
-                sw.MoveAttached()
-            Next
+            'For Each sw As StickyWindow In _stuckToMe
+            'sw.originalForm.Location = originalForm.Location - sw._dockDifference
+            'sw.MoveAttached()
+            'Next
         End Sub
 
         Public Function AttachedDownChain(ByVal sw As StickyWindow) As Boolean
@@ -681,7 +681,7 @@ Namespace Blue.Windows
                     End If
                 Next
 
-                ' Move attached windows, if any
+                'Move attached windows, if any
                 MoveAttached()
             End If
 

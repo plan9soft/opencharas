@@ -23,18 +23,18 @@ Partial Class LayersWindow
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Shoulder Pads")
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Chest")
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Body", New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Sword")
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("On Back")
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Accessories", New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5})
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Glasses")
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Hair")
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Head", New System.Windows.Forms.TreeNode() {TreeNode7, TreeNode8})
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pants")
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Shoes")
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Legs", New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode11})
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Shoulder Pads")
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Chest")
+        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Body", New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14})
+        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Sword")
+        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("On Back")
+        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Accessories", New System.Windows.Forms.TreeNode() {TreeNode16, TreeNode17})
+        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Glasses")
+        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Hair")
+        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Head", New System.Windows.Forms.TreeNode() {TreeNode19, TreeNode20})
+        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Pants")
+        Dim TreeNode23 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Shoes")
+        Dim TreeNode24 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Legs", New System.Windows.Forms.TreeNode() {TreeNode22, TreeNode23})
         Me.ToolStripContainer1 = New System.Windows.Forms.ToolStripContainer()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.TreeView1 = New System.Windows.Forms.TreeView()
@@ -68,6 +68,8 @@ Partial Class LayersWindow
         Me.ToolStripButton9 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.ToolStripContainer1.ContentPanel.SuspendLayout()
         Me.ToolStripContainer1.TopToolStripPanel.SuspendLayout()
         Me.ToolStripContainer1.SuspendLayout()
@@ -137,31 +139,31 @@ Partial Class LayersWindow
         Me.TreeView1.LabelEdit = True
         Me.TreeView1.Location = New System.Drawing.Point(0, 0)
         Me.TreeView1.Name = "TreeView1"
-        TreeNode1.Name = "Node3"
-        TreeNode1.Text = "Shoulder Pads"
-        TreeNode2.Name = "Node5"
-        TreeNode2.Text = "Chest"
-        TreeNode3.Name = "Node0"
-        TreeNode3.Text = "Body"
-        TreeNode4.Name = "Node12"
-        TreeNode4.Text = "Sword"
-        TreeNode5.Name = "Node13"
-        TreeNode5.Text = "On Back"
-        TreeNode6.Name = "Node1"
-        TreeNode6.Text = "Accessories"
-        TreeNode7.Name = "Node10"
-        TreeNode7.Text = "Glasses"
-        TreeNode8.Name = "Node11"
-        TreeNode8.Text = "Hair"
-        TreeNode9.Name = "Node2"
-        TreeNode9.Text = "Head"
-        TreeNode10.Name = "Node8"
-        TreeNode10.Text = "Pants"
-        TreeNode11.Name = "Node9"
-        TreeNode11.Text = "Shoes"
-        TreeNode12.Name = "Node7"
-        TreeNode12.Text = "Legs"
-        Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode6, TreeNode9, TreeNode12})
+        TreeNode13.Name = "Node3"
+        TreeNode13.Text = "Shoulder Pads"
+        TreeNode14.Name = "Node5"
+        TreeNode14.Text = "Chest"
+        TreeNode15.Name = "Node0"
+        TreeNode15.Text = "Body"
+        TreeNode16.Name = "Node12"
+        TreeNode16.Text = "Sword"
+        TreeNode17.Name = "Node13"
+        TreeNode17.Text = "On Back"
+        TreeNode18.Name = "Node1"
+        TreeNode18.Text = "Accessories"
+        TreeNode19.Name = "Node10"
+        TreeNode19.Text = "Glasses"
+        TreeNode20.Name = "Node11"
+        TreeNode20.Text = "Hair"
+        TreeNode21.Name = "Node2"
+        TreeNode21.Text = "Head"
+        TreeNode22.Name = "Node8"
+        TreeNode22.Text = "Pants"
+        TreeNode23.Name = "Node9"
+        TreeNode23.Text = "Shoes"
+        TreeNode24.Name = "Node7"
+        TreeNode24.Text = "Legs"
+        Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode18, TreeNode21, TreeNode24})
         Me.TreeView1.Size = New System.Drawing.Size(128, 274)
         Me.TreeView1.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.TreeView1, "Layers")
@@ -171,7 +173,7 @@ Partial Class LayersWindow
         Me.CheckBox2.Appearance = System.Windows.Forms.Appearance.Button
         Me.CheckBox2.Enabled = False
         Me.CheckBox2.Image = Global.CharasLike.My.Resources.Resources.flip_ver
-        Me.CheckBox2.Location = New System.Drawing.Point(177, 212)
+        Me.CheckBox2.Location = New System.Drawing.Point(177, 235)
         Me.CheckBox2.Name = "CheckBox2"
         Me.CheckBox2.Size = New System.Drawing.Size(30, 30)
         Me.CheckBox2.TabIndex = 17
@@ -183,7 +185,7 @@ Partial Class LayersWindow
         Me.CheckBox1.Appearance = System.Windows.Forms.Appearance.Button
         Me.CheckBox1.Enabled = False
         Me.CheckBox1.Image = Global.CharasLike.My.Resources.Resources.flip_hor
-        Me.CheckBox1.Location = New System.Drawing.Point(177, 180)
+        Me.CheckBox1.Location = New System.Drawing.Point(177, 203)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(30, 30)
         Me.CheckBox1.TabIndex = 16
@@ -192,6 +194,8 @@ Partial Class LayersWindow
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Controls.Add(Me.CheckBox3)
         Me.GroupBox1.Controls.Add(Me.TextBox6)
         Me.GroupBox1.Controls.Add(Me.TextBox4)
         Me.GroupBox1.Controls.Add(Me.TextBox3)
@@ -210,7 +214,7 @@ Partial Class LayersWindow
         Me.GroupBox1.Enabled = False
         Me.GroupBox1.Location = New System.Drawing.Point(10, 32)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(206, 142)
+        Me.GroupBox1.Size = New System.Drawing.Size(206, 165)
         Me.GroupBox1.TabIndex = 15
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Colors"
@@ -383,7 +387,7 @@ Partial Class LayersWindow
         '
         Me.Label4.AutoSize = True
         Me.Label4.Enabled = False
-        Me.Label4.Location = New System.Drawing.Point(16, 203)
+        Me.Label4.Location = New System.Drawing.Point(16, 226)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(39, 13)
         Me.Label4.TabIndex = 11
@@ -393,7 +397,7 @@ Partial Class LayersWindow
         '
         Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.PictureBox1.Enabled = False
-        Me.PictureBox1.Location = New System.Drawing.Point(123, 188)
+        Me.PictureBox1.Location = New System.Drawing.Point(123, 211)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(48, 48)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
@@ -495,6 +499,25 @@ Partial Class LayersWindow
         Me.ToolStripButton1.Text = "ToolStripButton1"
         Me.ToolStripButton1.ToolTipText = "Re-order Layer Down"
         '
+        'CheckBox3
+        '
+        Me.CheckBox3.AutoSize = True
+        Me.CheckBox3.Location = New System.Drawing.Point(145, 138)
+        Me.CheckBox3.Name = "CheckBox3"
+        Me.CheckBox3.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBox3.TabIndex = 22
+        Me.CheckBox3.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Enabled = False
+        Me.Label2.Location = New System.Drawing.Point(6, 138)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(34, 13)
+        Me.Label2.TabIndex = 23
+        Me.Label2.Text = "Invert"
+        '
         'LayersWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -564,4 +587,6 @@ Partial Class LayersWindow
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
     Friend WithEvents TrackBar3 As System.Windows.Forms.TrackBar
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
 End Class

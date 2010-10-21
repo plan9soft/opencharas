@@ -61,10 +61,8 @@ Public Class Canvas
     End Sub
 
     ' Loading code
-    Private Dockable As Blue.Windows.StickyWindow
-    Private Sub Canvas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dockable = New Blue.Windows.StickyWindow(Me)
 
+    Private Sub Canvas_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         CharacterSelect.ClearCharacters()
         SkipSizeChanged = False
 
@@ -84,30 +82,26 @@ Public Class Canvas
         ItemsWindow.Show(Me)
         SkipSizeChanged = False
 
-        If My.Settings.DockingMode = False Then
-            If String.IsNullOrEmpty(My.Settings.WindowGeometry_Canvas) Then
-                Me.Location = New Point((Screen.PrimaryScreen.WorkingArea.X + (Screen.PrimaryScreen.WorkingArea.Width / 2)) - (Me.Size.Width / 2) - (LayersWindow.Size.Width / 2), (Screen.PrimaryScreen.WorkingArea.Y + (Screen.PrimaryScreen.WorkingArea.Height / 2)) - (Me.Size.Height / 2) + (LayersWindow.Size.Height / 3.5))
-            End If
+        If String.IsNullOrEmpty(My.Settings.WindowGeometry_Canvas) Then
+            Me.Location = New Point((Screen.PrimaryScreen.WorkingArea.X + (Screen.PrimaryScreen.WorkingArea.Width / 2)) - (Me.Size.Width / 2) - (LayersWindow.Size.Width / 2), (Screen.PrimaryScreen.WorkingArea.Y + (Screen.PrimaryScreen.WorkingArea.Height / 2)) - (Me.Size.Height / 2) + (LayersWindow.Size.Height / 3.5))
+        End If
 
-            If String.IsNullOrEmpty(My.Settings.WindowGeometry_Items) Then
-                ItemsWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y + Me.Size.Height - ItemsWindow.Size.Height)
-            Else
-                WindowGeometry.FromString(My.Settings.WindowGeometry_Items, ItemsWindow)
-            End If
+        If String.IsNullOrEmpty(My.Settings.WindowGeometry_Items) Then
+            ItemsWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y + Me.Size.Height - ItemsWindow.Size.Height)
+        Else
+            WindowGeometry.FromString(My.Settings.WindowGeometry_Items, ItemsWindow)
+        End If
 
-            If String.IsNullOrEmpty(My.Settings.WindowGeometry_Layers) Then
-                LayersWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y - LayersWindow.Size.Height + (Me.Size.Height - LayersWindow.Size.Height) + (LayersWindow.Size.Height - ItemsWindow.Size.Height))
-            Else
-                WindowGeometry.FromString(My.Settings.WindowGeometry_Layers, LayersWindow)
-            End If
+        If String.IsNullOrEmpty(My.Settings.WindowGeometry_Layers) Then
+            LayersWindow.Location = New Point(Me.Location.X + Me.Size.Width, Me.Location.Y - LayersWindow.Size.Height + (Me.Size.Height - LayersWindow.Size.Height) + (LayersWindow.Size.Height - ItemsWindow.Size.Height))
+        Else
+            WindowGeometry.FromString(My.Settings.WindowGeometry_Layers, LayersWindow)
+        End If
 
-            If String.IsNullOrEmpty(My.Settings.WindowGeometry_CharSelect) Then
-                CharacterSelect.Location = New Point(Me.Location.X - CharacterSelect.Size.Width, Me.Location.Y + Me.Size.Height - CharacterSelect.Size.Height)
-            Else
-                WindowGeometry.FromString(My.Settings.WindowGeometry_CharSelect, CharacterSelect)
-            End If
-
-            '            WindowDockingHandler.Handler.Load()
+        If String.IsNullOrEmpty(My.Settings.WindowGeometry_CharSelect) Then
+            CharacterSelect.Location = New Point(Me.Location.X - CharacterSelect.Size.Width, Me.Location.Y + Me.Size.Height - CharacterSelect.Size.Height)
+        Else
+            WindowGeometry.FromString(My.Settings.WindowGeometry_CharSelect, CharacterSelect)
         End If
 
         If My.Settings.FirstRun Then
@@ -118,11 +112,6 @@ Public Class Canvas
         'ToolStripManager.LoadSettings(Me)
         ' ToolStripManager.LoadSettings(LayersWindow)
         'ToolStripManager.LoadSettings(CharacterSelect)
-
-        If My.Settings.DockingMode = True Then
-            DockForm.Show()
-            SwitchToDockModeToolStripMenuItem.Text = "Switch to Window Mode"
-        End If
 
         ' Do we have any games?
         While Images.RPGGames.Count = 0
@@ -147,23 +136,17 @@ Public Class Canvas
     ' Closing Code
     Private SwitchingToWindowMode As Boolean
     Private Sub Canvas_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        If My.Settings.DockingMode = False And SwitchingToWindowMode = False Then
             My.Settings.WindowGeometry_Canvas = WindowGeometry.ToString(Me)
             My.Settings.WindowGeometry_Items = WindowGeometry.ToString(ItemsWindow)
             My.Settings.WindowGeometry_Layers = WindowGeometry.ToString(LayersWindow)
             My.Settings.WindowGeometry_CharSelect = WindowGeometry.ToString(CharacterSelect)
-
-            '            WindowDockingHandler.Handler.Save()
-        End If
     End Sub
 
     Private Sub Canvas_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         If My.Application.SaveMySettingsOnExit Then
-            If My.Settings.DockingMode = False Then
                 ToolStripManager.SaveSettings(Me)
                 ToolStripManager.SaveSettings(LayersWindow)
                 ToolStripManager.SaveSettings(CharacterSelect)
-            End If
 
             My.Settings.Save()
         End If
@@ -1323,22 +1306,6 @@ Public Class Canvas
     ' Sheet Creator
     Private Sub SetSheetCreatorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetSheetCreatorToolStripMenuItem.Click
         SetSheetCreator.ShowDialog()
-    End Sub
-
-    Private Sub SwitchToDockModeToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SwitchToDockModeToolStripMenuItem.Click
-        My.Settings.DockingMode = (My.Settings.DockingMode = False)
-
-        If My.Settings.DockingMode = True Then
-            SwitchToDockModeToolStripMenuItem.Text = "Switch to Window Mode"
-            SwitchingToWindowMode = False
-        Else
-            SwitchToDockModeToolStripMenuItem.Text = "Switch to Dock Mode"
-            SwitchingToWindowMode = True
-        End If
-
-        If MsgBox("Changing the windowing style requires that OpenCharas is restarted. Do this now?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-            DoClose()
-        End If
     End Sub
 End Class
 

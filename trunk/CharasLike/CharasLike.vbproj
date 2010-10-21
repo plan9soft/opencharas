@@ -94,37 +94,10 @@
     <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Windows.Forms" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Classes\Character.vb" />
-    <Compile Include="Classes\StickyWindow.vb" />
-    <Compile Include="Controls\DockContainer\FrmContainer.Designer.vb">
-      <DependentUpon>FrmContainer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DockContainer\FrmContainer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\DockContainer\FrmFormContainer.Designer.vb">
-      <DependentUpon>FrmFormContainer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DockContainer\FrmFormContainer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\DockContainer\FrmOtherContainer.Designer.vb">
-      <DependentUpon>FrmOtherContainer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DockContainer\FrmOtherContainer.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\DockContainer\WindowDockContainer.Designer.vb">
-      <DependentUpon>WindowDockContainer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DockContainer\WindowDockContainer.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="Windows\About.Designer.vb">
       <DependentUpon>About.vb</DependentUpon>
@@ -148,12 +121,6 @@
       <DependentUpon>Dialog1.vb</DependentUpon>
     </Compile>
     <Compile Include="Windows\Dialog1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\DockForm.Designer.vb">
-      <DependentUpon>DockForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DockForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\SetValues.Designer.vb">
@@ -233,18 +200,6 @@
     <Compile Include="Classes\QColorMatrix.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\DockContainer\FrmContainer.resx">
-      <DependentUpon>FrmContainer.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DockContainer\FrmFormContainer.resx">
-      <DependentUpon>FrmFormContainer.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DockContainer\FrmOtherContainer.resx">
-      <DependentUpon>FrmOtherContainer.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\DockContainer\WindowDockContainer.resx">
-      <DependentUpon>WindowDockContainer.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Windows\About.resx">
       <DependentUpon>About.vb</DependentUpon>
     </EmbeddedResource>
@@ -256,9 +211,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Dialog1.resx">
       <DependentUpon>Dialog1.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\DockForm.resx">
-      <DependentUpon>DockForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\SetValues.resx">
       <DependentUpon>SetValues.vb</DependentUpon>
@@ -493,6 +445,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\Canvas\setmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

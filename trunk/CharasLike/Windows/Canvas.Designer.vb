@@ -91,8 +91,6 @@ Partial Class Canvas
         Me.FrameAnimationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SheetModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ResetCameraToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
-        Me.SwitchToDockModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem7 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LayersToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ItemsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -292,7 +290,7 @@ Partial Class Canvas
         '
         Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem4, Me.ToolStripSeparator2, Me.ToolStripMenuItem2, Me.ToolStripMenuItem3, Me.ToolStripMenuItem5, Me.ToolStripSeparator4, Me.ToolStripMenuItem6, Me.ToolStripMenuItem8, Me.ToolStripSeparator10, Me.ToolStripMenuItem11, Me.ToolStripMenuItem9, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(35, 20)
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
         '
         'ToolStripMenuItem1
@@ -300,131 +298,131 @@ Partial Class Canvas
         Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SingleCharacterToolStripMenuItem, Me.ImagePackToolStripMenuItem, Me.CharacterSetToolStripMenuItem})
         Me.ToolStripMenuItem1.Image = Global.CharasLike.My.Resources.Resources.NewDocumentHS
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem1.Text = "New..."
         '
         'SingleCharacterToolStripMenuItem
         '
         Me.SingleCharacterToolStripMenuItem.Name = "SingleCharacterToolStripMenuItem"
-        Me.SingleCharacterToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.SingleCharacterToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.SingleCharacterToolStripMenuItem.Text = "Character"
         '
         'ImagePackToolStripMenuItem
         '
         Me.ImagePackToolStripMenuItem.Name = "ImagePackToolStripMenuItem"
-        Me.ImagePackToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.ImagePackToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.ImagePackToolStripMenuItem.Text = "Image Pack..."
         '
         'CharacterSetToolStripMenuItem
         '
         Me.CharacterSetToolStripMenuItem.Name = "CharacterSetToolStripMenuItem"
-        Me.CharacterSetToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.CharacterSetToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.CharacterSetToolStripMenuItem.Text = "Character Sheet"
         '
         'ToolStripMenuItem4
         '
         Me.ToolStripMenuItem4.Image = Global.CharasLike.My.Resources.Resources.openHS
         Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem4.Text = "Open..."
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(147, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(151, 6)
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Image = Global.CharasLike.My.Resources.Resources.saveHS
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem2.Text = "Save..."
         '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem3.Text = "Save As..."
         '
         'ToolStripMenuItem5
         '
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
-        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem5.Text = "Export..."
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(147, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(151, 6)
         '
         'ToolStripMenuItem6
         '
         Me.ToolStripMenuItem6.Image = Global.CharasLike.My.Resources.Resources.PrintHS
         Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
-        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem6.Text = "Print"
         '
         'ToolStripMenuItem8
         '
         Me.ToolStripMenuItem8.Image = Global.CharasLike.My.Resources.Resources.PrintPreviewHS
         Me.ToolStripMenuItem8.Name = "ToolStripMenuItem8"
-        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem8.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem8.Text = "Print Preview"
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(147, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(151, 6)
         '
         'ToolStripMenuItem11
         '
         Me.ToolStripMenuItem11.Image = Global.CharasLike.My.Resources.Resources._112_RefreshArrow_Green_16x16_72
         Me.ToolStripMenuItem11.Name = "ToolStripMenuItem11"
-        Me.ToolStripMenuItem11.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem11.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem11.Text = "Refresh Images"
         '
         'ToolStripMenuItem9
         '
         Me.ToolStripMenuItem9.Image = Global.CharasLike.My.Resources.Resources._305_Close_16x16_72
         Me.ToolStripMenuItem9.Name = "ToolStripMenuItem9"
-        Me.ToolStripMenuItem9.Size = New System.Drawing.Size(150, 22)
+        Me.ToolStripMenuItem9.Size = New System.Drawing.Size(154, 22)
         Me.ToolStripMenuItem9.Text = "Clear Settings"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(147, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(151, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(150, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'ViewToolStripMenuItem
         '
-        Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewSheetToolStripMenuItem, Me.ToolStripSeparator3, Me.ViewModeToolStripMenuItem, Me.ResetCameraToolStripMenuItem, Me.ToolStripSeparator7, Me.SwitchToDockModeToolStripMenuItem})
+        Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewSheetToolStripMenuItem, Me.ToolStripSeparator3, Me.ViewModeToolStripMenuItem, Me.ResetCameraToolStripMenuItem})
         Me.ViewToolStripMenuItem.Name = "ViewToolStripMenuItem"
-        Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(41, 20)
+        Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.ViewToolStripMenuItem.Text = "View"
         '
         'PreviewSheetToolStripMenuItem
         '
         Me.PreviewSheetToolStripMenuItem.Image = Global.CharasLike.My.Resources.Resources.preview
         Me.PreviewSheetToolStripMenuItem.Name = "PreviewSheetToolStripMenuItem"
-        Me.PreviewSheetToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
+        Me.PreviewSheetToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.PreviewSheetToolStripMenuItem.Text = "Preview Sheet"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(170, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(149, 6)
         '
         'ViewModeToolStripMenuItem
         '
         Me.ViewModeToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SingleSetToolStripMenuItem, Me.FrameAnimationToolStripMenuItem, Me.SheetModeToolStripMenuItem})
         Me.ViewModeToolStripMenuItem.Name = "ViewModeToolStripMenuItem"
-        Me.ViewModeToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
+        Me.ViewModeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ViewModeToolStripMenuItem.Text = "View Mode"
         '
         'SingleSetToolStripMenuItem
@@ -433,113 +431,102 @@ Partial Class Canvas
         Me.SingleSetToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.SingleSetToolStripMenuItem.Image = Global.CharasLike.My.Resources.Resources.setmode
         Me.SingleSetToolStripMenuItem.Name = "SingleSetToolStripMenuItem"
-        Me.SingleSetToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.SingleSetToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SingleSetToolStripMenuItem.Text = "Single Set"
         '
         'FrameAnimationToolStripMenuItem
         '
         Me.FrameAnimationToolStripMenuItem.Image = CType(resources.GetObject("FrameAnimationToolStripMenuItem.Image"), System.Drawing.Image)
         Me.FrameAnimationToolStripMenuItem.Name = "FrameAnimationToolStripMenuItem"
-        Me.FrameAnimationToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.FrameAnimationToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.FrameAnimationToolStripMenuItem.Text = "Frame/Animation"
         '
         'SheetModeToolStripMenuItem
         '
         Me.SheetModeToolStripMenuItem.Image = Global.CharasLike.My.Resources.Resources.sheetmode
         Me.SheetModeToolStripMenuItem.Name = "SheetModeToolStripMenuItem"
-        Me.SheetModeToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.SheetModeToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.SheetModeToolStripMenuItem.Text = "Sheet Mode"
         '
         'ResetCameraToolStripMenuItem
         '
         Me.ResetCameraToolStripMenuItem.Image = Global.CharasLike.My.Resources.Resources.smCamera
         Me.ResetCameraToolStripMenuItem.Name = "ResetCameraToolStripMenuItem"
-        Me.ResetCameraToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
+        Me.ResetCameraToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ResetCameraToolStripMenuItem.Text = "Reset Camera"
-        '
-        'ToolStripSeparator7
-        '
-        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(170, 6)
-        '
-        'SwitchToDockModeToolStripMenuItem
-        '
-        Me.SwitchToDockModeToolStripMenuItem.Name = "SwitchToDockModeToolStripMenuItem"
-        Me.SwitchToDockModeToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
-        Me.SwitchToDockModeToolStripMenuItem.Text = "Switch to Dock Mode"
         '
         'ToolStripMenuItem7
         '
         Me.ToolStripMenuItem7.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LayersToolStripMenuItem2, Me.ItemsToolStripMenuItem, Me.CharactersToolStripMenuItem})
         Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
-        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(62, 20)
+        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(68, 20)
         Me.ToolStripMenuItem7.Text = "Windows"
         '
         'LayersToolStripMenuItem2
         '
         Me.LayersToolStripMenuItem2.Name = "LayersToolStripMenuItem2"
-        Me.LayersToolStripMenuItem2.Size = New System.Drawing.Size(127, 22)
+        Me.LayersToolStripMenuItem2.Size = New System.Drawing.Size(130, 22)
         Me.LayersToolStripMenuItem2.Text = "Layers"
         '
         'ItemsToolStripMenuItem
         '
         Me.ItemsToolStripMenuItem.Name = "ItemsToolStripMenuItem"
-        Me.ItemsToolStripMenuItem.Size = New System.Drawing.Size(127, 22)
+        Me.ItemsToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.ItemsToolStripMenuItem.Text = "Items"
         '
         'CharactersToolStripMenuItem
         '
         Me.CharactersToolStripMenuItem.Name = "CharactersToolStripMenuItem"
-        Me.CharactersToolStripMenuItem.Size = New System.Drawing.Size(127, 22)
+        Me.CharactersToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.CharactersToolStripMenuItem.Text = "Characters"
         '
         'ToolStripMenuItem12
         '
         Me.ToolStripMenuItem12.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SetSheetCreatorToolStripMenuItem, Me.ToolStripSeparator5, Me.ToolStripMenuItem10, Me.SetGameMenuItem})
         Me.ToolStripMenuItem12.Name = "ToolStripMenuItem12"
-        Me.ToolStripMenuItem12.Size = New System.Drawing.Size(44, 20)
+        Me.ToolStripMenuItem12.Size = New System.Drawing.Size(48, 20)
         Me.ToolStripMenuItem12.Text = "Tools"
         '
         'SetSheetCreatorToolStripMenuItem
         '
         Me.SetSheetCreatorToolStripMenuItem.Name = "SetSheetCreatorToolStripMenuItem"
-        Me.SetSheetCreatorToolStripMenuItem.Size = New System.Drawing.Size(161, 22)
+        Me.SetSheetCreatorToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
         Me.SetSheetCreatorToolStripMenuItem.Text = "Set Sheet Creator"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(158, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(161, 6)
         '
         'ToolStripMenuItem10
         '
         Me.ToolStripMenuItem10.Name = "ToolStripMenuItem10"
-        Me.ToolStripMenuItem10.Size = New System.Drawing.Size(161, 22)
+        Me.ToolStripMenuItem10.Size = New System.Drawing.Size(164, 22)
         Me.ToolStripMenuItem10.Text = "Game Editor"
         '
         'SetGameMenuItem
         '
         Me.SetGameMenuItem.Name = "SetGameMenuItem"
-        Me.SetGameMenuItem.Size = New System.Drawing.Size(161, 22)
+        Me.SetGameMenuItem.Size = New System.Drawing.Size(164, 22)
         Me.SetGameMenuItem.Text = "Set Game"
         '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ContentsToolStripMenuItem, Me.AboutToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(40, 20)
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
         '
         'ContentsToolStripMenuItem
         '
         Me.ContentsToolStripMenuItem.Name = "ContentsToolStripMenuItem"
-        Me.ContentsToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.ContentsToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
         Me.ContentsToolStripMenuItem.Text = "Contents"
         '
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(122, 22)
         Me.AboutToolStripMenuItem.Text = "About"
         '
         'ToolStripContainer1
@@ -776,7 +763,5 @@ Partial Class Canvas
     Friend WithEvents CharacterSetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CharactersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SheetModeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents SwitchToDockModeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

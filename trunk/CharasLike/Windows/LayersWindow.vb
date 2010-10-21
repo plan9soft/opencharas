@@ -1,13 +1,11 @@
 ﻿Public Class LayersWindow
     ' Loading/Closing
-    Private Dockable As Blue.Windows.StickyWindow
     Private Sub LayersWindow_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         TreeView1.Nodes.Clear()
 
         SetSliderColors()
 
         'If String.IsNullOrEmpty(My.Settings.DockString) Then Dockable.ForceDock(ItemsWindow)
-        Dockable = New Blue.Windows.StickyWindow(Me)
     End Sub
 
     Private Sub LayersWindow_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing

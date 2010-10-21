@@ -1,11 +1,9 @@
 ﻿Public Class ItemsWindow
     ' Loading/Closing
-    Private Dockable As Blue.Windows.StickyWindow
 
     Private Sub ItemsWindow_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         FlowLayoutPanel1.Controls.Add(RPGPictureBox.EmptyBox)
 
-        Dockable = New Blue.Windows.StickyWindow(Me)
         'If String.IsNullOrEmpty(My.Settings.DockString) Then Dockable.ForceDock(Canvas)
     End Sub
 

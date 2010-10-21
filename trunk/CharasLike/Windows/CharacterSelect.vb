@@ -1,10 +1,6 @@
 ﻿Public Class CharacterSelect
 
-    Private Dockable As Blue.Windows.StickyWindow
-
     Private Sub CharacterSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'If String.IsNullOrEmpty(My.Settings.DockString) Then Dockable.ForceDock(Canvas)
-        Dockable = New Blue.Windows.StickyWindow(Me)
     End Sub
 
     Private Sub CharacterSelect_Move(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Move

@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4457F65-4430-45D9-A8A6-1C51C74C7173}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenCharas</RootNamespace>
+    <AssemblyName>OpenCharas</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Character.cs" />
+    <Compile Include="Classes\FastPixel.cs" />
+    <Compile Include="Classes\Images.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\QColorMatrix.cs" />
+    <Compile Include="Classes\Settings.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Canvas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Canvas.Designer.cs">
+      <DependentUpon>Canvas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CharacterSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\CharacterSelect.Designer.cs">
+      <DependentUpon>CharacterSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CrashReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\CrashReport.Designer.cs">
+      <DependentUpon>CrashReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DontAskDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\DontAskDialog.Designer.cs">
+      <DependentUpon>DontAskDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EasyPosition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\EasyPosition.Designer.cs">
+      <DependentUpon>EasyPosition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\GameEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\GameEditor.Designer.cs">
+      <DependentUpon>GameEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\GameImageSizeShower.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\GameImageSizeShower.Designer.cs">
+      <DependentUpon>GameImageSizeShower.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ImagePacker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ImagePacker.designer.cs">
+      <DependentUpon>ImagePacker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ItemsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ItemsWindow.Designer.cs">
+      <DependentUpon>ItemsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LayersWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\LayersWindow.Designer.cs">
+      <DependentUpon>LayersWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PreviewWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\PreviewWindow.Designer.cs">
+      <DependentUpon>PreviewWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SetSheetCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\SetSheetCreator.Designer.cs">
+      <DependentUpon>SetSheetCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SetValues.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\SetValues.Designer.cs">
+      <DependentUpon>SetValues.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Windows\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Canvas.resx">
+      <DependentUpon>Canvas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\CharacterSelect.resx">
+      <DependentUpon>CharacterSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\CrashReport.resx">
+      <DependentUpon>CrashReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\DontAskDialog.resx">
+      <DependentUpon>DontAskDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\EasyPosition.resx">
+      <DependentUpon>EasyPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\GameEditor.resx">
+      <DependentUpon>GameEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\GameImageSizeShower.resx">
+      <DependentUpon>GameImageSizeShower.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\ImagePacker.resx">
+      <DependentUpon>ImagePacker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\ItemsWindow.resx">
+      <DependentUpon>ItemsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\LayersWindow.resx">
+      <DependentUpon>LayersWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\PreviewWindow.resx">
+      <DependentUpon>PreviewWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\SetSheetCreator.resx">
+      <DependentUpon>SetSheetCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\SetValues.resx">
+      <DependentUpon>SetValues.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\animation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\dec_speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\inc_speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\next_frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\nextanim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\playanim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\prev_frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\prevanim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\setmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\sheetmode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\stop_anim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\zoom_in.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Canvas\zoom_out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\chardown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\charup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\delchar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\delrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\newchar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\newrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\rowdown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CharacterSelect\rowup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\bottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\bottom_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\bottom_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\center.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\up_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\EasyPosition\up_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\GameEditor\g_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\GameEditor\g_X.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\add_layer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\flip_hor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\flip_ver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\move layer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\rem_layer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\reorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\reorder_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\LayersWindow\reorder_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\112_RefreshArrow_Green_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\305_Close_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\NewDocumentHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\openHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\PrintHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\PrintPreviewHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\smCamera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Standard\ThumbnailLoadingHS.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

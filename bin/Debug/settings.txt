@@ -1,0 +1,7 @@
+FirstRun = <False>
+DontAskGameChange = <False>
+CurrentGame = <data\rpg2000>
+WindowGeometry_Items = <802|502|390|302|Normal>
+WindowGeometry_Canvas = <489|438|313|366|Normal>
+WindowGeometry_Layers = <802|165|390|337|Normal>
+WindowGeometry_CharSelect = <281|502|208|302|Normal>

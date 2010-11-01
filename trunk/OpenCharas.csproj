@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon1.ico</ApplicationIcon>
+    <ApplicationIcon>mico.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -362,6 +362,7 @@
   <ItemGroup>
     <Content Include="icon1.ico" />
     <Content Include="Icon2.ico" />
+    <Content Include="mico.ico" />
     <None Include="Resources\sheet.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

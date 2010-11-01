@@ -9,9 +9,9 @@ namespace OpenCharas
 {
 	public enum EFlipFlag
 	{
-		FlipNone,
-		FlipHorizontal,
-		FlipVertical
+		FlipNone		= 0,
+		FlipHorizontal	= 1,
+		FlipVertical	= 2
 	}
 
 	public class RPGLayer
@@ -144,11 +144,11 @@ namespace OpenCharas
 				return;
 
 			FlippedImage = Image.RawBitmap.Clone(new Rectangle(0, 0, Image.RawBitmap.Width, Image.RawBitmap.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			if ((FlipFlags & (EFlipFlag.FlipHorizontal | EFlipFlag.FlipVertical)) != 0)
+			if ((FlipFlags & (EFlipFlag.FlipHorizontal | EFlipFlag.FlipVertical)) == (EFlipFlag.FlipHorizontal | EFlipFlag.FlipVertical))
 				FlippedImage.RotateFlip(RotateFlipType.RotateNoneFlipXY);
-			else if ((FlipFlags & EFlipFlag.FlipHorizontal) != 0)
+			else if ((FlipFlags & EFlipFlag.FlipHorizontal) == EFlipFlag.FlipHorizontal)
 				FlippedImage.RotateFlip(RotateFlipType.RotateNoneFlipX);
-			else if ((FlipFlags & EFlipFlag.FlipVertical) != 0)
+			else if ((FlipFlags & EFlipFlag.FlipVertical) == EFlipFlag.FlipVertical)
 				FlippedImage.RotateFlip(RotateFlipType.RotateNoneFlipY);
 		}
 
@@ -332,6 +332,9 @@ namespace OpenCharas
 			Rectangle destRect;
 			Rectangle srcRect;
 			System.Drawing.Imaging.ImageAttributes Attr = GenerateColorMatrix();
+
+			if (bmp == null)
+				return;
 
 			// Frame mode
 			if (Program.canvasForm.FrameAnimationToolStripMenuItem.Checked)
@@ -528,7 +531,7 @@ namespace OpenCharas
 			}
 			else
 			{
-				int OldIndex = (int)(Program.characterSelectForm.CharacterList.CurrentCharacter.Character.Layers.IndexOf(Layer));
+				int OldIndex = (int)(Program.characterSelectForm.GetSelectedCharacter().Character.Layers.IndexOf(Layer));
 				Layers.Remove(Layer);
 
 				if (Down)

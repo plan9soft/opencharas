@@ -35,36 +35,18 @@ namespace OpenCharas
 		[System.Diagnostics.DebuggerStepThrough()]
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Column 1");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Column 2");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Column 3");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Column 4");
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Row 1", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4});
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Column 1");
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Column 2");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Column 3");
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Column 4");
-			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Row 2", new System.Windows.Forms.TreeNode[] {
-            treeNode6,
-            treeNode7,
-            treeNode8,
-            treeNode9});
 			this.TreeView1 = new System.Windows.Forms.TreeView();
 			this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.ToolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.ToolStripButton1 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton2 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton5 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton1 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton2 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton5 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton6 = new OpenCharas.Classes.ToolStripButton();
 			this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.ToolStripButton3 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton4 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton8 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton7 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton3 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton4 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton8 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton7 = new OpenCharas.Classes.ToolStripButton();
 			this.ToolStripContainer1.ContentPanel.SuspendLayout();
 			this.ToolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.ToolStripContainer1.SuspendLayout();
@@ -75,35 +57,12 @@ namespace OpenCharas
 			// 
 			this.TreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.TreeView1.HideSelection = false;
-			this.TreeView1.HotTracking = true;
 			this.TreeView1.LabelEdit = true;
 			this.TreeView1.Location = new System.Drawing.Point(0, 0);
 			this.TreeView1.Name = "TreeView1";
-			treeNode1.Name = "Node5";
-			treeNode1.Text = "Column 1";
-			treeNode2.Name = "Node6";
-			treeNode2.Text = "Column 2";
-			treeNode3.Name = "Node7";
-			treeNode3.Text = "Column 3";
-			treeNode4.Name = "Node8";
-			treeNode4.Text = "Column 4";
-			treeNode5.Name = "Node0";
-			treeNode5.Text = "Row 1";
-			treeNode6.Name = "Node9";
-			treeNode6.Text = "Column 1";
-			treeNode7.Name = "Node10";
-			treeNode7.Text = "Column 2";
-			treeNode8.Name = "Node11";
-			treeNode8.Text = "Column 3";
-			treeNode9.Name = "Node12";
-			treeNode9.Text = "Column 4";
-			treeNode10.Name = "Node1";
-			treeNode10.Text = "Row 2";
-			this.TreeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode10});
 			this.TreeView1.Size = new System.Drawing.Size(192, 243);
 			this.TreeView1.TabIndex = 0;
+			this.TreeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
 			this.TreeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseClick);
 			this.TreeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseDoubleClick);
 			// 
@@ -263,15 +222,15 @@ namespace OpenCharas
 		internal System.Windows.Forms.TreeView TreeView1;
 		internal System.Windows.Forms.ToolStripContainer ToolStripContainer1;
 		internal System.Windows.Forms.ToolStrip ToolStrip1;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton1;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton2;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton3;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton4;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton1;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton2;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton3;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton4;
 		internal System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton5;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton6;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton7;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton8;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton5;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton6;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton7;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton8;
 	}
 
 }

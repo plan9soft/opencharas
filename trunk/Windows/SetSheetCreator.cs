@@ -63,63 +63,61 @@ namespace OpenCharas
 			if (SplitContainer1.Panel1.Width != 0 && SplitContainer1.Panel1.Height != 0)
 			{
 				StoredImage = new Bitmap(SplitContainer1.Panel1.Width, SplitContainer1.Panel1.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				Graphics TempGfx = Graphics.FromImage(StoredImage);
-
-				int ContentWidth = SplitContainer1.Panel1.Width;
-				int ContentHeight = SplitContainer1.Panel1.Height;
-				TempGfx.DrawLine(Pens.Black, new PointF(ContentWidth / 2, 0), new PointF(ContentWidth / 2, ContentHeight));
-				TempGfx.DrawLine(Pens.Black, new PointF(0, ContentHeight / 2), new PointF(ContentWidth, ContentHeight / 2));
-
-				TempGfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-				if (SheetWidth != 0 && SheetHeight != 0)
+				
+				using (Graphics TempGfx = Graphics.FromImage(StoredImage))
 				{
-					using (Bitmap EntireSheet = new Bitmap(SheetWidth + 1, SheetHeight + 1, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+					int ContentWidth = SplitContainer1.Panel1.Width;
+					int ContentHeight = SplitContainer1.Panel1.Height;
+					TempGfx.DrawLine(Pens.Black, new PointF(ContentWidth / 2, 0), new PointF(ContentWidth / 2, ContentHeight));
+					TempGfx.DrawLine(Pens.Black, new PointF(0, ContentHeight / 2), new PointF(ContentWidth, ContentHeight / 2));
+
+					TempGfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+					if (SheetWidth != 0 && SheetHeight != 0)
 					{
-						Graphics SheetGfx = Graphics.FromImage(EntireSheet);
-
-						int What = 0;
-						int TheY = 0;
-						for (int y = 0; y <= SheetColumns - 1; y++)
+						using (Bitmap EntireSheet = new Bitmap(SheetWidth + 1, SheetHeight + 1, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
 						{
-							int TheX = 0;
-
-							for (int x = 0; x <= SheetRows - 1; x++)
+							int TheY = 0;
+							using (var SheetGfx = Graphics.FromImage(EntireSheet))
 							{
-								if (SetImages[What] != null)
-									SheetGfx.DrawImage(SetImages[What], new Rectangle(TheX, TheY, SetWidth, SetHeight));
+								int What = 0;
+								for (int y = 0; y <= SheetColumns - 1; y++)
+								{
+									int TheX = 0;
 
-								What++;
-								TheX += SetWidth;
+									for (int x = 0; x <= SheetRows - 1; x++)
+									{
+										if (SetImages[What] != null)
+											SheetGfx.DrawImage(SetImages[What], new Rectangle(TheX, TheY, SetWidth, SetHeight));
+
+										What++;
+										TheX += SetWidth;
+									}
+
+									TheY += SetHeight;
+								}
 							}
 
-							TheY += SetHeight;
-						}
+							float ZoomVal = ZoomNumber / 100;
 
-						SheetGfx.Dispose();
-
-						float ZoomVal = ZoomNumber / 100;
-
-						// Draw rectangles separately
-						TheY = (int)((ContentHeight / 2) - (SheetHeight * ZoomVal) / 2);
-						for (int y = 0; y <= SheetColumns - 1; y++)
-						{
-							int TheX = (int)((ContentWidth / 2) - (SheetWidth * ZoomVal) / 2);
-
-							for (int x = 0; x <= SheetRows - 1; x++)
+							// Draw rectangles separately
+							TheY = (int)((ContentHeight / 2) - (SheetHeight * ZoomVal) / 2);
+							for (int y = 0; y <= SheetColumns - 1; y++)
 							{
-								TempGfx.DrawRectangle(Pens.Black, new Rectangle(TheX, TheY, (int)(SetWidth * ZoomVal), (int)(SetHeight * ZoomVal)));
-								TheX += (int)(SetWidth * ZoomVal);
+								int TheX = (int)((ContentWidth / 2) - (SheetWidth * ZoomVal) / 2);
+
+								for (int x = 0; x <= SheetRows - 1; x++)
+								{
+									TempGfx.DrawRectangle(Pens.Black, new Rectangle(TheX, TheY, (int)(SetWidth * ZoomVal), (int)(SetHeight * ZoomVal)));
+									TheX += (int)(SetWidth * ZoomVal);
+								}
+
+								TheY += (int)(SetHeight * ZoomVal);
 							}
-
-							TheY += (int)(SetHeight * ZoomVal);
+							TempGfx.DrawImage(EntireSheet, new Rectangle((int)((ContentWidth / 2) - (SheetWidth * ZoomVal) / 2), (int)((ContentHeight / 2) - (SheetHeight * ZoomVal) / 2), (int)(SheetWidth * ZoomVal), (int)(SheetHeight * ZoomVal)));
 						}
-
-						TempGfx.DrawImage(EntireSheet, new Rectangle((int)((ContentWidth / 2) - (SheetWidth * ZoomVal) / 2), (int)((ContentHeight / 2) - (SheetHeight * ZoomVal) / 2), (int)(SheetWidth * ZoomVal), (int)(SheetHeight * ZoomVal)));
 					}
-
 				}
-				TempGfx.Dispose();
 			}
 
 			PictureBox1.Image = StoredImage;
@@ -152,9 +150,8 @@ namespace OpenCharas
 					using (var TmpImage = Images.Convert8BPPTo32BPP(new Bitmap(Path)))
 					{
 						Bitmap ReferenceImage = new Bitmap(TmpImage.Width, TmpImage.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-						Graphics Gfx = Graphics.FromImage(ReferenceImage);
-						Gfx.DrawImage(TmpImage, new Rectangle(0, 0, TmpImage.Width, TmpImage.Height));
-						Gfx.Dispose();
+						using (var Gfx = Graphics.FromImage(ReferenceImage))
+							Gfx.DrawImage(TmpImage, new Rectangle(0, 0, TmpImage.Width, TmpImage.Height));
 
 						using (FastPixel ImgFP = new FastPixel(ReferenceImage, true))
 						{
@@ -198,29 +195,29 @@ namespace OpenCharas
 			Bitmap RenderedImage;
 
 			RenderedImage = new Bitmap(SheetWidth, SheetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			Graphics TempGfx = Graphics.FromImage(RenderedImage);
-			TempGfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-			// Go through each layer drawing the sheet
-			int What = 0;
-			int TheY = 0;
-			for (int y = 0; y <= SheetColumns - 1; y++)
+			using (Graphics TempGfx = Graphics.FromImage(RenderedImage))
 			{
-				int TheX = 0;
+				TempGfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-				for (int x = 0; x <= SheetRows - 1; x++)
+				// Go through each layer drawing the sheet
+				int What = 0;
+				int TheY = 0;
+				for (int y = 0; y <= SheetColumns - 1; y++)
 				{
-					if (SetImages[What] != null)
-						TempGfx.DrawImage(SetImages[What], new Rectangle(TheX, TheY, SetWidth, SetHeight));
+					int TheX = 0;
 
-					What++;
-					TheX += SetWidth;
+					for (int x = 0; x <= SheetRows - 1; x++)
+					{
+						if (SetImages[What] != null)
+							TempGfx.DrawImage(SetImages[What], new Rectangle(TheX, TheY, SetWidth, SetHeight));
+
+						What++;
+						TheX += SetWidth;
+					}
+
+					TheY += SetHeight;
 				}
-
-				TheY += SetHeight;
 			}
-
-			TempGfx.Dispose();
 
 			if (ResetTrans == false)
 			{
@@ -346,7 +343,7 @@ namespace OpenCharas
 
 		public void SaveToolStripMenuItem_Click(System.Object sender, System.EventArgs e)
 		{
-			if (CurrentSavePos == null)
+			if (string.IsNullOrEmpty(CurrentSavePos))
 				DoSaveAs();
 			else
 				DoSave();
@@ -645,10 +642,10 @@ namespace OpenCharas
 								for (int x = 0; x <= SheetRows - 1; x++)
 								{
 									Bitmap NewBmpSheet = new Bitmap(SetWidth, SetHeight);
-									var GfxTmp = Graphics.FromImage(NewBmpSheet);
-
-									GfxTmp.DrawImage(Bmp, new Rectangle(0, 0, SetWidth, SetHeight), new Rectangle(TheX, TheY, SetWidth, SetHeight), GraphicsUnit.Pixel);
-									GfxTmp.Dispose();
+									
+									using (var GfxTmp = Graphics.FromImage(NewBmpSheet))
+										GfxTmp.DrawImage(Bmp, new Rectangle(0, 0, SetWidth, SetHeight), new Rectangle(TheX, TheY, SetWidth, SetHeight), GraphicsUnit.Pixel);
+								
 									SetImages[What] = NewBmpSheet;
 									What++;
 									TheX += SetWidth;
@@ -676,7 +673,7 @@ namespace OpenCharas
 
 		public void ToolStripButton18_Click(System.Object sender, System.EventArgs e)
 		{
-			if (CurrentSavePos == null)
+			if (string.IsNullOrEmpty(CurrentSavePos))
 				DoSaveAs();
 			else
 				DoSave();

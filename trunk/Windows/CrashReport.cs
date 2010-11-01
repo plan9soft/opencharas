@@ -32,18 +32,11 @@ namespace OpenCharas
 		}
 
 		public string Folder_Path;
-		public void LinkLabel1_LinkClicked(System.Object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			if (string.IsNullOrEmpty(TextBox1.Text))
-			{
-				MessageBox.Show("You need to enter a name!");
-				return;
-			}
 
-			//Process.Start("http://www.glennfamily.us/Paril/Uploader/?name=" + System.Web.HttpUtility.UrlEncode(TextBox1.Text) + "&email=" + System.Web.HttpUtility.UrlEncode(TextBox2.Text))
-			MessageBox.Show("Your default email program will now open. Don\'t forget to attach the dump!");
+		private void linkLabel1_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Process.Start("http://opencharas.alteredsoftworks.com/forums/viewforum.php?id=4");
 			Process.Start("explorer.exe", Folder_Path.Substring(0, Folder_Path.LastIndexOf("\\")));
-			System.Diagnostics.Process.Start("mailto:crashreporting@opencharas.alteredsoftworks.com?subject=Crash Report&body=Name: " + TextBox1.Text + "%0AEmail: " + TextBox2.Text + "%0A%0AI have attached the crash dump.");
 		}
 	}
 

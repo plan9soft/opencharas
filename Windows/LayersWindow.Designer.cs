@@ -36,26 +36,26 @@ namespace OpenCharas
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Shoulder Pads");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Chest");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Body", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Sword");
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("On Back");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Accessories", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Glasses");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Hair");
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Head", new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
-			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Pants");
-			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Shoes");
-			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Legs", new System.Windows.Forms.TreeNode[] {
-            treeNode10,
-            treeNode11});
+			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Shoulder Pads");
+			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Chest");
+			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Body", new System.Windows.Forms.TreeNode[] {
+            treeNode13,
+            treeNode14});
+			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Sword");
+			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("On Back");
+			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Accessories", new System.Windows.Forms.TreeNode[] {
+            treeNode16,
+            treeNode17});
+			System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Glasses");
+			System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Hair");
+			System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Head", new System.Windows.Forms.TreeNode[] {
+            treeNode19,
+            treeNode20});
+			System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Pants");
+			System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Shoes");
+			System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Legs", new System.Windows.Forms.TreeNode[] {
+            treeNode22,
+            treeNode23});
 			this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.SplitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.TreeView1 = new System.Windows.Forms.TreeView();
@@ -85,11 +85,11 @@ namespace OpenCharas
 			this.NumericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.Label1 = new System.Windows.Forms.Label();
 			this.ToolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.ToolStripButton6 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton8 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton7 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton9 = new System.Windows.Forms.ToolStripButton();
-			this.ToolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton6 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton8 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton7 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton9 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton1 = new OpenCharas.Classes.ToolStripButton();
 			this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.ToolStripContainer1.ContentPanel.SuspendLayout();
 			this.ToolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -115,11 +115,11 @@ namespace OpenCharas
 			// ToolStripContainer1.ContentPanel
 			// 
 			this.ToolStripContainer1.ContentPanel.Controls.Add(this.SplitContainer1);
-			this.ToolStripContainer1.ContentPanel.Size = new System.Drawing.Size(374, 278);
+			this.ToolStripContainer1.ContentPanel.Size = new System.Drawing.Size(410, 278);
 			this.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ToolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.ToolStripContainer1.Name = "ToolStripContainer1";
-			this.ToolStripContainer1.Size = new System.Drawing.Size(374, 303);
+			this.ToolStripContainer1.Size = new System.Drawing.Size(410, 303);
 			this.ToolStripContainer1.TabIndex = 5;
 			this.ToolStripContainer1.Text = "ToolStripContainer1";
 			// 
@@ -149,8 +149,8 @@ namespace OpenCharas
 			this.SplitContainer1.Panel2.Controls.Add(this.NumericUpDown2);
 			this.SplitContainer1.Panel2.Controls.Add(this.NumericUpDown1);
 			this.SplitContainer1.Panel2.Controls.Add(this.Label1);
-			this.SplitContainer1.Size = new System.Drawing.Size(374, 278);
-			this.SplitContainer1.SplitterDistance = 132;
+			this.SplitContainer1.Size = new System.Drawing.Size(410, 278);
+			this.SplitContainer1.SplitterDistance = 174;
 			this.SplitContainer1.TabIndex = 1;
 			// 
 			// TreeView1
@@ -160,36 +160,36 @@ namespace OpenCharas
 			this.TreeView1.LabelEdit = true;
 			this.TreeView1.Location = new System.Drawing.Point(0, 0);
 			this.TreeView1.Name = "TreeView1";
-			treeNode1.Name = "Node3";
-			treeNode1.Text = "Shoulder Pads";
-			treeNode2.Name = "Node5";
-			treeNode2.Text = "Chest";
-			treeNode3.Name = "Node0";
-			treeNode3.Text = "Body";
-			treeNode4.Name = "Node12";
-			treeNode4.Text = "Sword";
-			treeNode5.Name = "Node13";
-			treeNode5.Text = "On Back";
-			treeNode6.Name = "Node1";
-			treeNode6.Text = "Accessories";
-			treeNode7.Name = "Node10";
-			treeNode7.Text = "Glasses";
-			treeNode8.Name = "Node11";
-			treeNode8.Text = "Hair";
-			treeNode9.Name = "Node2";
-			treeNode9.Text = "Head";
-			treeNode10.Name = "Node8";
-			treeNode10.Text = "Pants";
-			treeNode11.Name = "Node9";
-			treeNode11.Text = "Shoes";
-			treeNode12.Name = "Node7";
-			treeNode12.Text = "Legs";
+			treeNode13.Name = "Node3";
+			treeNode13.Text = "Shoulder Pads";
+			treeNode14.Name = "Node5";
+			treeNode14.Text = "Chest";
+			treeNode15.Name = "Node0";
+			treeNode15.Text = "Body";
+			treeNode16.Name = "Node12";
+			treeNode16.Text = "Sword";
+			treeNode17.Name = "Node13";
+			treeNode17.Text = "On Back";
+			treeNode18.Name = "Node1";
+			treeNode18.Text = "Accessories";
+			treeNode19.Name = "Node10";
+			treeNode19.Text = "Glasses";
+			treeNode20.Name = "Node11";
+			treeNode20.Text = "Hair";
+			treeNode21.Name = "Node2";
+			treeNode21.Text = "Head";
+			treeNode22.Name = "Node8";
+			treeNode22.Text = "Pants";
+			treeNode23.Name = "Node9";
+			treeNode23.Text = "Shoes";
+			treeNode24.Name = "Node7";
+			treeNode24.Text = "Legs";
 			this.TreeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode6,
-            treeNode9,
-            treeNode12});
-			this.TreeView1.Size = new System.Drawing.Size(128, 274);
+            treeNode15,
+            treeNode18,
+            treeNode21,
+            treeNode24});
+			this.TreeView1.Size = new System.Drawing.Size(170, 274);
 			this.TreeView1.TabIndex = 0;
 			this.ToolTip1.SetToolTip(this.TreeView1, "Layers");
 			this.TreeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.TreeView1_AfterLabelEdit);
@@ -202,7 +202,7 @@ namespace OpenCharas
 			this.CheckBox2.Appearance = System.Windows.Forms.Appearance.Button;
 			this.CheckBox2.Enabled = false;
 			this.CheckBox2.Image = global::OpenCharas.Properties.Resources.flip_ver;
-			this.CheckBox2.Location = new System.Drawing.Point(177, 235);
+			this.CheckBox2.Location = new System.Drawing.Point(177, 68);
 			this.CheckBox2.Name = "CheckBox2";
 			this.CheckBox2.Size = new System.Drawing.Size(30, 30);
 			this.CheckBox2.TabIndex = 17;
@@ -215,7 +215,7 @@ namespace OpenCharas
 			this.CheckBox1.Appearance = System.Windows.Forms.Appearance.Button;
 			this.CheckBox1.Enabled = false;
 			this.CheckBox1.Image = global::OpenCharas.Properties.Resources.flip_hor;
-			this.CheckBox1.Location = new System.Drawing.Point(177, 203);
+			this.CheckBox1.Location = new System.Drawing.Point(177, 36);
 			this.CheckBox1.Name = "CheckBox1";
 			this.CheckBox1.Size = new System.Drawing.Size(30, 30);
 			this.CheckBox1.TabIndex = 16;
@@ -243,7 +243,7 @@ namespace OpenCharas
 			this.GroupBox1.Controls.Add(this.Label5);
 			this.GroupBox1.Controls.Add(this.Label3);
 			this.GroupBox1.Enabled = false;
-			this.GroupBox1.Location = new System.Drawing.Point(10, 32);
+			this.GroupBox1.Location = new System.Drawing.Point(10, 102);
 			this.GroupBox1.Name = "GroupBox1";
 			this.GroupBox1.Size = new System.Drawing.Size(206, 165);
 			this.GroupBox1.TabIndex = 15;
@@ -448,7 +448,7 @@ namespace OpenCharas
 			// 
 			this.Label4.AutoSize = true;
 			this.Label4.Enabled = false;
-			this.Label4.Location = new System.Drawing.Point(16, 226);
+			this.Label4.Location = new System.Drawing.Point(16, 59);
 			this.Label4.Name = "Label4";
 			this.Label4.Size = new System.Drawing.Size(39, 13);
 			this.Label4.TabIndex = 11;
@@ -458,7 +458,7 @@ namespace OpenCharas
 			// 
 			this.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.PictureBox1.Enabled = false;
-			this.PictureBox1.Location = new System.Drawing.Point(123, 211);
+			this.PictureBox1.Location = new System.Drawing.Point(123, 44);
 			this.PictureBox1.Name = "PictureBox1";
 			this.PictureBox1.Size = new System.Drawing.Size(48, 48);
 			this.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -530,7 +530,7 @@ namespace OpenCharas
             this.ToolStripButton1});
 			this.ToolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.ToolStrip1.Name = "ToolStrip1";
-			this.ToolStrip1.Size = new System.Drawing.Size(374, 25);
+			this.ToolStrip1.Size = new System.Drawing.Size(410, 25);
 			this.ToolStrip1.Stretch = true;
 			this.ToolStrip1.TabIndex = 4;
 			// 
@@ -593,10 +593,10 @@ namespace OpenCharas
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(374, 303);
+			this.ClientSize = new System.Drawing.Size(410, 303);
 			this.Controls.Add(this.ToolStripContainer1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.MinimumSize = new System.Drawing.Size(382, 326);
+			this.MinimumSize = new System.Drawing.Size(426, 337);
 			this.Name = "LayersWindow";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -652,11 +652,11 @@ namespace OpenCharas
 		internal System.Windows.Forms.CheckBox CheckBox2;
 		internal System.Windows.Forms.CheckBox CheckBox1;
 		internal System.Windows.Forms.ToolStrip ToolStrip1;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton6;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton8;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton7;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton9;
-		internal System.Windows.Forms.ToolStripButton ToolStripButton1;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton6;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton8;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton7;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton9;
+		internal OpenCharas.Classes.ToolStripButton ToolStripButton1;
 		internal System.Windows.Forms.TextBox TextBox6;
 		internal System.Windows.Forms.TextBox TextBox4;
 		internal System.Windows.Forms.TextBox TextBox3;

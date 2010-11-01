@@ -423,8 +423,7 @@ namespace OpenCharas
 		static public void ClearImages()
 		{
 			RPGNodes.Clear();
-			Program.itemsWindowForm.FlowLayoutPanel1.Controls.Clear();
-			Program.itemsWindowForm.FlowLayoutPanel1.Controls.Add(RPGPictureBox.EmptyBox);
+			Program.itemsWindowForm.imageViewerContainer1.Images = null;
 			Program.itemsWindowForm.TreeView1.Nodes.Clear();
 		}
 

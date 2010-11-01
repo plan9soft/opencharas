@@ -106,7 +106,7 @@ namespace OpenCharas
 		{
 			RPGNode Node = new RPGNode();
 			Node.Text = (string)("Layer " + (TreeView1.Nodes.Count+ 1).ToString());
-			Node.Layer = Program.characterSelectForm.CharacterList.CurrentCharacter.Character.CreateLayer(Node);
+			Node.Layer = Program.characterSelectForm.GetSelectedCharacter().Character.CreateLayer(Node);
 			Node.Layer.Node = Node;
 			TreeView1.Nodes.Add(Node);
 			TreeView1.SelectedNode = Node;
@@ -115,15 +115,13 @@ namespace OpenCharas
 		public void ToolStripButton8_Click(System.Object sender, System.EventArgs e)
 		{
 			if (TreeView1.SelectedNode == null)
-			{
 				return;
-			}
 
 			RPGNode Node = (RPGNode)TreeView1.SelectedNode;
 
 			RPGNode NewNode = new RPGNode();
 			NewNode.Text = (string)("Sub-Layer " + (Node.Nodes.Count+ 1).ToString());
-			NewNode.Layer = Program.characterSelectForm.CharacterList.CurrentCharacter.Character.CreateLayer(NewNode);
+			NewNode.Layer = Program.characterSelectForm.GetSelectedCharacter().Character.CreateLayer(NewNode);
 			NewNode.Layer.Node = NewNode;
 			Node.Nodes.Add(NewNode);
 			Node.Expand();
@@ -135,17 +133,14 @@ namespace OpenCharas
 
 			if (Node != null)
 			{
-				Program.characterSelectForm.CharacterList.CurrentCharacter.Character.RemoveLayer(Node.Layer);
+				Program.characterSelectForm.GetSelectedCharacter().Character.RemoveLayer(Node.Layer);
 				TreeView1.Nodes.Remove(Node);
 
 				if (TreeView1.SelectedNode != null)
-				{
 					DoSelectNode(TreeView1.SelectedNode);
-				}
 				else
-				{
 					ChangeStates(false);
-				}
+
 				Program.canvasForm.UpdateDrawing();
 			}
 		}
@@ -156,24 +151,19 @@ namespace OpenCharas
 
 			TreeNodeCollection NodeCont;
 			if (Node.Parent == null)
-			{
 				NodeCont = TreeView1.Nodes;
-			}
 			else
-			{
 				NodeCont = Node.Parent.Nodes;
-			}
+
 			if (NodeCont.Count == 1 || NodeCont.IndexOf(Node) == 0)
-			{
 				return;
-			}
 
 			int OldIndex = NodeCont.IndexOf(Node);
 			NodeCont.Remove(Node);
 			NodeCont.Insert(OldIndex - 1, Node);
 			TreeView1.SelectedNode = Node;
 
-			Program.characterSelectForm.CharacterList.CurrentCharacter.Character.MoveLayer(Node.Layer, false);
+			Program.characterSelectForm.GetSelectedCharacter().Character.MoveLayer(Node.Layer, false);
 		}
 
 		public void ToolStripButton1_Click(System.Object sender, System.EventArgs e)
@@ -199,7 +189,7 @@ namespace OpenCharas
 			NodeCont.Insert(OldIndex + 1, Node);
 			TreeView1.SelectedNode = Node;
 
-			Program.characterSelectForm.CharacterList.CurrentCharacter.Character.MoveLayer(Node.Layer, true);
+			Program.characterSelectForm.GetSelectedCharacter().Character.MoveLayer(Node.Layer, true);
 		}
 
 		public void TreeView1_NodeMouseClick(System.Object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)

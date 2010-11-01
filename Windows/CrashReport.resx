@@ -124,6 +124,6 @@ It appears OpenCharas has encountered an unhandled exception! We recommend that 
 
 We have a special email account to deal with these. A crash dump was created in the dumps\ directory of your OpenCharas installation. This is the ultimate key to fixing the bug!
 
-Click the link below to open up your email client to report the developers a crash and we will get right on fixing! It will also open an Explorer window to the dump, for convenience.</value>
+Click the link below to open up the OpenCharas site to submit your dump!</value>
   </data>
 </root>

@@ -12,8 +12,6 @@ namespace OpenCharas
 		public CharacterSelect()
 		{
 			InitializeComponent();
-
-			CharacterList = new RPGCharacterNodeList(this);
 		}
 
 		public void CharacterSelect_Load(System.Object sender, System.EventArgs e)
@@ -30,11 +28,11 @@ namespace OpenCharas
 			// Dockable.CheckDocking()
 		}
 
-		public RPGCharacterNodeList CharacterList;
+		public RPGCharacterRowList CharacterList = new RPGCharacterRowList();
 
 		public void ClearCharacters()
 		{
-			TreeView1.Nodes.Clear();
+			CharacterList.Clear();
 			
 			var Row = CharacterList.AddRow();
 			Row.AddCharacter(true);
@@ -51,7 +49,7 @@ namespace OpenCharas
 		public void UpdateLayersTreeView()
 		{
 			Program.layersWindowForm.TreeView1.Nodes.Clear();
-			foreach (var Layer in CharacterList.CurrentCharacter.Character.Layers)
+			foreach (var Layer in GetSelectedCharacter().Character.Layers)
 				UpdateLayersTreeView_Recurse(Layer);
 	
 			Program.layersWindowForm.CurrentNode = null;
@@ -60,21 +58,7 @@ namespace OpenCharas
 
 		public void TreeView1_NodeMouseClick(System.Object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
 		{
-			TreeNode Node = e.Node;
-
-			if (Node == null)
-				return;
-			if (!(Node is RPGCharacterNode))
-				return;
-
-			RPGCharacterNode MyNode = (RPGCharacterNode)Node;
-
-			if (CharacterList.CurrentCharacter != MyNode)
-			{
-				CharacterList.CurrentCharacter = MyNode;
-				UpdateLayersTreeView();
-				Program.canvasForm.UpdateDrawing();
-			}
+			CharacterList.NodeChanged(e.Node);
 		}
 
 		public RPGCharacterRowNode GetSelectedRow()
@@ -88,6 +72,11 @@ namespace OpenCharas
 				Row = (RPGCharacterRowNode)Node;
 
 			return Row;
+		}
+
+		public RPGCharacterNode GetSelectedCharacter()
+		{
+			return GetSelectedRow().LastSelectedCharacter;
 		}
 
 		public void ToolStripButton1_Click(System.Object sender, System.EventArgs e)
@@ -115,49 +104,44 @@ namespace OpenCharas
 
 		public void ToolStripButton2_Click(System.Object sender, System.EventArgs e)
 		{
-			var Node = CharacterList.CurrentCharacter;
-			var Row = GetSelectedRow();
+			var Node = GetSelectedCharacter();
 
-			if (Node == null || Row == null || TreeView1.SelectedNode.GetType() == typeof(RPGCharacterRowNode))
+			if (Node == null)
 				return;
 
-			if (RowsWithNodes() == 1 && Row.Nodes.Count == 1)
+			if (RowsWithNodes() == 1 && Node.Row.Nodes.Count == 1)
 				// special case: if we have only this character, just clear the data.
 				Node.Character = new RPGCharacter();
-			else if (Row.Nodes.Count == 1)
+			else if (Node.Row.Nodes.Count == 1)
 			{
-				Row.Nodes.Remove(Node);
+				Node.Row.RemoveCharacter(Node);
 
 				// Is there a row behind us with nodes
-				if (Row.Index > 0)
+				if (Node.Row.Index > 0)
 				{
-					if (TreeView1.Nodes[Row.Index - 1].Nodes.Count > 0)
+					if (TreeView1.Nodes[Node.Row.Index - 1].Nodes.Count > 0)
 						// Good, select it
-						TreeView1.SelectedNode = TreeView1.Nodes[Row.Index - 1].Nodes[TreeView1.Nodes[Row.Index - 1].Nodes.Count - 1];
+						TreeView1.SelectedNode = TreeView1.Nodes[Node.Row.Index - 1].Nodes[TreeView1.Nodes[Node.Row.Index - 1].Nodes.Count - 1];
 				}
-				else if (Row.Index == 0)
+				else if (Node.Row.Index == 0)
 				{
 					// Ahead of us
-					if (TreeView1.Nodes[Row.Index + 1].Nodes.Count > 0)
+					if (TreeView1.Nodes[Node.Row.Index + 1].Nodes.Count > 0)
 						// Good, select it
-						TreeView1.SelectedNode = TreeView1.Nodes[Row.Index + 1].Nodes[TreeView1.Nodes[Row.Index + 1].Nodes.Count - 1];
+						TreeView1.SelectedNode = TreeView1.Nodes[Node.Row.Index + 1].Nodes[TreeView1.Nodes[Node.Row.Index + 1].Nodes.Count - 1];
 				}
 			}
 			else
 			{
 				int NewIndex = Node.Index;
-				Row.Nodes.Remove(Node);
-				if (NewIndex > Row.Nodes.Count - 1)
-					NewIndex = (int)(Row.Nodes.Count - 1);
-				TreeView1.SelectedNode = Row.Nodes[NewIndex];
+				Node.Row.Nodes.Remove(Node);
+				if (NewIndex > Node.Row.Nodes.Count - 1)
+					NewIndex = (int)(Node.Row.Nodes.Count - 1);
+				TreeView1.SelectedNode = Node.Row.Nodes[NewIndex];
 			}
 
-			if (CharacterList.CurrentCharacter != TreeView1.SelectedNode)
-			{
-				CharacterList.CurrentCharacter = (RPGCharacterNode)TreeView1.SelectedNode;
-				UpdateLayersTreeView();
-				Program.canvasForm.UpdateDrawing();
-			}
+			UpdateLayersTreeView();
+			Program.canvasForm.UpdateDrawing();
 		}
 
 		public void TreeView1_NodeMouseDoubleClick(System.Object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
@@ -167,7 +151,7 @@ namespace OpenCharas
 
 		public void MoveNode(int IndexOffset)
 		{
-			var Node = CharacterList.CurrentCharacter;
+			var Node = GetSelectedCharacter();
 			if (Node == null || TreeView1.SelectedNode.GetType() == typeof(RPGCharacterRowNode))
 				return;
 
@@ -238,7 +222,7 @@ namespace OpenCharas
 						return;
 				}
 
-				TreeView1.Nodes.Remove(Row);
+				CharacterList.RemoveRow(Row);
 				Program.canvasForm.UpdateDrawing();
 			}
 		}
@@ -270,64 +254,144 @@ namespace OpenCharas
 		{
 			MoveRow(-1);
 		}
+
+		private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+		{
+			CharacterList.NodeChanged(e.Node);
+		}
 	}
 
 	public class RPGCharacterNode : TreeNode
 	{
-		public RPGCharacter Character = new RPGCharacter();
+		RPGCharacter _character;
+
+		public RPGCharacterNode(RPGCharacter character)
+		{
+			_character = character;
+		}
+
+		public RPGCharacterRowNode Row
+		{
+			get { return Parent as RPGCharacterRowNode; }
+		}
+
+		public RPGCharacter Character
+		{
+			get { return _character; }
+			set { _character = value; }
+		}
+
+		public void Select()
+		{
+			Row.LastSelected = this;
+			Program.characterSelectForm.UpdateLayersTreeView();
+			Program.canvasForm.UpdateDrawing();
+		}
 	}
 
 	public class RPGCharacterRowNode : TreeNode
 	{
-		public RPGCharacterNodeList Row;
-		public CharacterSelect SelectForm;
+		List<RPGCharacterNode> _characters = new List<RPGCharacterNode>();
 
-		public RPGCharacterRowNode(CharacterSelect Form)
+		public List<RPGCharacterNode> Characters
 		{
-			SelectForm = Form;
+			get { return _characters; }
+		}
+
+		RPGCharacterNode _lastSelected;
+
+		public RPGCharacterNode LastSelected
+		{
+			get { return _lastSelected; }
+			set { _lastSelected = value; }
+		}
+
+		public RPGCharacterNode LastSelectedCharacter
+		{
+			get
+			{
+				if (Program.characterSelectForm.TreeView1.SelectedNode.Parent == this)
+					return (Program.characterSelectForm.TreeView1.SelectedNode as RPGCharacterNode);
+
+				return _lastSelected;
+			}
 		}
 
 		public RPGCharacterNode AddCharacter(bool SwitchTo = false)
 		{
-			RPGCharacterNode NewCharacter = new RPGCharacterNode();
+			RPGCharacterNode NewCharacter = new RPGCharacterNode(new RPGCharacter());
 			NewCharacter.Text = (string)("Character " + (Nodes.Count + 1).ToString());
 
 			Nodes.Add(NewCharacter);
+			_characters.Add(NewCharacter);
+
 			if (SwitchTo)
 			{
-				SelectForm.TreeView1.SelectedNode = NewCharacter;
-				Program.characterSelectForm.CharacterList.CurrentCharacter = NewCharacter;
+				Program.characterSelectForm.TreeView1.SelectedNode = NewCharacter;
 
-				SelectForm.UpdateLayersTreeView();
+				Program.characterSelectForm.UpdateLayersTreeView();
 				Program.canvasForm.UpdateDrawing();
 			}
+
 			return NewCharacter;
+		}
+
+		public void RemoveCharacter(RPGCharacterNode node)
+		{
+			_characters.Remove(node);
+			node.Parent.Remove();
+		}
+
+		public void Clear()
+		{
+			while (_characters.Count != 0)
+				RemoveCharacter(_characters[0]);
 		}
 	}
 
-	public class RPGCharacterNodeList
+	public class RPGCharacterRowList
 	{
-		public CharacterSelect SelectForm;
-
-		public RPGCharacterNodeList(CharacterSelect Form)
+		public RPGCharacterRowList()
 		{
-			SelectForm = Form;
 		}
 
-		private RPGCharacterNode CurrentSelectedNode_;
-		public RPGCharacterNode CurrentCharacter
+		List<RPGCharacterRowNode> _rows = new List<RPGCharacterRowNode>();
+		public List<RPGCharacterRowNode> Rows
 		{
-			get { return CurrentSelectedNode_; }
-			set { CurrentSelectedNode_ = value; }
+			get { return _rows; }
 		}
 
 		public RPGCharacterRowNode AddRow()
 		{
-			RPGCharacterRowNode NewRow = new RPGCharacterRowNode(SelectForm);
-			NewRow.Text = (string)("Row " + (SelectForm.TreeView1.Nodes.Count + 1).ToString());
+			RPGCharacterRowNode NewRow = new RPGCharacterRowNode();
+			NewRow.Text = (string)("Row " + (Program.characterSelectForm.TreeView1.Nodes.Count + 1).ToString());
 
-			SelectForm.TreeView1.Nodes.Add(NewRow);
+			Program.characterSelectForm.TreeView1.Nodes.Add(NewRow);
+			_rows.Add(NewRow);
 			return NewRow;
+		}
+
+		public void RemoveRow(RPGCharacterRowNode node)
+		{
+			node.Clear();
+			_rows.Remove(node);
+			node.Remove();
+		}
+
+		public void Clear()
+		{
+			while (_rows.Count != 0)
+				RemoveRow(_rows[0]);
+		}
+
+		public void NodeChanged(TreeNode Node)
+		{
+			if (Node == null || !(Node is RPGCharacterNode))
+				return;
+
+			RPGCharacterNode MyNode = (RPGCharacterNode)Node;
+
+			MyNode.Select();
 		}
 	}
 }

@@ -21,6 +21,11 @@ namespace OpenCharas
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+#if !DEBUG
+			//Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+			//Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+#endif
+
 			canvasForm = new Canvas();
 			characterSelectForm = new CharacterSelect();
 			itemsWindowForm = new ItemsWindow();
@@ -28,6 +33,11 @@ namespace OpenCharas
 			imagePackerForm = new ImagePacker();
 
 			Application.Run(canvasForm);
+		}
+
+		static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+		{
+			Canvas.ReportCrash(e.Exception);
 		}
 	}
 }

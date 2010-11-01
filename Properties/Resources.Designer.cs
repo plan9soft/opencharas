@@ -354,6 +354,13 @@ namespace OpenCharas.Properties {
             }
         }
         
+        internal static System.Drawing.Icon sheet {
+            get {
+                object obj = ResourceManager.GetObject("sheet", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap sheetmode {
             get {
                 object obj = ResourceManager.GetObject("sheetmode", resourceCulture);

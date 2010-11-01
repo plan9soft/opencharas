@@ -379,9 +379,8 @@ namespace OpenCharas
 					using (Bitmap TmpImage = new Bitmap(Path))
 					{
 						ReferenceImage = new Bitmap(TmpImage.Width, TmpImage.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-						Graphics Gfx = Graphics.FromImage(ReferenceImage);
-						Gfx.DrawImage(TmpImage, new Rectangle(0, 0, TmpImage.Width, TmpImage.Height));
-						Gfx.Dispose();
+						using (Graphics Gfx = Graphics.FromImage(ReferenceImage))
+							Gfx.DrawImage(TmpImage, new Rectangle(0, 0, TmpImage.Width, TmpImage.Height));
 					}
 
 					Button3.Enabled = true;
@@ -405,51 +404,52 @@ namespace OpenCharas
 				return;
 
 			Bitmap MyBMP;
-			Graphics Gfx;
 
 			if (AnimMode == false)
 			{
 				MyBMP = new Bitmap(ReferenceImage.Width, ReferenceImage.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				Gfx = Graphics.FromImage(MyBMP);
-				Gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				Gfx.DrawImage(ReferenceImage, new Rectangle(0, 0, ReferenceImage.Width, ReferenceImage.Height));
-
-				// Draw lines
-				int WidthMagic = ReferenceImage.Width / GameFile.SheetRows;
-				int HeightMagic = ReferenceImage.Height / GameFile.SheetColumns;
-
-				int Val = 0;
-				for (int i = 0; i <= GameFile.SheetRows; i++)
+				using (var Gfx = Graphics.FromImage(MyBMP))
 				{
-					Gfx.DrawLine(Pens.Black, new Point(Val, 0), new Point(Val, ReferenceImage.Height));
-					Val += WidthMagic;
-				}
+					Gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+					Gfx.DrawImage(ReferenceImage, new Rectangle(0, 0, ReferenceImage.Width, ReferenceImage.Height));
 
-				Val = 0;
-				for (int i = 0; i <= GameFile.SheetRows; i++)
-				{
-					Gfx.DrawLine(Pens.Black, new Point(0, Val), new Point(ReferenceImage.Width, Val));
-					Val += HeightMagic;
+					// Draw lines
+					int WidthMagic = ReferenceImage.Width / GameFile.SheetRows;
+					int HeightMagic = ReferenceImage.Height / GameFile.SheetColumns;
+
+					int Val = 0;
+					for (int i = 0; i <= GameFile.SheetRows; i++)
+					{
+						Gfx.DrawLine(Pens.Black, new Point(Val, 0), new Point(Val, ReferenceImage.Height));
+						Val += WidthMagic;
+					}
+
+					Val = 0;
+					for (int i = 0; i <= GameFile.SheetRows; i++)
+					{
+						Gfx.DrawLine(Pens.Black, new Point(0, Val), new Point(ReferenceImage.Width, Val));
+						Val += HeightMagic;
+					}
 				}
 			}
 			else
 			{
 				MyBMP = new Bitmap(ReferenceImage.Width / GameFile.SheetRows, ReferenceImage.Height / GameFile.SheetColumns, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-				Gfx = Graphics.FromImage(MyBMP);
-				Gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				var destRect = new Rectangle(0, 0, ReferenceImage.Width / GameFile.SheetRows, ReferenceImage.Height / GameFile.SheetColumns);
-				int Frame;
+				using (var Gfx = Graphics.FromImage(MyBMP))
+				{
+					Gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+					var destRect = new Rectangle(0, 0, ReferenceImage.Width / GameFile.SheetRows, ReferenceImage.Height / GameFile.SheetColumns);
+					int Frame;
 
-				if (NumericUpDown4.Value == 0)
-					Frame = GameFile.PreviewFrame;
-				else
-					Frame = (int)(GameFile.Animations[(int)(NumericUpDown4.Value - 1)].GetFrame(FrameIndex));
+					if (NumericUpDown4.Value == 0)
+						Frame = GameFile.PreviewFrame;
+					else
+						Frame = (int)(GameFile.Animations[(int)(NumericUpDown4.Value - 1)].GetFrame(FrameIndex));
 
-				var srcRect = Character.GetRectangleForBitmapFrame(ReferenceImage, Frame, GameFile.SheetRows, GameFile.SheetColumns);
-				Gfx.DrawImage(ReferenceImage, destRect, srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height, GraphicsUnit.Pixel);
+					var srcRect = Character.GetRectangleForBitmapFrame(ReferenceImage, Frame, GameFile.SheetRows, GameFile.SheetColumns);
+					Gfx.DrawImage(ReferenceImage, destRect, srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height, GraphicsUnit.Pixel);
+				}
 			}
-
-			Gfx.Dispose();
 
 			previewForm.PictureBox1.Image = MyBMP;
 		}

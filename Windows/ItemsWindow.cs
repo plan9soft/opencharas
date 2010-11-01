@@ -18,9 +18,6 @@ namespace OpenCharas
 
 		public void ItemsWindow_Load(System.Object sender, System.EventArgs e)
 		{
-			FlowLayoutPanel1.Controls.Add(RPGPictureBox.EmptyBox);
-
-			//If String.IsNullOrEmpty(Properties.Settings.DockString) Then Dockable.ForceDock(Canvas)
 		}
 
 		public void ItemsWindow_FormClosing(System.Object sender, System.Windows.Forms.FormClosingEventArgs e)
@@ -47,21 +44,32 @@ namespace OpenCharas
 		// Box code
 		public void TreeView1_NodeMouseClick(System.Object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
 		{
-			// Clear current box
-			FlowLayoutPanel1.Controls.Clear();
+		}
 
+		private void imageViewerContainer1_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			var b = imageViewerContainer1.GetImageAtLocation(e.Location);
+
+			if (b != null)
+				b.ClickProcess();
+		}
+
+		private void imageViewerContainer1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+		{
 			GameNodeNode Node = (GameNodeNode)e.Node;
 
-			FlowLayoutPanel1.Controls.Add (RPGPictureBox.EmptyBox);
-
-			if (Node.RPGNode.Images.Count != 0)
-			{
-				foreach (var Image in Node.RPGNode.Images)
-					// Add a box
-					FlowLayoutPanel1.Controls.Add(Image.Box);
-			}
-
+			imageViewerContainer1.Images = Node.RPGNode.Images;
 			TreeView1.SelectedNode = Node;
+		}
+
+		private void SplitContainer1_Panel2_SizeChanged(object sender, EventArgs e)
+		{
+			imageViewerContainer1.ResetImage();
 		}
 	}
 
@@ -91,7 +99,7 @@ namespace OpenCharas
 			get { return EmptyBoxVal; }
 		}
 
-		void ClickProcess()
+		public void ClickProcess()
 		{
 			if (!Program.imagePackerForm.Visible)
 			{
@@ -101,11 +109,12 @@ namespace OpenCharas
 					{
 						using (DontAskDialog dad = new DontAskDialog())
 						{
-							DialogResult result = dad.ShowDialog("You are about to use an image associated with\nanother game. This may result in problems with\nexporting and animation.\n\nAre you sure you want to do this?", SystemIcons.Question.ToBitmap());
-							Canvas.Settings.DontAskGameChange = dad.checkBox1.Checked;
+							DialogResult result = dad.ShowDialog("You are about to use an image associated with another game. This may result in problems with exporting and animation.\n\nAre you sure you want to do this?", SystemIcons.Question.ToBitmap());
 
 							if (result == DialogResult.Cancel)
 								return;
+
+							Canvas.Settings.DontAskGameChange = dad.CheckboxResult;
 						}
 					}
 				}
@@ -125,7 +134,7 @@ namespace OpenCharas
 
 		protected override void OnClick(EventArgs e)
 		{
-			ClickProcess();
+			//ClickProcess();
 			base.OnClick(e);
 		}
 
@@ -169,6 +178,26 @@ namespace OpenCharas
 			base.OnPaint(e);
 		}
 
+		public static bool BitmapEmpty(Bitmap bmp, Color emptyColor, bool transparentOnly)
+		{
+			using (FastPixel fp = new FastPixel(bmp, false))
+			{
+				for (int y = 0; y < fp.Height; ++y)
+				{
+					for (int x = 0; x < fp.Width; ++x)
+					{
+						Color c = fp.GetPixel(x, y);
+
+						if (transparentOnly && (c.A != emptyColor.A) ||
+							!transparentOnly && (c != emptyColor))
+							return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
 		static public RPGPictureBox Create(RPGImage MainImage)
 		{
 			RPGPictureBox Box = new RPGPictureBox();
@@ -182,23 +211,45 @@ namespace OpenCharas
 			{
 				if (MainImage.GameFile != null)
 				{
-					Size FrameSize = new Size(MainImage.RawBitmap.Width / MainImage.GameFile.SheetRows, MainImage.RawBitmap.Height / MainImage.GameFile.SheetColumns);
-					Box.MyImage = new Bitmap(FrameSize.Width, FrameSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+					Size FrameSize = new Size(MainImage.RawBitmap.Width / MainImage.GameFile.SheetRows,
+						MainImage.RawBitmap.Height / MainImage.GameFile.SheetColumns);
 
-					using (FastPixel MyImageFP = new FastPixel(Box.MyImage, true))
+					int curFrame = MainImage.GameFile.PreviewFrame;
+					bool triedPreviewFrame = false;
+
+					do
 					{
-						using (FastPixel RawImageFP = new FastPixel(Box.MainImage.RawBitmap, false))
+						Box.MyImage = new Bitmap(FrameSize.Width, FrameSize.Height,
+							System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+						using (FastPixel MyImageFP = new FastPixel(Box.MyImage, true))
 						{
-							Rectangle Rect = Character.GetRectangleForBitmapFrame(Box.MainImage.RawBitmap, MainImage.GameFile.PreviewFrame, MainImage.GameFile.SheetRows, MainImage.GameFile.SheetColumns);
-							for (int i = 0; i <= FrameSize.Width - 1; i++)
+							using (FastPixel RawImageFP = new FastPixel(Box.MainImage.RawBitmap, false))
 							{
-								for (int z = 0; z <= FrameSize.Height - 1; z++)
-									MyImageFP.SetPixel(i, z, RawImageFP.GetPixel(Rect.X + i, Rect.Y + z));
+								Rectangle Rect = Character.GetRectangleForBitmapFrame(Box.MainImage.RawBitmap,
+									curFrame, MainImage.GameFile.SheetRows, MainImage.GameFile.SheetColumns);
+
+								for (int i = 0; i <= FrameSize.Width - 1; i++)
+								{
+									for (int z = 0; z <= FrameSize.Height - 1; z++)
+										MyImageFP.SetPixel(i, z, RawImageFP.GetPixel(Rect.X + i, Rect.Y + z));
+								}
 							}
 						}
-					}
 
-					Program.itemsWindowForm.ToolTip1.SetToolTip(Box, MainImage.Name + "\nDouble-click to set current layer image to this.");
+						if (!triedPreviewFrame)
+						{
+							triedPreviewFrame = true;
+							curFrame = 0;
+						}
+						else
+							curFrame++;
+
+						if (curFrame >= MainImage.GameFile.SheetRows * MainImage.GameFile.SheetColumns)
+							break;
+					}
+					while (BitmapEmpty(Box.MyImage, Color.FromArgb(0, 0, 0, 0), true));
+
 					Box.BackgroundImage = Box.MyImage;
 
 					if (FrameSize.Width > Box.Size.Width && FrameSize.Height > Box.Size.Height)
@@ -220,4 +271,114 @@ namespace OpenCharas
 		}
 	}
 
+	public class ImageViewerContainer : ScrollableControl
+	{
+		Panel _imagePanel;
+
+		public ImageViewerContainer()
+		{
+			_imagePanel = new Panel();
+			Controls.Add(_imagePanel);
+
+			_imagePanel.MouseDoubleClick += new MouseEventHandler(_imagePanel_MouseDoubleClick);
+			Images = null;
+		}
+
+		void _imagePanel_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			OnMouseDoubleClick(e);
+		}
+
+		int _rows;
+
+		public RPGPictureBox GetImageAtLocation(Point loc)
+		{
+			int row = loc.X / 48;
+			int column = (loc.Y + HorizontalScroll.Value) / 48;
+			int v = (column * _rows) + row;
+
+			if (v == 0)
+				return RPGPictureBox.EmptyBox;
+			else if (v > _images.Count)
+				return null;
+
+			return _images[v - 1].Box;
+		}
+
+		List<RPGImage> _images;
+		public List<RPGImage> Images
+		{
+			get { return _images; }
+			set
+			{
+				_images = value;
+				ResetImage();
+			}
+		}
+
+		public void ResetImage()
+		{
+			if (_images == null)
+			{
+				if (_imagePanel.BackgroundImage != null)
+					_imagePanel.BackgroundImage.Dispose();
+				_imagePanel.BackgroundImage = null;
+				_imagePanel.Size = new Size(0, 0);
+			}
+
+			_rows = (Size.Width - SystemInformation.VerticalScrollBarWidth) / 48;
+
+			int y = 0;
+			int x = 0;
+
+			if (_images != null)
+			{
+				for (int i = 0; i < _images.Count; ++i)
+				{
+					x++;
+					if (x >= _rows)
+					{
+						y += 48;
+						x = 0;
+					}
+				}
+			}
+			else
+				_rows = 1;
+
+			if (_imagePanel.BackgroundImage != null)
+			{
+				_imagePanel.BackgroundImage.Dispose();
+				_imagePanel.BackgroundImage = null;
+			}
+
+			_imagePanel.Size = new Size(48 * _rows, y + 48);
+			_imagePanel.BackgroundImage = new Bitmap(_imagePanel.Size.Width, _imagePanel.Size.Height);
+			
+			int num = (_images != null) ? _images.Count + 1 : 1;
+
+			using (var g = Graphics.FromImage(_imagePanel.BackgroundImage))
+			{
+				y = 0;
+				x = 0;
+
+				for (int i = 0; i < num; ++i)
+				{
+					if (i >= 1)
+						g.DrawImage(_images[i - 1].Box.MyImage,
+							(x * 48) + (48 / 2) - (_images[i - 1].Box.MyImage.Width / 2),
+							y + ((48 / 2) - (_images[i - 1].Box.MyImage.Height / 2)));
+
+					ControlPaint.DrawBorder3D(g, new Rectangle((x * 48), y, 48, 48), Border3DStyle.Sunken);
+
+					x++;
+					if (x >= _rows)
+					{
+						y += 48;
+						x = 0;
+					}
+				}
+			}
+		}
+	}
 }

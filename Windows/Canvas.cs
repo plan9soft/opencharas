@@ -5,14 +5,16 @@ using System.Diagnostics;
 using System.Collections;
 using System.Windows.Forms;
 using Paril;
+using Paril.Windows.Forms.Docking;
 
 namespace OpenCharas
 {
-	public partial class Canvas
+	public partial class Canvas : DockingWindowForm
 	{
 		public EasyPosition easyPositionForm;
 
-		public Canvas()
+		public Canvas() :
+			base(Program.DockContainer)
 		{
 			SpecialColor = Color.FromArgb(32, 156, 0);
 
@@ -21,11 +23,11 @@ namespace OpenCharas
 			WindowGeometry.FromString(Canvas.Settings.WindowGeometry_Canvas, this);
 		}
 
-		private bool SkipSizeChanged_ = true;
+		bool _skipSizeChanged = true;
 		public bool SkipSizeChanged
 		{
-			get { return SkipSizeChanged_; }
-			set { SkipSizeChanged_ = value; }
+			get { return _skipSizeChanged; }
+			set { _skipSizeChanged = value; }
 		}
 
 		public struct LastSaveInfo
@@ -34,12 +36,7 @@ namespace OpenCharas
 			public EHeaderValue Header;
 		}
 
-		private LastSaveInfo LastSavePath_ = new LastSaveInfo();
-		public LastSaveInfo LastSavePath
-		{
-			get { return LastSavePath_; }
-			set { LastSavePath_ = value; }
-		}
+		public LastSaveInfo LastSavePath;
 
 		public void SetCurrentSavePosition(string Path, EHeaderValue Header)
 		{
@@ -83,54 +80,29 @@ namespace OpenCharas
 		{
 			static SettingsContainer _settings;
 
-			static bool _firstRun = true;
-			public static bool FirstRun
-			{
-				get { return _firstRun; }
-				set { _firstRun = value; }
-			}
+			[DefaultValue(true)]
+			public static bool FirstRun { get; set; }
 
-			static bool _dontAskGameChange = false;
-			public static bool DontAskGameChange
-			{
-				get { return _dontAskGameChange; }
-				set { _dontAskGameChange = value; }
-			}
+			[DefaultValue(false)]
+			public static bool DontAskGameChange  { get; set; }
 
-			static string _currentGame = "";
-			public static string CurrentGame
-			{
-				get { return _currentGame; }
-				set { _currentGame = value; }
-			}
+			[DefaultValue("")]
+			public static string CurrentGame { get; set; }
 
-			static string _windowGeometryItems = "";
-			public static string WindowGeometry_Items
-			{
-				get { return _windowGeometryItems; }
-				set { _windowGeometryItems = value; }
-			}
+			[DefaultValue("")]
+			public static string WindowGeometry_Items { get; set; }
 
-			static string _windowGeometryCanvas = "";
-			public static string WindowGeometry_Canvas
-			{
-				get { return _windowGeometryCanvas; }
-				set { _windowGeometryCanvas = value; }
-			}
+			[DefaultValue("")]
+			public static string WindowGeometry_Canvas { get; set; }
 
-			static string _windowGeometryLayers = "";
-			public static string WindowGeometry_Layers
-			{
-				get { return _windowGeometryLayers; }
-				set { _windowGeometryLayers = value; }
-			}
+			[DefaultValue("")]
+			public static string WindowGeometry_Layers { get; set; }
 
-			static string _windowGeometryCharSelect = "";
-			public static string WindowGeometry_CharSelect
-			{
-				get { return _windowGeometryCharSelect; }
-				set { _windowGeometryCharSelect = value; }
-			}
+			[DefaultValue("")]
+			public static string WindowGeometry_CharSelect { get; set; }
+
+			[DefaultValue(true)]
+			public static bool AutomaticUpdates { get; set; }
 
 			public static void Init()
 			{
@@ -200,16 +172,28 @@ namespace OpenCharas
 				{
 					Program.canvasForm.MouseDelta = new Point(e.X - Program.canvasForm.OldMousePos.X, e.Y - Program.canvasForm.OldMousePos.Y);
 					Program.canvasForm.OldMousePos = new Point(e.X, e.Y);
-					Program.canvasForm.CanvasCamera = new Point(Program.canvasForm.CanvasCamera.X + Program.canvasForm.MouseDelta.X, Program.canvasForm.CanvasCamera.Y + Program.canvasForm.MouseDelta.Y);
+					Program.canvasForm.CameraPosition = new Point(Program.canvasForm.CameraPosition.X + Program.canvasForm.MouseDelta.X, Program.canvasForm.CameraPosition.Y + Program.canvasForm.MouseDelta.Y);
 					Program.canvasForm.UpdateDrawing();
 				}
 			}
 		}
 
 		DoubleBufferImageControl imgControl;
+		bool _resetUpdate = false;
 
 		public void Canvas_Load(System.Object sender, System.EventArgs e)
 		{
+			Text = "OpenCharas v"+new Updater.Version(ProductVersion).ToString()
+#if BETA
+				+ " [beta]"
+#endif
+			;
+
+			SeasideResearch.LibCurlNet.Curl.GlobalInit((int)SeasideResearch.LibCurlNet.CURLinitFlag.CURL_GLOBAL_DEFAULT);
+			MenuStrip1.Renderer = new AwesomeToolStripRenderer();
+			ToolStrip1.Renderer = new AwesomeToolStripRenderer();
+			ToolStrip2.Renderer = new AwesomeToolStripRenderer();
+
 			System.IO.Directory.CreateDirectory("data");
 			Paril.Windows.Registry.FileExtension ext = new Paril.Windows.Registry.FileExtension(".txt");
 
@@ -228,8 +212,11 @@ namespace OpenCharas
 			AnimTimer.Tick += new System.EventHandler(AnimTimerUp);
 			ToolStripTextBox2.Text = AnimTimer.Interval.ToString();
 
+			if (Images.RPGGames.Count == 0)
+				MessageBox.Show("No game is present; the program will continue, however you will not be able to do anything until a game is made.");
+
 			// Do we have any games
-			while (Images.RPGGames.Count == 0)
+			/*while (Images.RPGGames.Count == 0)
 			{
 				MessageBox.Show(Application.ProductName + " notices that you don\'t have any games set up.\n\nTo use this application, you must create at least one game.", "", MessageBoxButtons.OK);
 
@@ -238,7 +225,7 @@ namespace OpenCharas
 
 				// Re-load images and games
 				Images.LoadImages();
-			}
+			}*/
 
 			UpdateDrawing();
 
@@ -278,6 +265,9 @@ namespace OpenCharas
 				string file = Environment.GetCommandLineArgs()[1];
 				PerformOpen(file);
 			}
+
+			if (Settings.AutomaticUpdates)
+				CheckForUpdates();
 		}
 
 		public bool AskToClose()
@@ -309,6 +299,19 @@ namespace OpenCharas
 			ToolStripManager.SaveSettings(Program.characterSelectForm);
 
 			Canvas.Settings.Save();
+
+			if (_resetUpdate)
+			{
+				using (var s = System.IO.File.Create("Updater.exe"))
+					s.Write(Properties.Resources.OpenCharasUpdater, 0, Properties.Resources.OpenCharasUpdater.Length);
+
+				ProcessStartInfo psi = new ProcessStartInfo();
+				psi.FileName = "Updater.exe";
+				psi.UseShellExecute = true;
+				Process p = new Process();
+				p.StartInfo = psi;
+				p.Start();
+			}
 		}
 
 		public void Canvas_Move(System.Object sender, System.EventArgs e)
@@ -417,6 +420,8 @@ namespace OpenCharas
 			SingleSetToolStripMenuItem.Checked = false;
 			SheetModeToolStripMenuItem.Checked = false;
 			UpdateDrawing();
+
+			ViewModeToolStripMenuItem.Image = Properties.Resources.animation;
 		}
 
 		public void FrameAnimationToolStripMenuItem_Click(System.Object sender, System.EventArgs e)
@@ -436,6 +441,8 @@ namespace OpenCharas
 			SingleSetToolStripMenuItem.Checked = true;
 			SheetModeToolStripMenuItem.Checked = false;
 			UpdateDrawing();
+
+			ViewModeToolStripMenuItem.Image = Properties.Resources.setmode;
 		}
 
 		public void EntireSheetToolStripMenuItem_Click(System.Object sender, System.EventArgs e)
@@ -455,6 +462,8 @@ namespace OpenCharas
 			SingleSetToolStripMenuItem.Checked = false;
 			SheetModeToolStripMenuItem.Checked = true;
 			UpdateDrawing();
+
+			ViewModeToolStripMenuItem.Image = Properties.Resources.sheetmode;
 		}
 
 		public void SheetModeToolStripMenuItem_Click(System.Object sender, System.EventArgs e)
@@ -463,11 +472,11 @@ namespace OpenCharas
 		}
 
 		// Zooming code
-		private int ZoomNumber_ = 100;
+		int _zoomValue = 100;
 		public int ZoomNumber
 		{
-			get { return ZoomNumber_; }
-			set { ZoomNumber_ = value; }
+			get { return _zoomValue; }
+			set { _zoomValue = value; }
 		}
 
 		private void SetZoom(int Num)
@@ -532,12 +541,7 @@ namespace OpenCharas
 
 		// Animation player
 		Timer AnimTimer;
-		private int AnimationFrame = 0;
-		public int AnimationFrameIndex
-		{
-			get { return AnimationFrame; }
-			set { AnimationFrame = value; }
-		}
+		public int AnimationFrame { get; set; }
 
 		private void AnimTimerUp(object sender, EventArgs e)
 		{
@@ -642,9 +646,17 @@ namespace OpenCharas
 				previewForm.Close();
 				return;
 			}
+			
+			var tex = Program.canvasForm.RenderSheetToTexture();
+
+			if (tex == null)
+			{
+				MessageBox.Show("Nothing to render.");
+				return;
+			}
 
 			previewForm = new PreviewWindow();
-			previewForm.RenderedImage = Program.canvasForm.RenderSheetToTexture();
+			previewForm.RenderedImage = tex;
 			previewForm.StartPosition = FormStartPosition.Manual;
 			var ImgWidth = previewForm.RenderedImage.Size;
 			previewForm.Size = new Size(ImgWidth.Width + GameEditor.Diff.Width, ImgWidth.Height + GameEditor.Diff.Height);
@@ -1093,20 +1105,17 @@ namespace OpenCharas
 			return EHeaderValue.HeaderUnknown;
 		}
 
-		private List<string> ImagesNotFound = new List<string>();
-		public List<string> PackImagesNotFound
-		{
-			get { return ImagesNotFound; }
-		}
-
-		private List<string> ImagesAcquired_ = new List<string>();
-		public List<string> ImagesAcquired
-		{
-			get { return ImagesAcquired_; }
-		}
+		public List<string> PackImagesNotFound { get; set; }
+		public List<string> ImagesAcquired { get; set; }
 
 		public void PerformOpen(string Path)
 		{
+			if (PackImagesNotFound == null)
+			{
+				PackImagesNotFound = new List<string>();
+				ImagesAcquired = new List<string>();
+			}
+
 			try
 			{
 				using (System.IO.MemoryStream DecompressedFile = new System.IO.MemoryStream())
@@ -1140,6 +1149,9 @@ namespace OpenCharas
 							}
 							else if (Header == EHeaderValue.HeaderImagePack)
 							{
+								Program.WorkInProgress("Image Packer");
+								return;
+
 								int Count = Reader.ReadInt32();
 								List<string> StrList = new List<string>();
 
@@ -1277,14 +1289,14 @@ namespace OpenCharas
 								if (Header == EHeaderValue.HeaderSheetImages)
 									Images.ReloadImages();
 
-								if (ImagesNotFound.Count != 0)
+								if (PackImagesNotFound.Count != 0)
 								{
 									string Prompt = (string)("The character file loaded with the following errors:\n\n");
-									foreach (var MissingImg in ImagesNotFound)
+									foreach (var MissingImg in PackImagesNotFound)
 										Prompt += (string)("The image " + MissingImg + " was not found.\n");
 
 									MessageBox.Show(Prompt);
-									ImagesNotFound.Clear();
+									PackImagesNotFound.Clear();
 								}
 								if (ImagesAcquired.Count != 0)
 								{
@@ -1303,14 +1315,14 @@ namespace OpenCharas
 					}
 
 				}
+
+				Images.ReloadImages();
+				UpdateDrawing();
 			}
 			catch
 			{
 				MessageBox.Show("Unable to load file!\n");
 			}
-
-			Images.ReloadImages();
-			UpdateDrawing();
 		}
 
 		public void HitOpen()
@@ -1591,6 +1603,9 @@ namespace OpenCharas
 
 		public void ImagePackToolStripMenuItem_Click(System.Object sender, System.EventArgs e)
 		{
+			Program.WorkInProgress("Image Packer");
+			return;
+
 			using (SaveFileDialog SaveDlg = new SaveFileDialog())
 			{
 				SaveDlg.AddExtension = true;
@@ -1602,7 +1617,6 @@ namespace OpenCharas
 				if (Result == System.Windows.Forms.DialogResult.OK)
 					PerformImagePackCreate(SaveDlg.FileName);
 			}
-
 		}
 
 		public void ToolStripButton1_Click(System.Object sender, System.EventArgs e)
@@ -1628,27 +1642,10 @@ namespace OpenCharas
 		}
 
 		// Camera code
-		public bool MovingCamera = false;
-		private Point _mouseDelta = new Point(0, 0);
-		public Point MouseDelta
-		{
-			get { return _mouseDelta; }
-			set { _mouseDelta = value; }
-		}
-		
-		private Point _oldMousePos = new Point(0, 0);
-		public Point OldMousePos
-		{
-			get { return _oldMousePos; }
-			set { _oldMousePos = value; }
-		}
-
-		private Point CameraPosition = new Point(0, 0);
-		public Point CanvasCamera
-		{
-			get { return CameraPosition; }
-			set { CameraPosition = value; }
-		}
+		public bool MovingCamera { get; set; }
+		public Point MouseDelta { get; set; }
+		public Point OldMousePos { get; set; }
+		public Point CameraPosition { get; set; }
 
 		// Reset camera
 		public void ResetCameraToolStripMenuItem_Click(System.Object sender, System.EventArgs e)
@@ -1853,6 +1850,49 @@ namespace OpenCharas
 		private void ToolStripButton20_Click(object sender, EventArgs e)
 		{
 			DoPrint();
+		}
+
+		void CheckForUpdates(bool reportNotFound = false)
+		{
+			Updater.CheckUpdates
+								(
+									(vec) =>
+									{
+										Invoke
+											(
+												(Action)delegate()
+												{
+													UpdateForm uf = new UpdateForm();
+													uf.AutomaticUpdates = !Settings.AutomaticUpdates;
+
+													if (uf.ShowDialog() == System.Windows.Forms.DialogResult.Yes)
+													{
+														_resetUpdate = true;
+														Close();
+													}
+
+													Settings.AutomaticUpdates = !uf.AutomaticUpdates;
+												}
+											);
+									},
+									null,
+									() =>
+									{
+										Invoke
+											(
+												(Action)delegate()
+												{
+													if (reportNotFound)
+														MessageBox.Show("You have the latest version.", "Woo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+												}
+											);
+									}
+								);
+		}
+
+		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CheckForUpdates(true);
 		}
 	}
 

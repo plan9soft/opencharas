@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace OpenCharas
 {
-	public partial class CharacterSelect : System.Windows.Forms.Form
+	public partial class CharacterSelect
 	{
 
 		//Form overrides dispose to clean up the component list.
@@ -38,15 +38,15 @@ namespace OpenCharas
 			this.TreeView1 = new System.Windows.Forms.TreeView();
 			this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.ToolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.ToolStripButton1 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton2 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton5 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton6 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton5 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton6 = new System.Windows.Forms.ToolStripButton();
 			this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.ToolStripButton3 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton4 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton8 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton7 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton3 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton4 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton8 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.ToolStripContainer1.ContentPanel.SuspendLayout();
 			this.ToolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.ToolStripContainer1.SuspendLayout();
@@ -60,7 +60,7 @@ namespace OpenCharas
 			this.TreeView1.LabelEdit = true;
 			this.TreeView1.Location = new System.Drawing.Point(0, 0);
 			this.TreeView1.Name = "TreeView1";
-			this.TreeView1.Size = new System.Drawing.Size(192, 243);
+			this.TreeView1.Size = new System.Drawing.Size(202, 249);
 			this.TreeView1.TabIndex = 0;
 			this.TreeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
 			this.TreeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView1_NodeMouseClick);
@@ -72,11 +72,11 @@ namespace OpenCharas
 			// ToolStripContainer1.ContentPanel
 			// 
 			this.ToolStripContainer1.ContentPanel.Controls.Add(this.TreeView1);
-			this.ToolStripContainer1.ContentPanel.Size = new System.Drawing.Size(192, 243);
+			this.ToolStripContainer1.ContentPanel.Size = new System.Drawing.Size(202, 249);
 			this.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ToolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.ToolStripContainer1.Name = "ToolStripContainer1";
-			this.ToolStripContainer1.Size = new System.Drawing.Size(192, 268);
+			this.ToolStripContainer1.Size = new System.Drawing.Size(202, 274);
 			this.ToolStripContainer1.TabIndex = 1;
 			this.ToolStripContainer1.Text = "ToolStripContainer1";
 			// 
@@ -100,7 +100,7 @@ namespace OpenCharas
             this.ToolStripButton7});
 			this.ToolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.ToolStrip1.Name = "ToolStrip1";
-			this.ToolStrip1.Size = new System.Drawing.Size(192, 25);
+			this.ToolStrip1.Size = new System.Drawing.Size(202, 25);
 			this.ToolStrip1.Stretch = true;
 			this.ToolStrip1.TabIndex = 0;
 			// 
@@ -171,7 +171,7 @@ namespace OpenCharas
 			this.ToolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.ToolStripButton4.Name = "ToolStripButton4";
 			this.ToolStripButton4.Size = new System.Drawing.Size(23, 22);
-			this.ToolStripButton4.Text = "ToolStripButton4";
+			this.ToolStripButton4.Text = "Delete Row";
 			this.ToolStripButton4.Click += new System.EventHandler(this.ToolStripButton4_Click);
 			// 
 			// ToolStripButton8
@@ -191,7 +191,7 @@ namespace OpenCharas
 			this.ToolStripButton7.Image = global::OpenCharas.Properties.Resources.rowup;
 			this.ToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.ToolStripButton7.Name = "ToolStripButton7";
-			this.ToolStripButton7.Size = new System.Drawing.Size(23, 22);
+			this.ToolStripButton7.Size = new System.Drawing.Size(23, 20);
 			this.ToolStripButton7.Text = "ToolStripButton6";
 			this.ToolStripButton7.ToolTipText = "Move Row Up";
 			this.ToolStripButton7.Click += new System.EventHandler(this.ToolStripButton7_Click);
@@ -200,9 +200,8 @@ namespace OpenCharas
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(192, 268);
+			this.ClientSize = new System.Drawing.Size(202, 274);
 			this.Controls.Add(this.ToolStripContainer1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MinimumSize = new System.Drawing.Size(208, 302);
 			this.Name = "CharacterSelect";
 			this.ShowInTaskbar = false;
@@ -222,15 +221,15 @@ namespace OpenCharas
 		internal System.Windows.Forms.TreeView TreeView1;
 		internal System.Windows.Forms.ToolStripContainer ToolStripContainer1;
 		internal System.Windows.Forms.ToolStrip ToolStrip1;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton1;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton2;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton3;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton4;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton1;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton2;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton3;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton4;
 		internal System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton5;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton6;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton7;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton8;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton5;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton6;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton7;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton8;
 	}
 
 }

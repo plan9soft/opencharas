@@ -6,6 +6,25 @@ using System.Drawing;
 
 namespace Paril
 {
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+	public sealed class DefaultValueAttribute : Attribute
+	{
+		// See the attribute guidelines at 
+		//  http://go.microsoft.com/fwlink/?LinkId=85236
+		readonly object value;
+
+		// This is a positional argument
+		public DefaultValueAttribute(object value)
+		{
+			this.value = value;
+		}
+
+		public object Value
+		{
+			get { return value; }
+		}
+	}
+
 	public interface ISettingsWriteRead
 	{
 		void Save(SettingsContainer settings, Stream stream);
@@ -115,6 +134,7 @@ namespace Paril
 			set { _converter = value; }
 		}
 
+		public abstract string RetrieveDefaultValue();
 		public abstract string InvokeConvertTo();
 		public abstract void InvokeConvertFrom(string str);
 	}	
@@ -132,6 +152,16 @@ namespace Paril
 		{
 			get { return _info; }
 			set { _info = value; Type = _info.PropertyType; }
+		}
+
+		public override string RetrieveDefaultValue()
+		{
+			var attrib = _info.GetCustomAttributes(typeof(DefaultValueAttribute), true);
+
+			if (attrib.Length == 1)
+				return Converter.Converter.ConvertTo(this, (attrib[0] as DefaultValueAttribute).Value);
+
+			return InvokeConvertTo();
 		}
 
 		public override string InvokeConvertTo()
@@ -158,6 +188,16 @@ namespace Paril
 		{
 			get { return _info; }
 			set { _info = value; Type = _info.FieldType; }
+		}
+
+		public override string RetrieveDefaultValue()
+		{
+			var attrib = _info.GetCustomAttributes(typeof(DefaultValueAttribute), true);
+
+			if (attrib.Length == 1)
+				return Converter.Converter.ConvertTo(this, (attrib[0] as DefaultValueAttribute).Value);
+
+			return InvokeConvertTo();
 		}
 
 		public override string InvokeConvertTo()
@@ -502,7 +542,8 @@ namespace Paril
 			else
 				prop.Converter = DefaultConverters.DefaultConverter;
 
-			prop.DefaultValue = prop.InvokeConvertTo();
+			prop.DefaultValue = prop.RetrieveDefaultValue();
+			prop.InvokeConvertFrom(prop.DefaultValue);
 
 			_props.Add(prop.Name, prop);
 		}
@@ -523,7 +564,8 @@ namespace Paril
 			else
 				prop.Converter = DefaultConverters.DefaultConverter;
 
-			prop.DefaultValue = prop.InvokeConvertTo();
+			prop.DefaultValue = prop.RetrieveDefaultValue();
+			prop.InvokeConvertFrom(prop.DefaultValue);
 
 			_props.Add(prop.Name, prop);
 		}
@@ -542,7 +584,8 @@ namespace Paril
 
 		public void Save(string FileName)
 		{
-			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(FileName));
+			if (!string.IsNullOrEmpty(System.IO.Path.GetDirectoryName(FileName)))
+				System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(FileName));
 
 			using (FileStream fs = new FileStream(FileName, FileMode.Create))
 				_saver.Save(this, fs);

@@ -1,0 +1,1 @@
+﻿- images not centered for box

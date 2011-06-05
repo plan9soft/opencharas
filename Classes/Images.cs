@@ -4,93 +4,38 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Collections;
 using System.Windows.Forms;
+using System.IO;
 
 namespace OpenCharas
 {
 	public class RPGImage
 	{
-		private Bitmap RawBitmap_;
-		public Bitmap RawBitmap
-		{
-			get { return RawBitmap_; }
-			set { RawBitmap_ = value; }
-		}
-
-		private Bitmap OriginalBitmap_;
-		public Bitmap OriginalBitmap
-		{
-			get { return OriginalBitmap_; }
-			set { OriginalBitmap_ = value; }
-		}
-
-		private RPGPictureBox Box_;
-		public RPGPictureBox Box
-		{
-			get { return Box_; }
-			set { Box_ = value; }
-		}
-
-		private string Path_;
-		public string Path
-		{
-			get { return Path_; }
-			set { Path_ = value; }
-		}
-
-		private string Name_;
-		public string Name
-		{
-			get { return Name_; }
-			set { Name_ = value; }
-		}
-
-		private RPGGameFile GameFile_;
-		public RPGGameFile GameFile
-		{
-			get { return GameFile_; }
-			set { GameFile_ = value; }
-		}
+		public Bitmap RawBitmap { get; set; }
+		public Bitmap OriginalBitmap { get; set; }
+		public RPGPictureBox Box { get; set; }
+		public string Path { get; set; }
+		public string Name { get; set; }
+		public RPGGameFile GameFile { get; set; }
 	}
 
 	public class GameNodeEntry
 	{
-		private List<GameNodeEntry> Subdirs_ = new List<GameNodeEntry>();
-		public List<GameNodeEntry> Subdirs
-		{
-			get { return Subdirs_; }
-		}
+		public List<GameNodeEntry> Subdirs { get; private set; }
+		public List<RPGImage> Images { get; private set; }
+		public string NodeName { get; set; }
+		public string Path { get; set; }
+		public RPGGameFile GameFile { get; set; }
 
-		private List<RPGImage> Images_ = new List<RPGImage>();
-		public List<RPGImage> Images
+		public GameNodeEntry()
 		{
-			get { return Images_; }
-		}
-
-		private string NodeName_;
-		public string NodeName
-		{
-			get { return NodeName_; }
-			set { NodeName_ = value; }
-		}
-
-		private string Path_;
-		public string Path
-		{
-			get { return Path_; }
-			set { Path_ = value; }
-		}
-
-		private RPGGameFile GameFile_;
-		public RPGGameFile GameFile
-		{
-			get { return GameFile_; }
-			set { GameFile_ = value; }
+			Subdirs = new List<GameNodeEntry>();
+			Images = new List<RPGImage>();
 		}
 
 		public void RecurseNodeAndAddAll()
 		{
-			foreach (var Image in Images)
-				Program.imagePackerForm.FlowLayoutPanel2.Controls.Add(Image.Box.CreatePictureBoxCopy());
+			//foreach (var Image in Images)
+				//Program.imagePackerForm.FlowLayoutPanel2.Controls.Add(Image.Box.CreatePictureBoxCopy());
 
 			foreach (var Subdir in Subdirs)
 				Subdir.RecurseNodeAndAddAll();
@@ -99,22 +44,12 @@ namespace OpenCharas
 
 	public class GameNodeNode : TreeNode
 	{
-		private GameNodeEntry RPGNode_;
-		public GameNodeEntry RPGNode
-		{
-			get { return RPGNode_; }
-			set { RPGNode_ = value; }
-		}
+		public GameNodeEntry RPGNode { get; set; }
 	}
 
 	public class GameModeMenuItem : ToolStripMenuItem
 	{
-		private RPGGameFile GameFile_;
-		public RPGGameFile GameFile
-		{
-			get { return GameFile_; }
-			set { GameFile_ = value; }
-		}
+		public RPGGameFile GameFile { get; set; }
 	}
 
 	public static class Images
@@ -445,6 +380,8 @@ namespace OpenCharas
 				Entry.NodeName = (string)(Game.Substring(Game.LastIndexOf("\\") + 1));
 				Entry.Path = Game.ToString();
 
+				bool hasGame = false;
+
 				// Is there a .gam file in here
 				foreach (var File in fileEntries)
 				{
@@ -468,17 +405,19 @@ namespace OpenCharas
 								CurrentGameFile = Entry.GameFile;
 								if (Canvas.Settings.CurrentGame == CurrentGameFile.Path)
 									WillBeCurrentGame = CurrentGameFile;
+
+								hasGame = true;
 								break;
 							}
-
 						}
-
 					}
 				}
 
-				RecurseSubdirectories(Entry);
-
-				RPGNodes.Add(Entry);
+				if (hasGame)
+				{
+					RecurseSubdirectories(Entry);
+					RPGNodes.Add(Entry);
+				}
 			}
 
 			if (WillBeCurrentGame != null)
@@ -580,6 +519,86 @@ namespace OpenCharas
 
 			// Re-draw incase we changed
 			Program.canvasForm.UpdateDrawing();
+		}
+	}
+
+	public static class Extensions
+	{
+		public static void CopyTo(this Stream from, Stream to, int bufferSize = 4096)
+		{
+			long fromPos = 0, toPos = 0;
+
+			if (from.CanSeek)
+				fromPos = from.Position;
+			if (to.CanSeek)
+				toPos = to.Position;
+
+			byte[] buffer = new byte[bufferSize];
+			while (true)
+			{
+				int bytes = from.Read(buffer, 0, bufferSize);
+
+				if (bytes == 0)
+					break;
+
+				to.Write(buffer, 0, bytes);
+			}
+
+			if (from.CanSeek)
+				from.Position = fromPos;
+			if (to.CanSeek)
+				to.Position = toPos;
+		}
+		/// <summary>
+		/// Converts an image into an icon.
+		/// </summary>
+		/// <param name="img">The image that shall become an icon</param>
+		/// <param name="size">The width and height of the icon. Standard
+		/// sizes are 16x16, 32x32, 48x48, 64x64.</param>
+		/// <param name="keepAspectRatio">Whether the image should be squashed into a
+		/// square or whether whitespace should be put around it.</param>
+		/// <returns>An icon!!</returns>
+		public static Icon ToIcon(this Image img, int size, bool keepAspectRatio)
+		{
+			Bitmap square = new Bitmap(size, size); // create new bitmap
+			Graphics g = Graphics.FromImage(square); // allow drawing to it
+
+			int x, y, w, h; // dimensions for new image
+
+			if (!keepAspectRatio || img.Height == img.Width)
+			{
+				// just fill the square
+				x = y = 0; // set x and y to 0
+				w = h = size; // set width and height to size
+			}
+			else
+			{
+				// work out the aspect ratio
+				float r = (float)img.Width / (float)img.Height;
+
+				// set dimensions accordingly to fit inside size^2 square
+				if (r > 1)
+				{ // w is bigger, so divide h by r
+					w = size;
+					h = (int)((float)size / r);
+					x = 0; y = (size - h) / 2; // center the image
+				}
+				else
+				{ // h is bigger, so multiply w by r
+					w = (int)((float)size * r);
+					h = size;
+					y = 0; x = (size - w) / 2; // center the image
+				}
+			}
+
+			// make the image shrink nicely by using HighQualityBicubic mode
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(img, x, y, w, h); // draw image with specified dimensions
+			g.Flush(); // make sure all drawing operations complete before we get the icon
+
+			// following line would work directly on any image, but then
+			// it wouldn't look as nice.
+			return Icon.FromHandle(square.GetHicon());
 		}
 	}
 }

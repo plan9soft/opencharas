@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace OpenCharas
 {
-	public partial class LayersWindow : System.Windows.Forms.Form
+	public partial class LayersWindow
 	{
 
 		//Form overrides dispose to clean up the component list.
@@ -36,26 +36,26 @@ namespace OpenCharas
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Shoulder Pads");
-			System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Chest");
-			System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Body", new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14});
-			System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Sword");
-			System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("On Back");
-			System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Accessories", new System.Windows.Forms.TreeNode[] {
-            treeNode16,
-            treeNode17});
-			System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Glasses");
-			System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Hair");
-			System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Head", new System.Windows.Forms.TreeNode[] {
-            treeNode19,
-            treeNode20});
-			System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Pants");
-			System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Shoes");
-			System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Legs", new System.Windows.Forms.TreeNode[] {
-            treeNode22,
-            treeNode23});
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Shoulder Pads");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Chest");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Body", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Sword");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("On Back");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Accessories", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Glasses");
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Hair");
+			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Head", new System.Windows.Forms.TreeNode[] {
+            treeNode7,
+            treeNode8});
+			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Pants");
+			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Shoes");
+			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Legs", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode11});
 			this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.SplitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.TreeView1 = new System.Windows.Forms.TreeView();
@@ -85,11 +85,11 @@ namespace OpenCharas
 			this.NumericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.Label1 = new System.Windows.Forms.Label();
 			this.ToolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.ToolStripButton6 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton8 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton7 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton9 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton1 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton8 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton7 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton9 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.ToolStripContainer1.ContentPanel.SuspendLayout();
 			this.ToolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -160,35 +160,35 @@ namespace OpenCharas
 			this.TreeView1.LabelEdit = true;
 			this.TreeView1.Location = new System.Drawing.Point(0, 0);
 			this.TreeView1.Name = "TreeView1";
-			treeNode13.Name = "Node3";
-			treeNode13.Text = "Shoulder Pads";
-			treeNode14.Name = "Node5";
-			treeNode14.Text = "Chest";
-			treeNode15.Name = "Node0";
-			treeNode15.Text = "Body";
-			treeNode16.Name = "Node12";
-			treeNode16.Text = "Sword";
-			treeNode17.Name = "Node13";
-			treeNode17.Text = "On Back";
-			treeNode18.Name = "Node1";
-			treeNode18.Text = "Accessories";
-			treeNode19.Name = "Node10";
-			treeNode19.Text = "Glasses";
-			treeNode20.Name = "Node11";
-			treeNode20.Text = "Hair";
-			treeNode21.Name = "Node2";
-			treeNode21.Text = "Head";
-			treeNode22.Name = "Node8";
-			treeNode22.Text = "Pants";
-			treeNode23.Name = "Node9";
-			treeNode23.Text = "Shoes";
-			treeNode24.Name = "Node7";
-			treeNode24.Text = "Legs";
+			treeNode1.Name = "Node3";
+			treeNode1.Text = "Shoulder Pads";
+			treeNode2.Name = "Node5";
+			treeNode2.Text = "Chest";
+			treeNode3.Name = "Node0";
+			treeNode3.Text = "Body";
+			treeNode4.Name = "Node12";
+			treeNode4.Text = "Sword";
+			treeNode5.Name = "Node13";
+			treeNode5.Text = "On Back";
+			treeNode6.Name = "Node1";
+			treeNode6.Text = "Accessories";
+			treeNode7.Name = "Node10";
+			treeNode7.Text = "Glasses";
+			treeNode8.Name = "Node11";
+			treeNode8.Text = "Hair";
+			treeNode9.Name = "Node2";
+			treeNode9.Text = "Head";
+			treeNode10.Name = "Node8";
+			treeNode10.Text = "Pants";
+			treeNode11.Name = "Node9";
+			treeNode11.Text = "Shoes";
+			treeNode12.Name = "Node7";
+			treeNode12.Text = "Legs";
 			this.TreeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode15,
-            treeNode18,
-            treeNode21,
-            treeNode24});
+            treeNode3,
+            treeNode6,
+            treeNode9,
+            treeNode12});
 			this.TreeView1.Size = new System.Drawing.Size(170, 274);
 			this.TreeView1.TabIndex = 0;
 			this.ToolTip1.SetToolTip(this.TreeView1, "Layers");
@@ -595,7 +595,6 @@ namespace OpenCharas
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(410, 303);
 			this.Controls.Add(this.ToolStripContainer1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MinimumSize = new System.Drawing.Size(426, 337);
 			this.Name = "LayersWindow";
 			this.ShowInTaskbar = false;
@@ -652,11 +651,11 @@ namespace OpenCharas
 		internal System.Windows.Forms.CheckBox CheckBox2;
 		internal System.Windows.Forms.CheckBox CheckBox1;
 		internal System.Windows.Forms.ToolStrip ToolStrip1;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton6;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton8;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton7;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton9;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton1;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton6;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton8;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton7;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton9;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton1;
 		internal System.Windows.Forms.TextBox TextBox6;
 		internal System.Windows.Forms.TextBox TextBox4;
 		internal System.Windows.Forms.TextBox TextBox3;

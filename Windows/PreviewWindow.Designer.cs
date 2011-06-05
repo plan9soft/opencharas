@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace OpenCharas
 {
-	public partial class PreviewWindow : System.Windows.Forms.Form
+	public partial class PreviewWindow
 	{
 
 		//Form overrides dispose to clean up the component list.

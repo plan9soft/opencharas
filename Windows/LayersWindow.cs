@@ -5,12 +5,14 @@ using System.Diagnostics;
 using Microsoft.VisualBasic;
 using System.Collections;
 using System.Windows.Forms;
+using Paril.Windows.Forms.Docking;
 
 namespace OpenCharas
 {
-	public partial class LayersWindow
+	public partial class LayersWindow : DockingWindowForm
 	{
-		public LayersWindow()
+		public LayersWindow() :
+			base(Program.DockContainer)
 		{
 			InitializeComponent();
 		}
@@ -18,11 +20,12 @@ namespace OpenCharas
 		// Loading/Closing
 		public void LayersWindow_Load(System.Object sender, System.EventArgs e)
 		{
+			ToolStrip1.Renderer = new AwesomeToolStripRenderer();
+			Icon = Properties.Resources.layers.ToIcon(16, true);
+			
 			TreeView1.Nodes.Clear();
 
 			SetSliderColors();
-
-			//If String.IsNullOrEmpty(Properties.Settings.DockString) Then Dockable.ForceDock(ItemsWindow)
 		}
 
 		public void LayersWindow_FormClosing(System.Object sender, System.Windows.Forms.FormClosingEventArgs e)
@@ -36,12 +39,7 @@ namespace OpenCharas
 			this.Hide();
 		}
 
-		private RPGNode CurrentNode_;
-		public RPGNode CurrentNode
-		{
-			get { return CurrentNode_; }
-			set { CurrentNode_ = value; }
-		}
+		public RPGNode CurrentNode { get; set; }
 
 		public void ChangeStatesSub(Control Ctrl, bool Enabled)
 		{
@@ -119,6 +117,9 @@ namespace OpenCharas
 
 			RPGNode Node = (RPGNode)TreeView1.SelectedNode;
 
+			if (Node == null)
+				return;
+
 			RPGNode NewNode = new RPGNode();
 			NewNode.Text = (string)("Sub-Layer " + (Node.Nodes.Count+ 1).ToString());
 			NewNode.Layer = Program.characterSelectForm.GetSelectedCharacter().Character.CreateLayer(NewNode);
@@ -131,23 +132,26 @@ namespace OpenCharas
 		{
 			RPGNode Node = (RPGNode)TreeView1.SelectedNode;
 
-			if (Node != null)
-			{
-				Program.characterSelectForm.GetSelectedCharacter().Character.RemoveLayer(Node.Layer);
-				TreeView1.Nodes.Remove(Node);
+			if (Node == null)
+				return;
 
-				if (TreeView1.SelectedNode != null)
-					DoSelectNode(TreeView1.SelectedNode);
-				else
-					ChangeStates(false);
+			Program.characterSelectForm.GetSelectedCharacter().Character.RemoveLayer(Node.Layer);
+			TreeView1.Nodes.Remove(Node);
 
-				Program.canvasForm.UpdateDrawing();
-			}
+			if (TreeView1.SelectedNode != null)
+				DoSelectNode(TreeView1.SelectedNode);
+			else
+				ChangeStates(false);
+
+			Program.canvasForm.UpdateDrawing();
 		}
 
 		public void ToolStripButton9_Click(System.Object sender, System.EventArgs e)
 		{
 			RPGNode Node = (RPGNode)TreeView1.SelectedNode;
+
+			if (Node == null)
+				return;
 
 			TreeNodeCollection NodeCont;
 			if (Node.Parent == null)
@@ -170,19 +174,17 @@ namespace OpenCharas
 		{
 			RPGNode Node = (RPGNode)TreeView1.SelectedNode;
 
+			if (Node == null)
+				return;
+
 			TreeNodeCollection NodeCont;
 			if (Node.Parent == null)
-			{
 				NodeCont = TreeView1.Nodes;
-			}
 			else
-			{
 				NodeCont = Node.Parent.Nodes;
-			}
+
 			if (NodeCont.Count == 1 || NodeCont.IndexOf(Node) == NodeCont.Count - 1)
-			{
 				return;
-			}
 
 			int OldIndex = NodeCont.IndexOf(Node);
 			NodeCont.Remove(Node);
@@ -490,24 +492,15 @@ namespace OpenCharas
 			RPGNode Node = (RPGNode)e.Node;
 
 			if (Node != null)
-			{
 				DoSelectNode(Node);
-			}
 			else
-			{
 				ChangeStates(false);
-			}
 		}
 	}
 
 	public class RPGNode : TreeNode
 	{
-		private RPGLayer Layer_;
-		public RPGLayer Layer
-		{
-			get { return Layer_; }
-			set { Layer_ = value; }
-		}
+		public RPGLayer Layer { get; set; }
 
 		public void RecurseAndLoadSubNodes()
 		{

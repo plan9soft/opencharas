@@ -270,25 +270,28 @@ namespace OpenCharas
 
 		public void ToolStripMenuItem1_Click(System.Object sender, System.EventArgs e)
 		{
-			if (GameFile.GameName == "" || GameFile.GameName == null)
+			if (string.IsNullOrEmpty(GameFile.GameName))
 			{
 				MessageBox.Show("You might want to give this game mode a name!");
 				return;
 			}
 
-			if (SavedPath != "")
+			if (string.IsNullOrEmpty(GameFile.FolderName))
 			{
-				using (var outfile = System.IO.File.Open(SavedPath, System.IO.FileMode.Create))
+				MessageBox.Show("Give the game a data folder name!");
+				return;
+			}
+
+			System.IO.Directory.CreateDirectory("data\\"+GameFile.FolderName);
+
+			using (var outfile = System.IO.File.Open("data\\"+GameFile.FolderName+"\\game.gam", System.IO.FileMode.Create))
+			{
+				using (System.IO.BinaryWriter Writer = new System.IO.BinaryWriter(outfile))
 				{
-					using (System.IO.BinaryWriter Writer = new System.IO.BinaryWriter(outfile))
-					{
-						if (Writer != null)
-							GameFile.Save(Writer);
-					}
+					if (Writer != null)
+						GameFile.Save(Writer);
 				}
 			}
-			else
-				DoASaveAs();
 		}
 
 		public void ToolStripMenuItem3_Click(System.Object sender, System.EventArgs e)
@@ -324,6 +327,7 @@ namespace OpenCharas
 				OpenDlg.DefaultExt = "gam";
 				OpenDlg.FilterIndex = 1;
 				OpenDlg.RestoreDirectory = true;
+				OpenDlg.InitialDirectory = Environment.CurrentDirectory + "\\data\\";
 				var Result = OpenDlg.ShowDialog();
 
 				if (Result == System.Windows.Forms.DialogResult.OK)
@@ -337,6 +341,10 @@ namespace OpenCharas
 							{
 								CreateNew();
 								GameFile.Load(Reader);
+								Path = Path.Replace('/', '\\');
+								string temp = Path.Substring(0, Path.LastIndexOf('\\'));
+								GameFile.FolderName = temp.Substring(temp.LastIndexOf('\\')+1);
+								textBox2.Text = GameFile.FolderName;
 
 								TextBox1.Text = GameFile.GameName;
 								DontUpdateList = true;
@@ -517,12 +525,7 @@ namespace OpenCharas
 			previewForm = null;
 		}
 
-		private bool AnimMode_ = false;
-		public bool AnimMode
-		{
-			get { return AnimMode_; }
-			set { AnimMode_ = value; }
-		}
+		public bool AnimMode { get; set; }
 
 		public void Button5_Click(System.Object sender, System.EventArgs e)
 		{
@@ -561,14 +564,20 @@ namespace OpenCharas
 		{
 			UpdateFramesList();
 		}
+
+		private void textBox2_TextChanged(object sender, EventArgs e)
+		{
+			GameFile.FolderName = textBox2.Text;
+		}
 	}
 
 	public class RPGGameFileAnimation
 	{
-		private List<int> Frames_ = new List<int>();
-		public List<int> Frames
+		public List<int> Frames { get; set; }
+
+		public RPGGameFileAnimation()
 		{
-			get { return Frames_; }
+			Frames = new List<int>();
 		}
 
 		public void Save(System.IO.BinaryWriter Writer)
@@ -595,77 +604,27 @@ namespace OpenCharas
 
 	public class RPGGameFile
 	{
-		private string Path_;
-		public string Path
-		{
-			get { return Path_; }
-			set { Path_ = value; }
-		}
-
-		private string FilePath_;
-		public string FilePath
-		{
-			get { return FilePath_; }
-			set { FilePath_ = value; }
-		}
-
-		private string GameName_;
-		public string GameName
-		{
-			get { return GameName_; }
-			set { GameName_ = value; }
-		}
-
-		private int SheetRows_;
-		public int SheetRows
-		{
-			get { return SheetRows_; }
-			set { SheetRows_ = value; }
-		}
-
-		private int SheetColumns_;
-		public int SheetColumns
-		{
-			get { return SheetColumns_; }
-			set { SheetColumns_ = value; }
-		}
-
-		private bool Is8Bit_;
-		public bool Is8Bit
-		{
-			get { return Is8Bit_; }
-			set { Is8Bit_ = value; }
-		}
-
-		private int PreviewFrame_;
-		public int PreviewFrame
-		{
-			get { return PreviewFrame_; }
-			set { PreviewFrame_ = value; }
-		}
-
-		private List<RPGGameFileAnimation> Animations_ = new List<RPGGameFileAnimation>();
-		public List<RPGGameFileAnimation> Animations
-		{
-			get { return Animations_; }
-		}
-
-		private GameModeMenuItem MenuItem_;
-		public GameModeMenuItem MenuItem
-		{
-			get { return MenuItem_; }
-			set { MenuItem_ = value; }
-		}
+		public string Path { get; set; }
+		public string FilePath { get; set; }
+		public string GameName { get; set; }
+		public string FolderName { get; set; }
+		public int SheetRows { get; set; }
+		public int SheetColumns { get; set; }
+		public bool Is8Bit { get; set; }
+		public int PreviewFrame { get; set; }
+		public List<RPGGameFileAnimation> Animations { get; set; }
+		public GameModeMenuItem MenuItem { get; set; }
 
 		public RPGGameFile()
 		{
 			SheetRows = 1;
 			SheetColumns = 1;
+			Animations = new List<RPGGameFileAnimation>();
 		}
 
 		public void Clear()
 		{
-			GameName = "";
+			GameName = FolderName = "";
 			SheetRows = 1;
 			SheetColumns = 1;
 			Is8Bit = false;

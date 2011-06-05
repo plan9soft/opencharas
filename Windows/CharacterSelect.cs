@@ -4,18 +4,32 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Collections;
 using System.Windows.Forms;
+using Paril.Windows.Forms.Docking;
 
 namespace OpenCharas
 {
-	public partial class CharacterSelect
+	public partial class CharacterSelect : DockingWindowForm
 	{
-		public CharacterSelect()
+		public CharacterSelect() :
+			base(Program.DockContainer)
 		{
 			InitializeComponent();
 		}
 
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			base.OnFormClosing(e);
+			if (Program.canvasForm.FinalClosing)
+				return;
+
+			e.Cancel = true;
+			this.Hide();
+		}
+
 		public void CharacterSelect_Load(System.Object sender, System.EventArgs e)
 		{
+			Icon = Properties.Resources.character.ToIcon(16, true);
+			ToolStrip1.Renderer = new AwesomeToolStripRenderer();
 		}
 
 		public void CharacterSelect_Move(System.Object sender, System.EventArgs e)
@@ -24,8 +38,6 @@ namespace OpenCharas
 				return;
 			if (Program.canvasForm.SkipSizeChanged)
 				return;
-
-			// Dockable.CheckDocking()
 		}
 
 		public RPGCharacterRowList CharacterList = new RPGCharacterRowList();
@@ -134,10 +146,11 @@ namespace OpenCharas
 			else
 			{
 				int NewIndex = Node.Index;
+				var row = Node.Row;
 				Node.Row.Nodes.Remove(Node);
-				if (NewIndex > Node.Row.Nodes.Count - 1)
-					NewIndex = (int)(Node.Row.Nodes.Count - 1);
-				TreeView1.SelectedNode = Node.Row.Nodes[NewIndex];
+				if (NewIndex > row.Nodes.Count - 1)
+					NewIndex = (int)(row.Nodes.Count - 1);
+				TreeView1.SelectedNode = row.Nodes[NewIndex];
 			}
 
 			UpdateLayersTreeView();

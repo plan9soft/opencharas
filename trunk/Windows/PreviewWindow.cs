@@ -5,12 +5,14 @@ using System.Diagnostics;
 using Microsoft.VisualBasic;
 using System.Collections;
 using System.Windows.Forms;
+using Paril.Windows.Forms.Docking;
 
 namespace OpenCharas
 {
-	public partial class PreviewWindow
+	public partial class PreviewWindow : DockingWindowForm
 	{
-		public PreviewWindow()
+		public PreviewWindow() :
+			base(Program.DockContainer)
 		{
 			InitializeComponent();
 		}

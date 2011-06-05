@@ -57,12 +57,12 @@ namespace OpenCharas
 			this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.ToolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.ToolStripButton9 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton13 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton18 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton9 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton13 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton18 = new System.Windows.Forms.ToolStripButton();
 			this.ToolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.ToolStripButton6 = new OpenCharas.Classes.ToolStripButton();
-			this.ToolStripButton7 = new OpenCharas.Classes.ToolStripButton();
+			this.ToolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.ToolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.ToolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
 			this.SplitContainer1.Panel1.SuspendLayout();
 			this.SplitContainer1.Panel2.SuspendLayout();
@@ -395,12 +395,12 @@ namespace OpenCharas
 		internal System.Windows.Forms.ToolStripMenuItem ImportImageToThisSetToolStripMenuItem;
 		internal System.Windows.Forms.ToolStripMenuItem ClearImageToolStripMenuItem;
 		internal System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem2;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton6;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton7;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton6;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton7;
 		internal System.Windows.Forms.ToolStripTextBox ToolStripTextBox1;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton18;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton13;
-		internal OpenCharas.Classes.ToolStripButton ToolStripButton9;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton18;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton13;
+		internal System.Windows.Forms.ToolStripButton ToolStripButton9;
 		internal System.Windows.Forms.ToolStripSeparator ToolStripSeparator4;
 		private System.ComponentModel.IContainer components;
 	}

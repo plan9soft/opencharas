@@ -16,94 +16,19 @@ namespace OpenCharas
 
 	public class RPGLayer
 	{
-		private Point _offset = new Point();
-		public Point Offset
-		{
-			get { return _offset; }
-			set { _offset = value; }
-		}
-
-		private RPGImage _image;
-		public RPGImage Image
-		{
-			get { return _image; }
-			set { _image = value; }
-		}
-
-		private string _name;
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
-
-		private QColorMatrix _matrix = new QColorMatrix();
-		public QColorMatrix Matrix
-		{
-			get { return _matrix; }
-			set { _matrix = value; }
-		}
-
-		private float[] _matrixValues = new float[4];
-		public float[] MatrixValues
-		{
-			get { return _matrixValues; }
-		}
-
-		private int _alpha;
-		public int Alpha
-		{
-			get { return _alpha; }
-			set { _alpha = value; }
-		}
-
-		private List<RPGLayer> _subLayers = new List<RPGLayer>();
-		public List<RPGLayer> SubLayers
-		{
-			get { return _subLayers; }
-		}
-
-		private RPGLayer _parent;
-		public RPGLayer Parent
-		{
-			get { return _parent; }
-			set { _parent = value; }
-		}
-
-		private RPGCharacter _ownedCharacter;
-		public RPGCharacter OwnedCharacter
-		{
-			get { return _ownedCharacter; }
-			set { _ownedCharacter = value; }
-		}
-
-		private EFlipFlag _flipFlags;
-		public EFlipFlag FlipFlags
-		{
-			get { return _flipFlags; }
-			set { _flipFlags = value; }
-		}
-
-		private bool _inverted;
-		public bool Inverted
-		{
-			get { return _inverted; }
-			set { _inverted = value; }
-		}
-
-		private Bitmap _flippedImage;
-		public Bitmap FlippedImage
-		{
-			get { return _flippedImage; }
-			set { _flippedImage = value; }
-		}
-
-		private RPGNode _node;
-		public RPGNode Node
-		{
-			get { return _node; }
-			set { _node = value; }
-		}
+		public Point Offset { get; set; }
+		public RPGImage Image { get; set; }
+		public string Name { get; set; }
+		public QColorMatrix Matrix { get; set; }
+		public float[] MatrixValues { get; private set; }
+		public int Alpha { get; set; }
+		public List<RPGLayer> SubLayers { get; private set; }
+		public RPGLayer Parent { get; set; }
+		public RPGCharacter OwnedCharacter { get; set; }
+		public EFlipFlag FlipFlags { get; set; }
+		public bool Inverted { get; set; }
+		public Bitmap FlippedImage { get; set; }
+		public RPGNode Node { get; set; }
 
 		public RPGLayer()
 		{
@@ -111,16 +36,15 @@ namespace OpenCharas
 			Image = null;
 			Name = "";
 			Parent = null;
+			Matrix = new QColorMatrix();
 			Matrix.Reset();
 			Alpha = 255;
 			FlipFlags = EFlipFlag.FlipNone;
 			Inverted = false;
 			FlippedImage = null;
 
-			_matrixValues[0] = 0;
-			_matrixValues[1] = 1;
-			_matrixValues[2] = 1;
-			_matrixValues[3] = 0;
+			SubLayers = new List<RPGLayer>();
+			MatrixValues = new float[4] { 0, 1, 1, 0 };
 		}
 
 		public void SetImage(RPGPictureBox Img)
@@ -179,7 +103,7 @@ namespace OpenCharas
 			}
 
 			for (int i = 0; i <= 3; i++)
-				File.Write(_matrixValues[i]);
+				File.Write(MatrixValues[i]);
 
 			File.Write(Alpha);
 			File.Write((int)FlipFlags);
@@ -254,7 +178,7 @@ namespace OpenCharas
 			}
 
 			for (int i = 0; i <= 3; i++)
-				_matrixValues[i] = File.ReadSingle();
+				MatrixValues[i] = File.ReadSingle();
 
 			Alpha = File.ReadInt32();
 			FlipFlags = (EFlipFlag)File.ReadInt32();
@@ -348,7 +272,7 @@ namespace OpenCharas
 				if (Program.canvasForm.AnimationIndex == 0)
 					Frame = 0;
 				else
-					Frame = (int)(Images.CurrentGameFile.Animations[Program.canvasForm.AnimationIndex - 1].GetFrame(Program.canvasForm.AnimationFrameIndex));
+					Frame = (int)(Images.CurrentGameFile.Animations[Program.canvasForm.AnimationIndex - 1].GetFrame(Program.canvasForm.AnimationFrame));
 
 				destRect = new Rectangle(DrawX, DrawY, (int)((bmp.Width / Image.GameFile.SheetRows) * Zoom), (int)((bmp.Height / Image.GameFile.SheetColumns) * Zoom));
 				srcRect = Character.GetRectangleForBitmapFrame(bmp, Frame, Image.GameFile.SheetRows, Image.GameFile.SheetColumns);
@@ -358,8 +282,8 @@ namespace OpenCharas
 			{
 				int BmpWidth = (int)((bmp.Width * Zoom) / 2);
 				int BmpHeight = (int)((bmp.Height * Zoom) / 2);
-				int DrawX = (int)((ContentWidth - BmpWidth) + (Offset.X * Zoom) + Program.canvasForm.CanvasCamera.X);
-				int DrawY = (int)((ContentHeight - BmpHeight) + (Offset.Y * Zoom) + Program.canvasForm.CanvasCamera.Y);
+				int DrawX = (int)((ContentWidth - BmpWidth) + (Offset.X * Zoom) + Program.canvasForm.CameraPosition.X);
+				int DrawY = (int)((ContentHeight - BmpHeight) + (Offset.Y * Zoom) + Program.canvasForm.CameraPosition.Y);
 
 				destRect = new Rectangle(new Point(DrawX, DrawY), new Size((int)(bmp.Width * Zoom), (int)(bmp.Height * Zoom)));
 				srcRect = new Rectangle(0, 0, bmp.Width, bmp.Height);
@@ -413,17 +337,12 @@ namespace OpenCharas
 
 	public class RPGCharacter
 	{
-		private string _name; // Unique ID for character file (for multi-sheet)
-		public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
+		public string Name { get; set; } // Unique ID for character file (for multi-sheet)
+		public List<RPGLayer> Layers { get; private set; }
 
-		private List<RPGLayer> Layers_ = new List<RPGLayer>();
-		public List<RPGLayer> Layers
+		public RPGCharacter()
 		{
-			get { return Layers_; }
+			Layers = new List<RPGLayer>();
 		}
 
 		public void Save(System.IO.BinaryWriter Writer, bool ImagesToo)

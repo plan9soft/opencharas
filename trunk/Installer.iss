@@ -17,7 +17,7 @@ DefaultDirName={pf}\OpenCharas
 DefaultGroupName=OpenCharas
 AllowNoIcons=yes
 OutputBaseFilename=setup
-Compression=lzma
+Compression=lzma2
 SolidCompression=yes
 
 [Languages]

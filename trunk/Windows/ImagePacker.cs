@@ -4,12 +4,14 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Collections;
 using System.Windows.Forms;
+using Paril.Windows.Forms.Docking;
 
 namespace OpenCharas
 {
-	public partial class ImagePacker
+	public partial class ImagePacker : DockingWindowForm
 	{
-		public ImagePacker()
+		public ImagePacker() :
+			base(Program.DockContainer)
 		{
 			InitializeComponent();
 		}
@@ -46,8 +48,8 @@ namespace OpenCharas
 				foreach (var Image in Node.RPGNode.Images)
 				{
 					// Add a box
-					if (ContainsThisBox(FlowLayoutPanel2.Controls, Image.Box) == false)
-						FlowLayoutPanel1.Controls.Add(Image.Box.CreatePictureBoxCopy());
+					//if (ContainsThisBox(FlowLayoutPanel2.Controls, Image.Box) == false)
+					//	FlowLayoutPanel1.Controls.Add(Image.Box.CreatePictureBoxCopy());
 				}
 			}
 
@@ -71,8 +73,8 @@ namespace OpenCharas
 
 		public void FlowLayoutPanel2_DragDrop(System.Object sender, System.Windows.Forms.DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(typeof(RPGPictureBox)))
-				FlowLayoutPanel2.Controls.Add((RPGPictureBox)e.Data.GetData(typeof(RPGPictureBox)));
+			//if (e.Data.GetDataPresent(typeof(RPGPictureBox)))
+			//	FlowLayoutPanel2.Controls.Add((RPGPictureBox)e.Data.GetData(typeof(RPGPictureBox)));
 		}
 
 		public void FlowLayoutPanel1_DragEnter(System.Object sender, System.Windows.Forms.DragEventArgs e)
@@ -92,8 +94,8 @@ namespace OpenCharas
 
 		public void FlowLayoutPanel1_DragDrop(System.Object sender, System.Windows.Forms.DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(typeof(RPGPictureBox)))
-				FlowLayoutPanel1.Controls.Add((RPGPictureBox)e.Data.GetData(typeof(RPGPictureBox)));
+			//if (e.Data.GetDataPresent(typeof(RPGPictureBox)))
+			//	FlowLayoutPanel1.Controls.Add((RPGPictureBox)e.Data.GetData(typeof(RPGPictureBox)));
 		}
 
 		public void Button2_Click(System.Object sender, System.EventArgs e)

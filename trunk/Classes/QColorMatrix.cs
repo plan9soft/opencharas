@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Collections;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 
 namespace OpenCharas
@@ -12,9 +13,9 @@ namespace OpenCharas
 	{
 		public QColorMatrix()
 		{
+			MyMatrix = new ColorMatrix();
 			PI = (float)(4.0F * (float)(Math.Atan(1.0)));
 			Rad = (float)(4.0F * (float)(Math.Atan(1.0))) / 180.0F;
-
 		}
 
 		float PI;
@@ -31,22 +32,13 @@ namespace OpenCharas
 		static QColorMatrix PreHue = new QColorMatrix();
 		static QColorMatrix PostHue = new QColorMatrix();
 
-		private System.Drawing.Imaging.ColorMatrix MyMatrix_ = new System.Drawing.Imaging.ColorMatrix();
-		public System.Drawing.Imaging.ColorMatrix MyMatrix
-		{
-			get { return MyMatrix_; }
-			set { MyMatrix_ = value; }
-		}
+		public ColorMatrix MyMatrix { get; set; }
 
 		private void Copy(QColorMatrix CopyFrom)
 		{
 			for (int x = 0; x <= 4; x++)
-			{
 				for (int y = 0; y <= 4; y++)
-				{
 					MyMatrix[x, y] = CopyFrom.MyMatrix[x, y];
-				}
-			}
 		}
 
 		public void Reset()
@@ -68,8 +60,7 @@ namespace OpenCharas
 			// NOTE: The last column is NOT calculated, because it is (or at least should be)
 			// always { 0, 0, 0, 0, 1 }.
 
-			System.Drawing.Imaging.ColorMatrix A;
-			System.Drawing.Imaging.ColorMatrix B;
+			ColorMatrix A, B;
 
 			if (Order == MatrixOrder.Append)
 			{
@@ -82,7 +73,7 @@ namespace OpenCharas
 				B = Matrix.MyMatrix;
 			}
 
-			System.Drawing.Imaging.ColorMatrix Temp = new System.Drawing.Imaging.ColorMatrix();
+			ColorMatrix Temp = new ColorMatrix();
 
 			for (int y = 0; y <= 4; y++)
 			{
@@ -278,7 +269,7 @@ namespace OpenCharas
 			float[][] matrixValues = new float[][] { new Single[] { SatComplR + Saturation, SatComplR, SatComplR, 0, 0 }, new Single[] { SatComplG, SatComplG + Saturation, SatComplG, 0, 0 }, new Single[] { SatComplB, SatComplB, SatComplB + Saturation, 0, 0 }, new Single[] { 0, 0, 0, 1, 0 }, new Single[] { 0, 0, 0, 0, 1 } };
 
 			QColorMatrix m = new QColorMatrix();
-			m.MyMatrix = new System.Drawing.Imaging.ColorMatrix(matrixValues);
+			m.MyMatrix = new ColorMatrix(matrixValues);
 
 			Multiply(m, order);
 		}

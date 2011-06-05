@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace OpenCharas
 {
-	public partial class ImagePacker : System.Windows.Forms.Form
+	public partial class ImagePacker
 	{
 
 		//Form overrides dispose to clean up the component list.

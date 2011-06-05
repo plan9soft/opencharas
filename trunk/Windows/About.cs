@@ -105,5 +105,11 @@ namespace OpenCharas
 		{
 
 		}
+
+		private void logoPictureBox_Click(object sender, EventArgs e)
+		{
+			var p = new System.Media.SoundPlayer(Properties.Resources.boggle);
+			p.Play();
+		}
 	}
 }
